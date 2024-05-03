@@ -1,0 +1,209 @@
+import React from "react";
+import Layout from "../Layout/Layout";
+
+const PayoutDetails = () => {
+  return (
+    <Layout activeSlide={"Payout"}>
+      <div className="content-body">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xl-12">
+              <div className="card profile-card card-bx m-b30">
+                <div className="card-header">
+                  <h6 className="title">Payout Guide Details</h6>
+                </div>
+                <form className="profile-form">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Guest Name<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="James"
+                        />
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Email<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="email"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="james@gmail.com"
+                        />
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Mobile No.<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="+966 58966545"
+                        />
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Payment Status<sup className="mandatesign">*</sup>
+                        </label>
+                        <select
+                          className="form-select py-3 bg-body-secondary"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Status</option>
+                          <option value={1}>Paid</option>
+                          <option value={2}>Pending</option>
+                        </select>
+                        <a href className="btn_save_changes">
+                          Save Changes
+                        </a>
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Booking Amount<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="200 SAR"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div className="col-xl-12">
+              <div className="card profile-card card-bx m-b30">
+                <div className="card-header">
+                  <h6 className="title">Trip Details</h6>
+                </div>
+                <form className="profile-form">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Local Name<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="The Oberoi Madinah"
+                        />
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Booking Date<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="21 Non 2024"
+                        />
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Total Guests<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="4 People"
+                        />
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Package<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control bg-body-secondary text-dark"
+                          defaultValue="Package 1"
+                        />
+                      </div>
+                      <div className="col-md-6 m-b30">
+                        <label className="form-label">
+                          Destination<sup className="mandatesign">*</sup>
+                        </label>
+                        <div className="d-flex">
+                          <div className="bg-body-secondary p-2 pt-2 rounded">
+                            <label className="form-label">From : </label>
+                            <input
+                              type="text"
+                              className=" border-0 ms-2 fs-5 bg-body-secondary"
+                              defaultValue="Delhi"
+                            />
+                          </div>
+                          <div className="bg-body-secondary p-2 pt-2 rounded ms-3">
+                            <label className="form-label">To : </label>
+                            <input
+                              type="text"
+                              className=" border-0 ms-2 fs-5 bg-body-secondary"
+                              defaultValue="Banglore"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-9 m-b30">
+                      <label className="form-label">
+                        Guest Activities<sup className="mandatesign">*</sup>
+                      </label>
+                      <div className="d-flex justify-content-between flex-wrap">
+                        <div className="border p-2">
+                          <h5 className="text-center bg-body-secondary p-1">
+                            Wildlife Viewing
+                          </h5>
+                          <img
+                            src="images/wild-life.jpeg"
+                            alt
+                            className="activity_image"
+                          />
+                        </div>
+                        <div className="border p-2">
+                          <h5 className="text-center bg-body-secondary p-1">
+                            Hiking
+                          </h5>
+                          <img
+                            src="images/family-small-children-hiking-outdoors-600nw-1927128746.webp"
+                            alt
+                            className="activity_image"
+                          />
+                        </div>
+                        <div className="border p-2">
+                          <h5 className="text-center bg-body-secondary p-1">
+                            Bornfire
+                          </h5>
+                          <img
+                            src="images/vertical-shot-of-small-bonfire-with-beautiful-flames-on-the-rocks-2C4T18J.jpg"
+                            alt
+                            className="activity_image"
+                          />
+                        </div>
+                        <div className="border p-2">
+                          <h5 className="text-center bg-body-secondary p-1">
+                            Boat Touring
+                          </h5>
+                          <img
+                            src="images/boat.jpg"
+                            alt
+                            className="activity_image"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default PayoutDetails;
