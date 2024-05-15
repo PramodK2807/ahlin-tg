@@ -1,5 +1,12 @@
 import { MDBDataTable } from "mdbreact";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  AllGuidesList,
+  ChangeGuideStatus,
+  DeleteGuide,
+} from "../../adminHttpServices/dashHttpService";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 const Local = () => {
   const [local, setLocal] = useState({
@@ -46,7 +53,6 @@ const Local = () => {
         width: 50,
         selected: false,
       },
-
       {
         label: "Actions",
         field: "actions",
@@ -57,29 +63,111 @@ const Local = () => {
     rows: [],
   });
 
+  useEffect(() => {
+    getGuides(); // Guide or Locals
+  }, []);
+
+  const getGuides = async () => {
+    let { data } = await AllGuidesList();
+    console.log(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results?.list;
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.name = list?.fullName;
+          returnData.mobile = list?.mobileNumber || "NA";
+          returnData.email = list?.email || "NA";
+          returnData.rating = list?.rating || "NA";
+          returnData.reviews = list?.reviews || "NA";
+          returnData.status = (
+            <div className="check_toggle text-center" key={list?._id}>
+              <input
+                type="checkbox"
+                defaultChecked={list?.status}
+                name="check1"
+                id={list?._id}
+                className="d-none"
+                onClick={() => {
+                  changeStatus(list?._id, list?.status);
+                }}
+              />
+              <label for={list?._id}></label>
+            </div>
+          );
+          returnData.actions = (
+            <div class="d-flex">
+              <Link
+                to={`/Guest-Management/Details/${list?._id}`}
+                state={{
+                  title: "Edit Local Details",
+                  isEdit: true,
+                  type: "Guide",
+                  api:"editGuide"
+                }}
+                class="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i class="fa fa-edit"></i>
+              </Link>
+              <Link
+                to={`/Guest-Management/Details/${list?._id}`}
+                state={{
+                  title: "View Local Details",
+                  isEdit: false,
+                  type: "Guide",
+                }}
+                class="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i class="fa fa-eye"></i>
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDeleteItem(list?._id)}
+                class="btn btn-danger shadow btn-xs sharp"
+              >
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          );
+
+          newRows.push(returnData);
+        });
+      setLocal({ ...local, rows: newRows });
+    }
+  };
+
+  const handleDeleteItem = async (id) => {
+    try {
+      let { data } = await DeleteGuide(id);
+      if (data && !data.error) {
+        getGuides();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const changeStatus = async (id) => {
+    try {
+      let { data } = await ChangeGuideStatus(id);
+      if (data && !data.error) {
+        getGuides();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="col-xl-12 pt-4">
         <div className="card dz-card" id="bootstrap-table1">
-          <div className="card-header flex-wrap border-0 d-none">
-            <div>
-              <h4 className="card-title">Local LIST</h4>
-            </div>
-            <div className="searchh_box">
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Search"
-              />
-              <button>
-                <i className="fas fa-search" />
-              </button>
-            </div>
-          </div>
-
           <div className="col-12 card-body position-relative card-body-2">
             <div className="card_title_container">
-              <h4 className="card-title">LOCAL LIST</h4>
+              <h4 className="card-title">Guide List</h4>
             </div>
             <div className="search_icon">
               <i class="fa-solid fa-magnifying-glass"></i>
@@ -95,7 +183,6 @@ const Local = () => {
                 noBottomColumns
                 sortable={false}
                 paginationLabel={"«»"}
-                // navigate to view ==== /Dashboard/Guests-Details/:123
               />
             </div>
           </div>

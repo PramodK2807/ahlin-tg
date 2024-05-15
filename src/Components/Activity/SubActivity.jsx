@@ -2,6 +2,10 @@ import { MDBDataTable } from "mdbreact";
 import React, { useState } from "react";
 
 const SubActivity = () => {
+  const [name, setName] = useState("");
+  const [file, setFile] = useState();
+  const [errors, setErrors] = useState({});
+
   const [subActivity, setSubActivity] = useState({
     columns: [
       {
@@ -45,6 +49,93 @@ const SubActivity = () => {
     ],
     rows: [],
   });
+
+  const handleNameChange = (e) => {
+    let value = e.target.value;
+    setName(value);
+    if (value.trim().length <= 3) {
+      setErrors({
+        ...errors,
+        nameError: {
+          isError: true,
+          message: "Please enter more than 3 characters",
+        },
+      });
+    } else {
+      setErrors({
+        ...errors,
+        nameError: {
+          isError: false,
+        },
+      });
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFile(file);
+
+    if (file) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!allowedTypes.includes(file.type)) {
+        setErrors((prev) => ({
+          ...prev,
+          fileError: {
+            isError: true,
+            message: "Only JPEG, PNG, or GIF files are allowed.",
+          },
+        }));
+      } else if (file.size > 2 * 1024 * 1024) {
+        setErrors((prev) => ({
+          ...prev,
+          fileError: {
+            isError: true,
+            message: "File size must be under 2MB.",
+          },
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          fileError: {
+            isError: false,
+          },
+        }));
+      }
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        fileError: {
+          isError: true,
+          message: "Please upload a file.",
+        },
+      }));
+    }
+  };
+  const handleSelectChange = (e) => {
+    let value = e.target.value;
+    if (value === undefined || value === "") {
+      setErrors((prev) => ({
+        ...prev,
+        selectError: {
+          isError: true,
+          message: "Please select a option",
+        },
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        selectError: {
+          isError: false,
+        },
+      }));
+    }
+  };
+  const isFormValid =
+    !errors.nameError?.isError &&
+    !errors.fileError?.isError &&
+    name.trim().length > 0 &&
+    !errors.selectError?.isError;
+    
   return (
     <>
       <div className="p-4 mt-4 border rounded">
@@ -54,32 +145,57 @@ const SubActivity = () => {
             <select
               className="form-select py-3"
               aria-label="Default select example"
+              onChange={handleSelectChange}
             >
-              <option selected>Select Activity</option>
+              <option selected value={""}>
+                Select Activity
+              </option>
               <option value={1}>Hiking</option>
               <option value={2}>Wildlife Viewing</option>
               <option value={3}>Bornfire</option>
             </select>
+            {errors?.selectError?.isError && (
+              <p className="text-danger">{errors?.selectError?.message}</p>
+            )}
           </div>
         </div>
         <div className="row">
           <div className="col-md-6 m-b30">
             <label className="form-label">
-              Enter Sub Activity Name
+              Enter Activity Name
               <sup className="mandatesign">*</sup>
             </label>
-            <input type="text" className="form-control" />
+            <input
+              type="text"
+              className="form-control"
+              onChange={(e) => handleNameChange(e)}
+            />
+            {errors?.nameError?.isError && (
+              <p className="text-danger">{errors?.nameError?.message}</p>
+            )}
           </div>
           <div className="col-md-6 m-b30">
             <label htmlFor="formFile" className="form-label">
               Upload Image
             </label>
-            <input className="form-control" type="file" id="formFile" />
+            <input
+              className="form-control"
+              type="file"
+              id="formFile"
+              onChange={handleFileChange}
+            />
+            {errors?.fileError?.isError && (
+              <p className="text-danger">{errors?.fileError?.message}</p>
+            )}
           </div>
           <div className="col-md-2 m-b30 pt-3">
-            <a href className="btn btn-primary rounded">
+            <button
+              disabled={!isFormValid}
+              type="button"
+              className="btn btn-primary rounded"
+            >
               Save
-            </a>
+            </button>
           </div>
         </div>
       </div>

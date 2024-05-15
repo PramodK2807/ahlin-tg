@@ -1,7 +1,50 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { AdminLogin } from "../adminHttpServices/adminLoginHttpServie";
 const Login = () => {
+  const [passRemember, setPassRemember] = useState(false);
+  const [passVisible, setPassVisible] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    const rememberData = JSON.parse(localStorage.getItem("ahl-remember"));
+    console.log(rememberData);
+    setValue("email", rememberData?.email || "");
+    setValue("password", rememberData?.password || "");
+  }, []);
+
+  const onSubmit = async (info) => {
+    localStorage.removeItem("ahl-admin-token");
+    console.log(passRemember);
+    if (passRemember) {
+      localStorage.setItem(
+        "ahl-remember",
+        JSON.stringify({ email: info?.email, password: info?.password })
+      );
+    }
+    try {
+      let { data } = await AdminLogin({
+        email: info.email,
+        password: info.password,
+      });
+      if (data && !data?.error) {
+        navigate("/Dashboard");
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="authincation h-100">
       <div className="container-fluid h-100">
@@ -12,24 +55,53 @@ const Login = () => {
                 <h3 className="title">Login for Admin Panel</h3>
                 <p>Please enter your email and password</p>
               </div>
-              <form action>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                   <label className="mb-1 text-dark">Email</label>
                   <input
                     type="email"
-                    className="form-control form-control"
-                    defaultValue="hello@example.com"
+                    className={`form-control ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
+                    {...register("email", {
+                      required: "This field is required",
+                      pattern: {
+                        value:
+                          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        message: "Invalid email address",
+                      },
+                    })}
                   />
+                  {errors?.email && (
+                    <p className="errorText mt-1">{errors.email.message}</p>
+                  )}
                 </div>
                 <div className="mb-4 position-relative">
                   <label className="mb-1 text-dark">Password</label>
                   <input
-                    type="password"
+                    type={passVisible ? "text" : "password"}
                     id="dz-password"
-                    className="form-control"
-                    defaultValue={123456}
+                    className={`form-control ${
+                      errors.password ? "is-invalid" : ""
+                    }`}
+                    {...register("password", {
+                      required: "* Please Enter Your Password",
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                        message:
+                          "* Minimum 8 characters, One Uppercase, One Lowercase & One Special Character Allowed",
+                      },
+                    })}
                   />
-                  <span className="show-pass eye">
+                  {errors?.password && (
+                    <p className="errorText mt-1">{errors.password.message}</p>
+                  )}
+
+                  <span
+                    onClick={() => setPassVisible(!passVisible)}
+                    className="show-pass eye"
+                  >
                     <i className="fa fa-eye-slash" />
                     <i className="fa fa-eye" />
                   </span>
@@ -41,7 +113,9 @@ const Login = () => {
                         type="checkbox"
                         className="form-check-input"
                         id="customCheckBox1"
-                        required
+                        name="passRemeber"
+                        value={passRemember}
+                        onClick={() => setPassRemember(!passRemember)}
                       />
                       <label
                         className="form-check-label"
@@ -52,22 +126,22 @@ const Login = () => {
                     </div>
                   </div>
                   <div className="mb-4">
-                    <a
-                      href="forgot-password.html"
+                    <Link
+                      to="/forgot-password"
                       className="btn-link text-primary"
                     >
                       Forgot Password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="text-center mb-4">
-                  <Link
-                    to={'/Dashboard'}
+                  <button
+                    // disabled={!isValid}
                     type="submit"
                     className="btn btn-primary btn-block"
                   >
                     Sign In
-                  </Link>
+                  </button>
                 </div>
                 <h6 className="login-title">
                   <span>Or continue with</span>

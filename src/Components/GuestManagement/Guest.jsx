@@ -1,8 +1,14 @@
 import { MDBDataTable } from "mdbreact";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  AllUsersList,
+  ChangeUserStatus,
+  DeleteUser,
+} from "../../adminHttpServices/dashHttpService";
+import { Link } from "react-router-dom";
 
 const Guest = () => {
-  const [guest, setGuest] = useState({
+  const [user, setUser] = useState({
     columns: [
       {
         label: "S.No.",
@@ -11,8 +17,14 @@ const Guest = () => {
         selected: false,
       },
       {
-        label: "Name",
-        field: "name",
+        label: "First Name",
+        field: "firstName",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Last Name",
+        field: "lastName",
         width: 50,
         selected: false,
       },
@@ -51,32 +63,115 @@ const Guest = () => {
     rows: [],
   });
 
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const getUsers = async () => {
+    let { data } = await AllUsersList();
+    console.warn(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results?.list;
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.firstName = list?.firstName || "NA";
+          returnData.lastName = list?.lastName || "NA";
+          returnData.mobile = list?.mobileNumber || "NA";
+          returnData.email = list?.email || "NA";
+          returnData.country = list?.countryName || "NA";
+
+          returnData.status = (
+            <div className="check_toggle text-center" key={list?._id}>
+              <input
+                type="checkbox"
+                defaultChecked={list?.status}
+                name="check1"
+                id={list?._id}
+                className="d-none"
+                onClick={() => {
+                  changeStatus(list?._id, list?.status);
+                }}
+              />
+              <label for={list?._id}></label>
+            </div>
+          );
+          returnData.actions = (
+            <div className="d-flex">
+              <Link
+                to={`/Guest-Management/Details/${list?._id}`}
+                state={{
+                  title: "Edit User Details",
+                  isEdit: true,
+                  type: "User",
+                  api:"editUser"
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-edit"></i>
+              </Link>
+              <Link
+                to={`/Guest-Management/Details/${list?._id}`}
+                state={{
+                  title: "View User Details",
+                  isEdit: false,
+                  type: "User",
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDeleteItem(list?._id)}
+                className="btn btn-danger shadow btn-xs sharp"
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </div>
+          );
+
+          newRows.push(returnData);
+        });
+      setUser({ ...user, rows: newRows });
+    }
+  };
+
+  const handleDeleteItem = async (id) => {
+    try {
+      let { data } = await DeleteUser(id);
+      if (data && !data.error) {
+        getUsers();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const changeStatus = async (id) => {
+    try {
+      let { data } = await ChangeUserStatus(id);
+      if (data && !data.error) {
+        getUsers();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="col-xl-12 pt-4">
         <div className="card dz-card" id="bootstrap-table1">
-          <div className="card-header flex-wrap border-0 d-none">
-            <div>
-              <h4 className="card-title">GUEST LIST</h4>
-            </div>
-            <div className="searchh_box">
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Search"
-              />
-              <button>
-                <i className="fas fa-search" />
-              </button>
-            </div>
-          </div>
-
           <div className="col-12 card-body position-relative card-body-2">
             <div className="card_title_container">
-              <h4 className="card-title">GUEST LIST</h4>
+              <h4 className="card-title">User List</h4>
             </div>
             <div className="search_icon">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <i className="fa-solid fa-magnifying-glass"></i>
             </div>
             <div className="table-responsive mdb_table">
               <MDBDataTable
@@ -85,11 +180,10 @@ const Guest = () => {
                 entries={10}
                 className="text-nowrap"
                 hover
-                data={guest}
+                data={user}
                 noBottomColumns
                 sortable={false}
                 paginationLabel={"«»"}
-                // navigate to view ==== /Dashboard/Guests-Details/:123
               />
             </div>
           </div>

@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./Components/Login";
@@ -9,10 +8,6 @@ import { ActivityManagement } from "./Components/Activity/ActivityManagement";
 import PackageManagement from "./Components/Package/PackageManagement";
 import { Suspense, lazy } from "react";
 import Loader from "./Components/Loader";
-import GuestEdit from "./Components/GuestManagement/GuestEdit";
-import GuestDetails from "./Components/GuestManagement/GuestDetails";
-import LocalDetails from "./Components/GuestManagement/LocalDetails";
-import LocalEdit from "./Components/GuestManagement/LocalEdit";
 import BookingDetails from "./Components/Booking/BookingDetails";
 import ActivityEdit from "./Components/Activity/ActivityEdit";
 import PackageDetails from "./Components/Package/PackageDetails";
@@ -23,6 +18,11 @@ import PayoutDetails from "./Components/Payout/PayoutDetails";
 import TransManag from "./Components/Transaction/TransManag";
 import TransDetails from "./Components/Transaction/TransDetails";
 import Help from "./Components/HelpSupport/Help";
+import ContentManagement from "./Components/CMS/ContentManagement";
+import EditContent from "./Components/CMS/EditContent";
+import EditViewLocalGuest from "./Components/Common/EditViewLocalGuest";
+import ForgotPassword from "./Components/ForgotPassword";
+import ResetPassword from "./Components/ResetPassword";
 const Dashboard = lazy(() => import("./Components/Dashboard/Dashboard"));
 const GuestsDetails = lazy(() =>
   import("./Components/Dashboard/GuestsDetails")
@@ -33,7 +33,8 @@ function App() {
     <Routes>
       <Route exact path="*" element={<Login />} />
       <Route exact path="/" element={<Login />} />
-      <Route exact path="/Loader" element={<Loader />} />
+      <Route exact path="/forgot-password" element={<ForgotPassword />} />
+      <Route exact path="/reset-password" element={<ResetPassword />} />
       <Route
         exact
         path="Dashboard"
@@ -54,19 +55,27 @@ function App() {
       />
 
       <Route exact path="Guest-Management" element={<GuestHome />} />
-      <Route exact path="Guest-Management/Edit/:id" element={<GuestEdit />} />
+      <Route
+        exact
+        path="Guest-Management/Edit/:id"
+        element={<EditViewLocalGuest />}
+      />
       <Route
         exact
         path="Guest-Management/Details/:id"
-        element={<GuestDetails />}
+        element={<EditViewLocalGuest />}
       />
 
       <Route
         exact
         path="Local-Management/Details/:id"
-        element={<LocalDetails />}
+        element={<EditViewLocalGuest />}
       />
-      <Route exact path="Local-Management/Edit/:id" element={<LocalEdit />} />
+      <Route
+        exact
+        path="Local-Management/Edit/:id"
+        element={<EditViewLocalGuest />}
+      />
 
       <Route exact path="Booking-Management" element={<BookingManagement />} />
       <Route
@@ -91,7 +100,7 @@ function App() {
         element={<PackageDetails />}
       />
 
-      {/* <Route
+      <Route
         exact
         path="Subscription-Management"
         element={<SubscriptionManag />}
@@ -113,9 +122,14 @@ function App() {
         path="Transaction-Management/Details/:id"
         element={<TransDetails />}
       />
-      <Route exact path="Help-Support-Management" element={<Help />} /> */}
+      <Route exact path="Help-Support-Management" element={<Help />} />
 
-      <Route exact path="Content-Management" element={<Help />} />
+      <Route exact path="Content-Management" element={<ContentManagement />} />
+      <Route
+        exact
+        path="Content-Management/edit/:id"
+        element={<EditContent />}
+      />
     </Routes>
   );
 }

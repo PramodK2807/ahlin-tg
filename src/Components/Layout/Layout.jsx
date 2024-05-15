@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Layout = ({ children, activeSlide }) => {
   const [slide, setSlide] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setSlide(activeSlide);
   }, [activeSlide]);
+
+  const handleLogout = () => {
+    document.getElementById("closeLogout").click();
+    navigate("/login");
+  };
 
   return (
     <div id="main-wrapper" className="show">
@@ -29,23 +36,21 @@ const Layout = ({ children, activeSlide }) => {
               <ul className="navbar-nav header-right">
                 <li className="nav-item ps-3">
                   <div className="dropdown header-profile2">
-                    <a
+                    <Link
                       className="nav-link"
-                      to="javascript:void(0);"
-                      role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
                       <div className="header-info2 d-flex align-items-center">
                         <div className="header-media">
-                          <img src="images/1.jpg" alt />
+                          <img src="images/1.jpg" alt="i" />
                         </div>
                         <div className="header-info">
                           <h6>Jennifer Garcia </h6>
                           <p>xyz@gmail.com</p>
                         </div>
                       </div>
-                    </a>
+                    </Link>
                     <div className="dropdown-menu dropdown-menu-end" style={{}}>
                       <div className="card border-0 mb-0">
                         <div className="card-header py-2">
@@ -53,7 +58,7 @@ const Layout = ({ children, activeSlide }) => {
                             <img
                               src="images/1.jpg"
                               className="avatar avatar-md"
-                              alt
+                              alt="i"
                             />
                             <div>
                               <h6>Jennifer Garcia</h6>
@@ -61,24 +66,24 @@ const Layout = ({ children, activeSlide }) => {
                           </div>
                         </div>
                         <div className="card-body px-0 py-2">
-                          <a
+                          <Link
                             to="profile.html"
                             className="dropdown-item ai-icon "
                           >
                             <i className="fas fa-user" />
                             <span className="ms-2">Profile </span>
-                          </a>
-                          <a
+                          </Link>
+                          <Link
                             to="change-password.html"
                             className="dropdown-item ai-icon "
                           >
                             <i className="fas fa-refresh" />
                             <span className="ms-2">Change Password </span>
-                          </a>
-                          <a to="login.html" className="dropdown-item ai-icon ">
+                          </Link>
+                          <Link className="dropdown-item ai-icon ">
                             <i className="fas fa-sign-out-alt" />
                             <span className="ms-2">Logout </span>
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -111,7 +116,7 @@ const Layout = ({ children, activeSlide }) => {
                 <div className="menu-icon">
                   <i className="fa-solid fa-people-pulling" />
                 </div>
-                <span className="nav-text">Guest/Local Management</span>
+                <span className="nav-text">User/Guide Management</span>
               </Link>
             </li>
             <li
@@ -203,7 +208,7 @@ const Layout = ({ children, activeSlide }) => {
               </Link>
             </li>
             <li>
-              <Link to="javascript:;" aria-expanded="false">
+              <Link aria-expanded="false">
                 <div className="menu-icon">
                   <i className="fas fa-sign-out-alt" />
                 </div>
@@ -242,18 +247,23 @@ const Layout = ({ children, activeSlide }) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                id="closeLogout"
               />
             </div>
             <div className="modal-body">
               <p>Are you sure you want to log out ?</p>
             </div>
             <div className="modal-footer">
-              <Link to="login.html" className="btn btn-primary">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn btn-primary"
+              >
                 Yes
-              </Link>
-              <Link to="index.html" className="btn btn-secondary">
+              </button>
+              <button type="button" className="btn btn-secondary">
                 No
-              </Link>
+              </button>
             </div>
           </div>
         </div>
