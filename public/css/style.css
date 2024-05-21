@@ -41046,8 +41046,10 @@ input#checkAll.form-check-input:checked {
 }
 
 .card-profile .admin-user .img-wrraper img {
-  height: 80px;
-  width: 80px;
+  min-height: 80px;
+  max-height: 80px;
+  min-width: 80px;
+  max-width: 80px;
   border: 7px solid rgba(62, 95, 206, 0.08);
 }
 
@@ -61845,6 +61847,7 @@ html[dir="rtl"]
 [data-theme-version="dark"] .card-profile .admin-user .img-wrraper a {
   background-color: black;
   box-shadow: 0 0 6px 3px rgba(255, 255, 255, 0.1);
+  display: inline-block;
 }
 
 [data-theme-version="dark"] .card-profile .follow-list .follow-num {
@@ -62500,3 +62503,19 @@ div.dataTables_wrapper div.dataTables_paginate {
 }
 .errorText, .invalid-feedback{
 color:red !important;}
+
+.profile_edit{
+  position: absolute;
+  bottom: 3px;
+  right: -3px;
+  background: white;
+  border: 1px solid;
+  border-radius: 20px;
+  padding: 5px;
+  cursor: pointer;
+}
+.upload_label{
+  min-height: 140px ;
+  border: 1px dashed grey;
+  border-radius: 10px;
+}

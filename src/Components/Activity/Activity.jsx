@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { MDBDataTable } from "mdbreact";
+import {
+  ChangeActivityStatus,
+  CreateActivity,
+  DeleteActivity,
+  GetAllActivity,
+} from "../../adminHttpServices/dashHttpService";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 const Activity = () => {
   const [name, setName] = useState("");
@@ -44,6 +52,10 @@ const Activity = () => {
     ],
     rows: [],
   });
+
+  useEffect(() => {
+    getActivity();
+  }, []);
 
   const handleNameChange = (e) => {
     let value = e.target.value;
@@ -106,52 +118,174 @@ const Activity = () => {
       }));
     }
   };
-  const isFormValid = !errors.nameError?.isError && !errors.fileError?.isError && name.trim().length > 0 && file !== null;
+  const isFormValid =
+    !errors.nameError?.isError &&
+    !errors.fileError?.isError &&
+    name.trim().length > 0 &&
+    file !== null;
+
+  const handleAddActivity = async (e) => {
+    e.preventDefault();
+    try {
+      let formData = new FormData();
+      console.log(file);
+      formData.append("activityName", name);
+      formData.append("uploadImage", file);
+      let { data } = await CreateActivity(formData);
+      if (data && !data?.error) {
+        setName("");
+        document.getElementById("reset").click();
+        setFile([]);
+        getActivity();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getActivity = async () => {
+    let { data } = await GetAllActivity();
+    console.warn(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results?.listActivity;
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.activity = list?.activityName || "NA";
+          returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
+
+          returnData.status = (
+            <div className="check_toggle text-center" key={list?._id}>
+              <input
+                type="checkbox"
+                defaultChecked={list?.status}
+                name="check1"
+                id={list?._id}
+                className="d-none"
+                onClick={() => {
+                  changeStatus(list?._id, list?.status);
+                }}
+              />
+              <label for={list?._id}></label>
+            </div>
+          );
+          returnData.actions = (
+            <div className="d-flex">
+              <Link
+                to={`/Activity-Management/Details/${list?._id}`}
+                state={{
+                  title: "Edit Activity Details",
+                  isEdit: true,
+                  type: "activity",
+                  api: "editActivity",
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-edit"></i>
+              </Link>
+              <Link
+                to={`/Activity-Management/Details/${list?._id}`}
+                state={{
+                  title: "View Activity Details",
+                  isEdit: false,
+                  type: "activity",
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDeleteItem(list?._id)}
+                className="btn btn-danger shadow btn-xs sharp"
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </div>
+          );
+
+          newRows.push(returnData);
+        });
+      setActivity({ ...activity, rows: newRows });
+    }
+  };
+
+  const handleDeleteItem = async (id) => {
+    try {
+      let { data } = await DeleteActivity(id);
+      if (data && !data.error) {
+        getActivity();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const changeStatus = async (id) => {
+    try {
+      let { data } = await ChangeActivityStatus(id);
+      if (data && !data.error) {
+        getActivity();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      <div className="p-4 mt-4 border rounded">
-        <h4>ADD NEW ACTIVITY</h4>
-        <div className="row pt-4">
-          <div className="col-md-6 m-b30">
-            <label className="form-label">
-              Enter Activity Name
-              <sup className="mandatesign">*</sup>
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              onChange={(e) => handleNameChange(e)}
-            />
-            {errors?.nameError?.isError && (
-              <p className="text-danger">{errors?.nameError?.message}</p>
-            )}
-          </div>
-          <div className="col-md-6 m-b30">
-            <label htmlFor="formFile" className="form-label">
-              Upload Image
-            </label>
-            <input
-              className="form-control"
-              type="file"
-              id="formFile"
-              onChange={handleFileChange}
-            />
-            {errors?.fileError?.isError && (
-              <p className="text-danger">{errors?.fileError?.message}</p>
-            )}
-          </div>
-          <div className="col-md-2 m-b30 pt-3">
-            <button
-              disabled={!isFormValid}
-              type="button"
-              className="btn btn-primary rounded"
-            >
-              Save
-            </button>
+      <form onSubmit={handleAddActivity}>
+        <div className="p-4 mt-4 border rounded">
+          <h4>ADD NEW ACTIVITY</h4>
+          <div className="row pt-4">
+            <div className="col-md-6 m-b30">
+              <label className="form-label">
+                Enter Activity Name
+                <sup className="mandatesign">*</sup>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                onChange={(e) => handleNameChange(e)}
+              />
+              {errors?.nameError?.isError && (
+                <p className="text-danger">{errors?.nameError?.message}</p>
+              )}
+            </div>
+            <div className="col-md-6 m-b30">
+              <label htmlFor="formFile" className="form-label">
+                Upload Image
+              </label>
+              <input
+                className="form-control"
+                type="file"
+                id="formFile"
+                onChange={handleFileChange}
+                multiple
+              />
+              {errors?.fileError?.isError && (
+                <p className="text-danger">{errors?.fileError?.message}</p>
+              )}
+            </div>
+            <div className="col-md-2 m-b30 pt-3">
+              <button
+                disabled={!isFormValid}
+                type="submit"
+                className="btn btn-primary rounded"
+                // onClick={handleAddActivity}
+              >
+                Save
+              </button>
+              <button className="d-none" type="reset" id="reset">
+                reset
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
       <div className="col-xl-12 pt-4">
         <div className="card dz-card" id="bootstrap-table1">
           <div className="col-12 card-body position-relative card-body-2">

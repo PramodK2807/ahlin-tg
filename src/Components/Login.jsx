@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AdminLogin } from "../adminHttpServices/adminLoginHttpServie";
+import secureLocalStorage from "react-secure-storage";
+
 const Login = () => {
   const [passRemember, setPassRemember] = useState(false);
   const [passVisible, setPassVisible] = useState(false);
@@ -25,7 +27,6 @@ const Login = () => {
 
   const onSubmit = async (info) => {
     localStorage.removeItem("ahl-admin-token");
-    console.log(passRemember);
     if (passRemember) {
       localStorage.setItem(
         "ahl-remember",
@@ -38,6 +39,10 @@ const Login = () => {
         password: info.password,
       });
       if (data && !data?.error) {
+        secureLocalStorage.setItem("userAccessData", {
+          userData: data?.results?.verify,
+          isNavOpen: true,
+        });
         navigate("/Dashboard");
       }
       console.log(data);

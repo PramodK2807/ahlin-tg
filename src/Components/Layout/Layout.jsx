@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
 const Layout = ({ children, activeSlide }) => {
   const [slide, setSlide] = useState("");
 
   const navigate = useNavigate();
+  const userData = secureLocalStorage.getItem("userAccessData");
+  console.log(userData);
 
   useEffect(() => {
     setSlide(activeSlide);
@@ -18,7 +21,7 @@ const Layout = ({ children, activeSlide }) => {
   return (
     <div id="main-wrapper" className="show">
       <div className="nav-header">
-        <Link to="/" className="brand-logo">
+        <Link to="/Dashboard" className="brand-logo">
           Tourist Booking
         </Link>
         <div className="nav-control">
@@ -43,11 +46,14 @@ const Layout = ({ children, activeSlide }) => {
                     >
                       <div className="header-info2 d-flex align-items-center">
                         <div className="header-media">
-                          <img src="images/1.jpg" alt="i" />
+                          <img
+                            src={userData?.userData?.image || "images/1.jpg"}
+                            alt="i"
+                          />
                         </div>
                         <div className="header-info">
-                          <h6>Jennifer Garcia </h6>
-                          <p>xyz@gmail.com</p>
+                          <h6>{userData?.userData?.fullName}</h6>
+                          <p>{userData?.userData?.email}</p>
                         </div>
                       </div>
                     </Link>
@@ -56,25 +62,25 @@ const Layout = ({ children, activeSlide }) => {
                         <div className="card-header py-2">
                           <div className="products">
                             <img
-                              src="images/1.jpg"
+                              src={userData?.userData?.image || "images/1.jpg"}
                               className="avatar avatar-md"
                               alt="i"
                             />
                             <div>
-                              <h6>Jennifer Garcia</h6>
+                              <h6>{userData?.userData?.fullName}</h6>
                             </div>
                           </div>
                         </div>
                         <div className="card-body px-0 py-2">
                           <Link
-                            to="profile.html"
+                            to="/Admin/Profile"
                             className="dropdown-item ai-icon "
                           >
                             <i className="fas fa-user" />
                             <span className="ms-2">Profile </span>
                           </Link>
                           <Link
-                            to="change-password.html"
+                            to="/Admin/Change-Password"
                             className="dropdown-item ai-icon "
                           >
                             <i className="fas fa-refresh" />
@@ -158,7 +164,7 @@ const Layout = ({ children, activeSlide }) => {
             >
               <Link to="/Subscription-Management" aria-expanded="false">
                 <div className="menu-icon">
-                  <i className="fa-solid fa-bacon" />
+                  <i loading='lazy' className="fa-solid fa-bacon" />
                 </div>
                 <span className="nav-text">Subscription Plan Management</span>
               </Link>
