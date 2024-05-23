@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
+import { GetPackageDetails } from "../../adminHttpServices/dashHttpService";
+import { useParams } from "react-router-dom";
+import moment from "moment";
 
 const PackageDetails = () => {
+  const [details, setDetails] = useState();
+  const { id } = useParams();
+
+  useEffect(() => {
+    getPackageDetails();
+  }, []);
+
+  const getPackageDetails = async () => {
+    try {
+      let { data } = await GetPackageDetails(id);
+      if (data && !data?.error) {
+        console.log(data);
+        setDetails(data?.results?.details);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Layout activeSlide={"Package"}>
       <div className="content-body">
@@ -22,7 +43,7 @@ const PackageDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Package 1"
+                          value={details?.packageName || "NA"}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -32,7 +53,7 @@ const PackageDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Tom"
+                          value={details?.localName || "NA"}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -42,7 +63,7 @@ const PackageDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="75 SAR"
+                          value={details?.price || "NA"}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -62,7 +83,10 @@ const PackageDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="28 September 2023"
+                          value={
+                            moment(details?.createdAT).format("Do MMMM YYYY") ||
+                            "NA"
+                          }
                         />
                       </div>
                       <div className="col-md-12 m-b30">
@@ -76,7 +100,7 @@ const PackageDetails = () => {
                           rows={4}
                           className="form-control"
                           placeholder="A supplier is a person or a company who provides goods or services to another person or entity. For every business transaction, there are two parties."
-                          defaultValue={""}
+                          value={details?.description}
                         />
                       </div>
                       <div className="col-md-6 m-b30">
@@ -86,7 +110,7 @@ const PackageDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Rock Climbing , Hiking , Wildlife Viewing"
+                          value={details?.includes}
                         />
                       </div>
                       <div className="col-md-6 m-b30">
@@ -96,54 +120,28 @@ const PackageDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="All Meals , Personal Expenses"
+                          value={details?.excludes}
                         />
                       </div>
                       <div className="col-md-9 m-b30">
                         <label className="form-label">
                           Package Activities<sup className="mandatesign">*</sup>
                         </label>
-                        <div className="d-flex justify-content-between">
-                          <div className="border p-2">
-                            <h5 className="text-center bg-info-subtle p-1">
-                              Wildlife Viewing
-                            </h5>
-                            <img
+                        <div className="d-flex justify-content-start">
+                          {(details?.Activities &&
+                            details?.Activities?.map((act) => (
+                              <div className=" p-2">
+                                <h5 className="text-center bg-info-subtle p-1">
+                                  {act}
+                                </h5>
+                                {/* <img
                               src="images/wild-life.jpeg"
                               alt
                               className="activity_image"
-                            />
-                          </div>
-                          <div className="border p-2">
-                            <h5 className="text-center bg-info-subtle p-1">
-                              Hiking
-                            </h5>
-                            <img
-                              src="images/family-small-children-hiking-outdoors-600nw-1927128746.webp"
-                              alt
-                              className="activity_image"
-                            />
-                          </div>
-                          <div className="border p-2">
-                            <h5 className="text-center bg-info-subtle p-1">
-                              Bornfire
-                            </h5>
-                            <img
-                              src="images/vertical-shot-of-small-bonfire-with-beautiful-flames-on-the-rocks-2C4T18J.jpg"
-                              alt
-                              className="activity_image"
-                            />
-                          </div>
-                          <div className="border p-2">
-                            <h5 className="text-center bg-info-subtle p-1">
-                              Boat Touring
-                            </h5>
-                            <img
-                              src="images/boat.jpg"
-                              alt
-                              className="activity_image"
-                            />
-                          </div>
+                            /> */}
+                              </div>
+                            ))) ||
+                            "NA"}
                         </div>
                       </div>
                     </div>

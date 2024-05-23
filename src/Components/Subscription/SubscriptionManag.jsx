@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { MDBDataTable } from "mdbreact";
+import {
+  ChangeSubscriptionStatus,
+  DeleteSubscription,
+  GetAllSubscription,
+} from "../../adminHttpServices/dashHttpService";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 const SubscriptionManag = () => {
   const [subscriptionM, setSubscriptionM] = useState({
@@ -40,6 +47,104 @@ const SubscriptionManag = () => {
     ],
     rows: [],
   });
+
+  useEffect(() => {
+    getSubscription();
+  }, []);
+
+  const getSubscription = async () => {
+    let { data } = await GetAllSubscription();
+    console.warn(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results?.groupedPlan[0]?.plan;
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.name = list?.plan || "NA";
+          returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
+          returnData.cost = list?.price || "NA";
+
+          returnData.status = (
+            <div className="check_toggle text-center" key={list?._id}>
+              <input
+                type="checkbox"
+                defaultChecked={list?.status}
+                name="check1"
+                id={list?._id}
+                className="d-none"
+                onClick={() => {
+                  changeStatus(list?._id, list?.status);
+                }}
+              />
+              <label for={list?._id}></label>
+            </div>
+          );
+          returnData.actions = (
+            <div className="d-flex">
+              {/* <Link
+                to={`/Activity-Management/Details/${list?._id}`}
+                state={{
+                  title: "Edit Activity Details",
+                  isEdit: true,
+                  type: "activity",
+                  api: "editActivity",
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-edit"></i>
+              </Link> */}
+              <Link
+                to={`/Subscription-Management/Details/${list?._id}`}
+                // state={{
+                //   title: "View Activity Details",
+                //   isEdit: false,
+                //   type: "activity",
+                // }}
+                state={list}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDeleteItem(list?._id)}
+                className="btn btn-danger shadow btn-xs sharp"
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </div>
+          );
+
+          newRows.push(returnData);
+        });
+      setSubscriptionM({ ...subscriptionM, rows: newRows });
+    }
+  };
+
+  const handleDeleteItem = async (id) => {
+    try {
+      let { data } = await DeleteSubscription(id);
+      if (data && !data.error) {
+        getSubscription();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const changeStatus = async (id) => {
+    try {
+      let { data } = await ChangeSubscriptionStatus(id);
+      if (data && !data.error) {
+        getSubscription();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Layout activeSlide={"Subscription"}>
       <div className="content-body">

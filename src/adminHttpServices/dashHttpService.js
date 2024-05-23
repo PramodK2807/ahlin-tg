@@ -831,45 +831,299 @@ export async function DeleteSubActivity(id) {
     return { error };
   }
 }
-// export async function UpdateSubActivity(id, formData) {
-//   try {
-//     const { data } = await adminHttpService.put(
-//       `${process.env.REACT_APP_API}/api/admin/editSubActivity/${id}`,
-//       formData
-//     );
 
-//     if (!data?.error) {
-//       Swal.fire({
-//         toast: true,
-//         icon: "success",
-//         position: "top-end",
-//         title: data?.message,
-//         showConfirmButton: false,
-//         timerProgressBar: true,
-//         timer: 3000,
-//       });
-//       return { data };
-//     } else
-//       Swal.fire({
-//         toast: true,
-//         icon: "error",
-//         position: "top-end",
-//         title: data.message,
-//         showConfirmButton: false,
-//         timerProgressBar: true,
-//         timer: 3000,
-//       });
-//   } catch (error) {
-//     if (error.response)
-//       Swal.fire({
-//         toast: true,
-//         icon: "error",
-//         position: "top-end",
-//         title: "error",
-//         showConfirmButton: false,
-//         timerProgressBar: true,
-//         timer: 3000,
-//       });
-//     return { error };
-//   }
-// }
+// PACKAGE MANAG.
+export async function GetAllPackage() {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/packageList`
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function GetPackageDetails(id) {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/packageDetails/${id}`
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function ChangePackageStatus(id) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/checkPackageStatus/${id}`
+    );
+
+    if (!data?.error) {
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-end",
+        title: data?.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function DeletePackage(id) {
+  try {
+    const { data } = await adminHttpService.delete(
+      `${process.env.REACT_APP_API}/api/admin/packageDelete/${id}`
+    );
+
+    if (!data?.error) {
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-end",
+        title: data?.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+
+// SUBSCRIPTION MANAGEMENT
+export async function GetAllSubscription() {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/getAllPlan`
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function SubscriptionDetails(id) {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/planDetails/${id}`
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function ChangeSubscriptionStatus(id) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/checkSubScriptionStatus/${id}`
+    );
+
+    if (!data?.error) {
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-end",
+        title: data?.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function DeleteSubscription(id) {
+  try {
+    const { data } = await adminHttpService.delete(
+      `${process.env.REACT_APP_API}/api/admin/deleteSubScription/${id}`
+    );
+
+    if (!data?.error) {
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-end",
+        title: data?.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}

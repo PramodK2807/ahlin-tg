@@ -1,7 +1,10 @@
 import React from "react";
 import Layout from "../Layout/Layout";
+import { useLocation } from "react-router-dom";
 
 const SubscriptionDetails = () => {
+  const { state } = useLocation();
+
   return (
     <Layout activeSlide={"Subscription"}>
       <div className="content-body">
@@ -22,7 +25,7 @@ const SubscriptionDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Tinzo"
+                          value={state?.plan}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -32,7 +35,7 @@ const SubscriptionDetails = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="100 SAR"
+                          value={state?.price}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -56,7 +59,7 @@ const SubscriptionDetails = () => {
                           rows={4}
                           className="form-control"
                           placeholder="Comedy is a genre of fiction that consists of discourses or works intended to be humorous or amusing by inducing laughter, especially in theatre, film, stand-up comedy, television, radio, books, or any other entertainment medium."
-                          defaultValue={""}
+                          value={state?.features?.join(", ") || ""}
                         />
                       </div>
                     </div>
