@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { MDBDataTable } from "mdbreact";
+import {
+  DeleteContent,
+  GetContent,
+} from "../../adminHttpServices/dashHttpService";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 const ContentManagement = () => {
-
   const [contentM, setContentM] = useState({
     columns: [
       {
@@ -18,10 +23,16 @@ const ContentManagement = () => {
         width: 50,
         selected: false,
       },
-   
+
       {
         label: "Status",
         field: "status",
+        width: 100,
+        selected: false,
+      },
+      {
+        label: "Last updated",
+        field: "date",
         width: 100,
         selected: false,
       },
@@ -34,6 +45,99 @@ const ContentManagement = () => {
     ],
     rows: [],
   });
+
+  useEffect(() => {
+    getContent();
+  }, []);
+
+  const getContent = async () => {
+    let { data } = await GetContent();
+    console.warn(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results?.contents;
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.title = list?.title || "NA";
+
+          returnData.status = list?.status || "NA";
+          returnData.date = moment(list?.updatedAt).format("Do MMMM YYYY");
+
+          // returnData.status = (
+          //   <div className="check_toggle text-center" key={list?._id}>
+          //     <input
+          //       type="checkbox"
+          //       defaultChecked={list?.status}
+          //       name="check1"
+          //       id={list?._id}
+          //       className="d-none"
+          //       // onClick={() => {
+          //       //   changeStatus(list?._id, list?.status);
+          //       // }}
+          //     />
+          //     <label for={list?._id}></label>
+          //   </div>
+          // );
+          returnData.actions = (
+            <div className="d-flex">
+              <Link
+                to={`/Content-Management/Details/${list?._id}`}
+                state={{
+                  isEdit: true,
+                  data: list,
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-edit"></i>
+              </Link>
+              <Link
+                to={`/Content-Management/Details/${list?._id}`}
+                state={{
+                  isEdit: false,
+                  data: list,
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDeleteItem(list?._id)}
+                className="btn btn-danger shadow btn-xs sharp"
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </div>
+          );
+
+          newRows.push(returnData);
+        });
+      setContentM({ ...contentM, rows: newRows });
+    }
+  };
+  const handleDeleteItem = async (id) => {
+    try {
+      let { data } = await DeleteContent(id);
+      if (data && !data.error) {
+        getContent();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // const changeStatus = async (id) => {
+  //   try {
+  //     let { data } = await Change(id);
+  //     if (data && !data.error) {
+  //       getContent();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   return (
     <Layout activeSlide={"Content"}>
       <div className="content-body">
@@ -43,8 +147,8 @@ const ContentManagement = () => {
               <div className="card dz-card" id="bootstrap-table1">
                 <div className="col-12 card-body position-relative card-body-2">
                   <div className="d-flex card_title_container">
-                    <h4 className="card-title">Guests</h4>
-                    <p className="ps-2">(14,555)</p>
+                    <h4 className="card-title">Content Management</h4>
+                    <p className="ps-2 d-none">(14,555)</p>
                   </div>
                   <div className="search_icon">
                     <i class="fa-solid fa-magnifying-glass"></i>

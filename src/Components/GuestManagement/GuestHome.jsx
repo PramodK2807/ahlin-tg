@@ -13,7 +13,7 @@ const GuestHome = () => {
               <div className="card dz-card" id="bootstrap-table1">
                 <div className="card-header flex-wrap border-0">
                   <div>
-                    <h4 className="card-title">User / Guide Management</h4>
+                    <h4 className="card-title">Guest / Local Management</h4>
                   </div>
                 </div>
                 <div className="card-body">
@@ -33,7 +33,7 @@ const GuestHome = () => {
                         aria-controls="pills-home"
                         aria-selected="true"
                       >
-                        User
+                        Guest
                       </button>
                     </li>
                     <li className="nav-item" role="presentation">
@@ -47,7 +47,7 @@ const GuestHome = () => {
                         aria-controls="pills-profile"
                         aria-selected="false"
                       >
-                        Guide
+                        Local
                       </button>
                     </li>
                   </ul>

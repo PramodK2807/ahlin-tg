@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 
@@ -7,13 +7,15 @@ const Layout = ({ children, activeSlide }) => {
 
   const navigate = useNavigate();
   const userData = secureLocalStorage.getItem("userAccessData");
-  console.log(userData);
 
   useEffect(() => {
     setSlide(activeSlide);
   }, [activeSlide]);
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault()
+    secureLocalStorage.removeItem("userAccessData");
+    localStorage.removeItem("ahl-admin-token");
     document.getElementById("closeLogout").click();
     navigate("/login");
   };
@@ -164,7 +166,7 @@ const Layout = ({ children, activeSlide }) => {
             >
               <Link to="/Subscription-Management" aria-expanded="false">
                 <div className="menu-icon">
-                  <i loading='lazy' className="fa-solid fa-bacon" />
+                  <i loading="lazy" className="fa-solid fa-bacon" />
                 </div>
                 <span className="nav-text">Subscription Plan Management</span>
               </Link>
@@ -279,4 +281,4 @@ const Layout = ({ children, activeSlide }) => {
   );
 };
 
-export default Layout;
+export default memo(Layout);

@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
+import { useLocation, useNavigate } from "react-router-dom";
+import { UpdateContent } from "../../adminHttpServices/dashHttpService";
 
 const EditContent = () => {
+  const [contentDetails, setContentDetails] = useState({});
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setContentDetails(state?.data);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(contentDetails);
+    try {
+      let { data } = await UpdateContent(contentDetails?._id, {
+        title: contentDetails.title,
+        content: contentDetails.content,
+      });
+      if (data && !data?.error) {
+        navigate(-1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Layout activeSlide={"Content"}>
       <div className="content-body">
@@ -10,9 +36,9 @@ const EditContent = () => {
             <div className="col-xl-12">
               <div className="card profile-card card-bx m-b30">
                 <div className="card-header">
-                  <h6 className="title">Edit Content</h6>
+                  <h6 className="title">{state?.title}</h6>
                 </div>
-                <form className="profile-form">
+                <form className="profile-form" onSubmit={handleSubmit}>
                   <div className="card-body">
                     <div className="row">
                       <div className="col-12 m-b30">
@@ -20,23 +46,39 @@ const EditContent = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="About Us"
+                          value={contentDetails?.title}
+                          disabled
+                          onChange={(e) =>
+                            setContentDetails({
+                              ...contentDetails,
+                              title: e.target.value,
+                            })
+                          }
                         />
                       </div>
                       <div className="col-12 m-b30">
                         <label className="form-label">Description</label>
                         <textarea
                           className="form-control edit_content_textarea"
-                          defaultValue={
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+                          value={contentDetails?.content}
+                          onChange={(e) =>
+                            setContentDetails({
+                              ...contentDetails,
+                              content: e.target.value,
+                            })
                           }
+                          disabled={!state?.isEdit}
                         />
                       </div>
                     </div>
                   </div>
-                  <div className="card-footer">
-                    <button className="btn btn-primary">Update</button>
-                  </div>
+                  {state?.isEdit && (
+                    <div className="card-footer">
+                      <button className="btn btn-primary" type="submit">
+                        Update
+                      </button>
+                    </div>
+                  )}
                 </form>
               </div>
             </div>

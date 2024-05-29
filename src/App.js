@@ -289,7 +289,7 @@ function App() {
           }
         />
         <Route
-          path="Content-Management/edit/:id"
+          path="Content-Management/details/:id"
           element={
             <IsLoggedIn>
               <Suspense fallback={<Loader />}>

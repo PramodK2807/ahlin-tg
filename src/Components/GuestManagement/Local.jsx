@@ -167,7 +167,7 @@ const Local = () => {
         <div className="card dz-card" id="bootstrap-table1">
           <div className="col-12 card-body position-relative card-body-2">
             <div className="card_title_container">
-              <h4 className="card-title">Guide List</h4>
+              <h4 className="card-title">Local List</h4>
             </div>
             <div className="search_icon">
               <i class="fa-solid fa-magnifying-glass"></i>
