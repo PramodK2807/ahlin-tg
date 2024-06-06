@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AdminResetPassword } from "../adminHttpServices/adminLoginHttpServie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
   const [passVisible, setPassVisible] = useState(false);
   const [passVisible2, setPassVisible2] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location);
   const {
     register,
     handleSubmit,
@@ -23,6 +26,7 @@ const ResetPassword = () => {
     try {
       let { data } = await AdminResetPassword({
         newPassword: info?.password,
+        email:location?.state
       });
       if (data && !data?.error) {
         navigate("/login");
@@ -47,7 +51,7 @@ const ResetPassword = () => {
                 <div className="mb-4 position-relative">
                   <label className="mb-1 text-dark">New Password</label>
                   <input
-                   type={passVisible ? "text" : "password"}
+                    type={passVisible ? "text" : "password"}
                     className={`form-control ${
                       errors.password ? "is-invalid" : ""
                     }`}

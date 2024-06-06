@@ -52,7 +52,7 @@ const ForgotPassword = () => {
       let { data } = await AdminVerifyOTP({ email, otp: OTP });
       if (data && !data?.error) {
         console.log(data);
-        navigate("/reset-password");
+        navigate("/reset-password", { state: email });
       }
     } catch (error) {
       console.log(error);
