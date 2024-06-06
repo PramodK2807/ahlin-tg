@@ -4,14 +4,17 @@ import TripBooking from "../TripBooking/TripBooking";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
+  Commission,
   GuideDetails,
   UpdateDetails,
   UserDetails,
 } from "../../adminHttpServices/dashHttpService";
+import Swal from "sweetalert2";
 
 const EditViewLocalGuest = () => {
   const [details, setDetails] = useState();
   const [imageUrl, setImageUrl] = useState();
+  const [commission, setCommission] = useState(0);
   const [file, setFile] = useState([]);
   const { id } = useParams();
   const { state } = useLocation();
@@ -29,6 +32,7 @@ const EditViewLocalGuest = () => {
   useEffect(() => {
     if (state?.type === "Guide") {
       getGUideDetails();
+      // getCommision();
     }
     if (state?.type === "User") {
       getUserDetails();
@@ -47,6 +51,8 @@ const EditViewLocalGuest = () => {
         setValue("email", values?.email || "NA");
         setValue("dob", values?.dob || "2024-12-04");
         setValue("image", values?.profile_image || "NA");
+        setValue("country", values?.countryName || "NA");
+        setCommission(values?.commission);
         setImageUrl(values?.profile_image);
       }
     } catch (error) {
@@ -69,7 +75,42 @@ const EditViewLocalGuest = () => {
         setValue("dob", values?.dob || "2024-12-04");
         setValue("image", values?.profile_image || "NA");
         setImageUrl(values?.profile_image);
+        setValue("country", values?.countryName || "NA");
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCommision = async (e) => {
+    e.preventDefault();
+    try {
+      if (commission > 100 || !commission || commission < 1) {
+        Swal.fire({
+          toast: true,
+          icon: "warning",
+          position: "top-end",
+          title: "Please enter a valid commission percentage",
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 3000,
+        });
+        return false;
+      }
+      let formData = { guideId: id, commission };
+      let { data } = await Commission(formData);
+      if (data && !data?.error) {
+        Swal.fire({
+          toast: true,
+          icon: "success",
+          position: "top-end",
+          title: "Commission updated successfully",
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 3000,
+        });
+      }
+      navigate(-1);
     } catch (error) {
       console.log(error);
     }
@@ -217,6 +258,42 @@ const EditViewLocalGuest = () => {
                           </div>
                         )}
                       </div>
+                      <div className="col-md-3 m-b30">
+                        <label className="form-label">
+                          Country<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          disabled={!state?.isEdit}
+                          type="text"
+                          className={`form-control ${
+                            errors.country ? "is-invalid" : ""
+                          }`}
+                          {...register("country", {
+                            required: "* Country is required",
+                          })}
+                        />
+                        {errors.country && (
+                          <div className="invalid-feedback">
+                            {errors.country.message}
+                          </div>
+                        )}
+                      </div>
+
+                      {state?.type === "Guide" && (
+                        <div className="col-md-3 m-b30">
+                          <label className="form-label">
+                            Commission<sup className="mandatesign">*</sup>
+                          </label>
+                          <input
+                            disabled={!state?.isEdit}
+                            type="number"
+                            value={commission}
+                            className="form-control"
+                            onChange={(e) => setCommission(e.target.value)}
+                          />
+                        </div>
+                      )}
+
                       <div className="col-md-5 m-b30">
                         <label className="form-label" htmlFor="img">
                           Passport Image<sup className="mandatesign">*</sup>
@@ -265,8 +342,18 @@ const EditViewLocalGuest = () => {
                     </div> */}
                   </div>
                   {state?.isEdit && (
-                    <div className="card-footer">
+                    <div className="card-footer justify-content-start ">
                       <button className="btn btn-primary">Save</button>
+
+                      {state?.type === "Guide" && (
+                        <button
+                          className="btn btn-primary ms-4"
+                          onClick={getCommision}
+                          type="button"
+                        >
+                          Update Commission
+                        </button>
+                      )}
                     </div>
                   )}
                 </form>

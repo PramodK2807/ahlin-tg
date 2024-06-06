@@ -3,6 +3,39 @@ import adminHttpService from "./adminHttpService";
 
 // DASHBOARD
 
+export async function Commission(formData) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/setCommissionGuide`,
+      formData
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
 export async function GetState() {
   try {
     const { data } = await adminHttpService.get(

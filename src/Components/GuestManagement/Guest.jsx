@@ -104,7 +104,7 @@ const Guest = () => {
               <Link
                 to={`/Guest-Management/Details/${list?._id}`}
                 state={{
-                  title: "Edit User Details",
+                  title: "Edit Guest Details",
                   isEdit: true,
                   type: "User",
                   api:"editUser"
@@ -116,7 +116,7 @@ const Guest = () => {
               <Link
                 to={`/Guest-Management/Details/${list?._id}`}
                 state={{
-                  title: "View User Details",
+                  title: "View Guest Details",
                   isEdit: false,
                   type: "User",
                 }}

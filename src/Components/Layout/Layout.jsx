@@ -124,7 +124,7 @@ const Layout = ({ children, activeSlide }) => {
                 <div className="menu-icon">
                   <i className="fa-solid fa-people-pulling" />
                 </div>
-                <span className="nav-text">User/Guide Management</span>
+                <span className="nav-text">Guest/Local Management</span>
               </Link>
             </li>
             <li
