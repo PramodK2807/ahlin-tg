@@ -26,7 +26,7 @@ const ResetPassword = () => {
     try {
       let { data } = await AdminResetPassword({
         newPassword: info?.password,
-        email:location?.state
+        email: location?.state,
       });
       if (data && !data?.error) {
         navigate("/login");

@@ -49,7 +49,7 @@ const ForgotPassword = () => {
   const handleVerifyOtp = async () => {
     console.log(email);
     try {
-      let { data } = await AdminVerifyOTP({ email, otp: OTP });
+      let { data } = await AdminVerifyOTP({ email, otp: +OTP });
       if (data && !data?.error) {
         console.log(data);
         navigate("/reset-password", { state: email });

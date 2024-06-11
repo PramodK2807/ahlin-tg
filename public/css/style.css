@@ -16358,6 +16358,8 @@ svg.pulse-svg .third-circle {
 
 .header-right .header-media img {
   width: 100%;
+  height: 100%;
+  object-fit: contain;
   border-radius: 100%;
 }
 

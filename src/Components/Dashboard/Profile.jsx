@@ -7,7 +7,7 @@ import { EditProfile } from "../../adminHttpServices/dashHttpService";
 import Swal from "sweetalert2";
 
 const Profile = () => {
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState();
   const [file, setFile] = useState([]);
   const navigate = useNavigate();
   const userData = secureLocalStorage.getItem("userAccessData");
@@ -27,7 +27,7 @@ const Profile = () => {
     // setValue("lname", userData?.userData?.lastName || "");
     setValue("email", userData?.userData?.email || "");
     setValue("mobileNumber", userData?.userData?.mobileNumber || "");
-    setImageUrl("image", userData?.userData?.image);
+    setImageUrl(userData?.userData?.image);
   }, []);
 
   const onFileSelection = (e) => {

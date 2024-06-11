@@ -37,7 +37,7 @@ const GuestsDetails = () => {
                     </div>
                     <div className="col-md-3 m-b30">
                       <label className="form-label">
-                        Mobile NO<sup className="mandatesign">*</sup>
+                        Mobile No.<sup className="mandatesign">*</sup>
                       </label>
                       <input
                         type="text"

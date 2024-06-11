@@ -7,7 +7,7 @@ import {
 } from "../../adminHttpServices/dashHttpService";
 import { Link } from "react-router-dom";
 
-const Guest = () => {
+const Guest = ({ latest }) => {
   const [user, setUser] = useState({
     columns: [
       {
@@ -72,7 +72,11 @@ const Guest = () => {
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
-      let values = data?.results?.list;
+      let values;
+      values =
+        latest && latest
+          ? data?.results?.list.slice(0, 10)
+          : data?.results?.list;
       values
         ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
         ?.map((list, index) => {
@@ -107,7 +111,7 @@ const Guest = () => {
                   title: "Edit Guest Details",
                   isEdit: true,
                   type: "User",
-                  api:"editUser"
+                  api: "editUser",
                 }}
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >

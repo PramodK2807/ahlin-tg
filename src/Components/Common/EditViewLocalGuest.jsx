@@ -10,6 +10,7 @@ import {
   UserDetails,
 } from "../../adminHttpServices/dashHttpService";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 const EditViewLocalGuest = () => {
   const [details, setDetails] = useState();
@@ -49,7 +50,7 @@ const EditViewLocalGuest = () => {
         setValue("name", values?.fullName || "NA");
         setValue("number", values?.mobileNumber || "NA");
         setValue("email", values?.email || "NA");
-        setValue("dob", values?.dob || "2024-12-04");
+        setValue("dob", moment(values?.dob).format("YYYY-MM-DD") || "NA");
         setValue("image", values?.profile_image || "NA");
         setValue("country", values?.countryName || "NA");
         setCommission(values?.commission);
@@ -66,13 +67,17 @@ const EditViewLocalGuest = () => {
         console.log(data);
         setDetails(data?.results?.user);
         let values = data?.results?.user;
-        setValue(
-          "name",
-          `${values?.firstName + " " + values?.lastName}` || "NA"
+        setValue("name", `${values?.firstName}` || "NA");
+        if (
+          values?.lastName &&
+          setValue(
+            "name",
+            `${values?.firstName + " " + values?.lastName}` || "NA"
+          )
         );
-        setValue("number", values?.mobileNumber || "NA");
         setValue("email", values?.email || "NA");
-        setValue("dob", values?.dob || "2024-12-04");
+        setValue("number", values?.mobileNumber || "NA");
+        setValue("dob", moment(values?.dob).format("YYYY-MM-DD") || "NA");
         setValue("image", values?.profile_image || "NA");
         setImageUrl(values?.profile_image);
         setValue("country", values?.countryName || "NA");
