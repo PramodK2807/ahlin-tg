@@ -200,25 +200,23 @@ const ActivityEdit = () => {
                           <label className="form-label">
                             Activities<sup className="mandatesign">*</sup>
                           </label>
-                          <div className="d-flex justify-content-between flex-wrap">
+                          <div className="row">
+                            {activityimages &&
+                              activityimages?.map((images, index) => (
+                                <img
+                                  src={images}
+                                  alt="act"
+                                  className="activity_image w-100"
+                                />
+                              ))}
+                          </div>
+                          {/* <div className="d-flex justify-content-between flex-wrap">
                             <div className="border p-2">
                               <h5 className="text-center bg-body-secondary p-1">
                                 Wildlife Viewing
                               </h5>
-                              <div className="row">
-                                {activityimages &&
-                                  activityimages?.map((images, index) => (
-                                    <div className="col-3" key={index}>
-                                      <img
-                                        src={images}
-                                        alt="act"
-                                        className="activity_image w-100"
-                                      />
-                                    </div>
-                                  ))}
-                              </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       )}
                       {state?.isEdit && (
@@ -254,6 +252,7 @@ const ActivityEdit = () => {
                                 className="d-none w-100"
                                 name="images"
                                 id="images"
+                                accept=".jpeg, .png, .jpg"
                                 onChange={handleFileSelection}
                               />
                             </label>
