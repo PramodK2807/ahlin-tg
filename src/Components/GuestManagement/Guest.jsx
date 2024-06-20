@@ -105,18 +105,18 @@ const Guest = ({ latest }) => {
           );
           returnData.actions = (
             <div className="d-flex">
-              <Link
+              {/* <Link
                 to={`/Guest-Management/Details/${list?._id}`}
                 state={{
                   title: "Edit Guest Details",
-                  isEdit: true,
+                  isEdit: false,
                   type: "User",
                   api: "editUser",
                 }}
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >
-                <i className="fa fa-edit"></i>
-              </Link>
+                <i className="fa fa-edit"></i> 
+              </Link>*/}
               <Link
                 to={`/Guest-Management/Details/${list?._id}`}
                 state={{

@@ -100,23 +100,24 @@ const Local = () => {
           );
           returnData.actions = (
             <div class="d-flex">
-              <Link
+              {/* <Link
                 to={`/Guest-Management/Details/${list?._id}`}
                 state={{
                   title: "Edit Local Details",
-                  isEdit: true,
+                  isEdit: false,
                   type: "Guide",
                   api:"editGuide"
                 }}
                 class="btn btn-primary shadow btn-xs sharp me-2"
               >
                 <i class="fa fa-edit"></i>
-              </Link>
+              </Link> */}
               <Link
                 to={`/Guest-Management/Details/${list?._id}`}
                 state={{
                   title: "View Local Details",
                   isEdit: false,
+                  updateCommision: true,
                   type: "Guide",
                 }}
                 class="btn btn-primary shadow btn-xs sharp me-2"

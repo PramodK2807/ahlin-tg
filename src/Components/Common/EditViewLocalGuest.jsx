@@ -14,6 +14,7 @@ import moment from "moment";
 
 const EditViewLocalGuest = () => {
   const [details, setDetails] = useState();
+  const [galleryIndexUrl, setGalleryIndexUrl] = useState("");
   const [imageUrl, setImageUrl] = useState();
   const [commission, setCommission] = useState(0);
   const [file, setFile] = useState([]);
@@ -44,7 +45,6 @@ const EditViewLocalGuest = () => {
     try {
       let { data } = await GuideDetails(id);
       if (data && !data?.error) {
-        console.log(data);
         setDetails(data?.results?.guide);
         let values = data?.results?.guide;
         setValue("name", values?.fullName || "NA");
@@ -169,7 +169,7 @@ const EditViewLocalGuest = () => {
                           Name<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                          disabled={!state?.isEdit}
+                          disabled
                           type="text"
                           name="name"
                           className={`form-control ${
@@ -199,7 +199,7 @@ const EditViewLocalGuest = () => {
                           Contact Number<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                          disabled={!state?.isEdit}
+                          disabled
                           type="number"
                           className={`form-control ${
                             errors.number ? "is-invalid" : ""
@@ -223,7 +223,7 @@ const EditViewLocalGuest = () => {
                           EMAIL ID<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                          disabled={!state?.isEdit}
+                          disabled
                           type="email"
                           className={`form-control ${
                             errors.email ? "is-invalid" : ""
@@ -248,7 +248,7 @@ const EditViewLocalGuest = () => {
                           Date of birth<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                          disabled={!state?.isEdit}
+                          disabled
                           type="date"
                           className={`form-control ${
                             errors.dob ? "is-invalid" : ""
@@ -268,7 +268,7 @@ const EditViewLocalGuest = () => {
                           Country<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                          disabled={!state?.isEdit}
+                          disabled
                           type="text"
                           className={`form-control ${
                             errors.country ? "is-invalid" : ""
@@ -290,7 +290,6 @@ const EditViewLocalGuest = () => {
                             Commission<sup className="mandatesign">*</sup>
                           </label>
                           <input
-                            disabled={!state?.isEdit}
                             type="number"
                             value={commission}
                             className="form-control"
@@ -319,6 +318,31 @@ const EditViewLocalGuest = () => {
                           </div>
                         </label>
                       </div>
+                      {state?.type === "Guide" && (
+                        <div className="row">
+                          <label className="form-label">
+                            Gallery<sup className="mandatesign"></sup>
+                          </label>
+                          {details?.tripMemories &&
+                            details.tripMemories.length > 0 &&
+                            details.tripMemories.map((item, index) => (
+                              <div
+                                key={index}
+                                className="col-6 col-sm-4 col-md-3 col-lg-2 my-2"
+                              >
+                                <img
+                                  src={item}
+                                  alt=""
+                                  className="w-100 rounded border border-light object-fit"
+                                  height={200}
+                                  onClick={() => setGalleryIndexUrl(item)}
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#exampleModal"
+                                />
+                              </div>
+                            ))}
+                        </div>
+                      )}
                     </div>
 
                     {/* <div className="row border p-4 m-b30 rounded">
@@ -327,7 +351,7 @@ const EditViewLocalGuest = () => {
                           Password<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                        disabled={!state?.isEdit}
+                      disabled
                           type="password"
                           className="form-control"
                           defaultValue={123456789}
@@ -338,7 +362,7 @@ const EditViewLocalGuest = () => {
                           Confirm Password<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                        disabled={!state?.isEdit}
+                      disabled
                           type="password"
                           className="form-control"
                           defaultValue={123456789}
@@ -346,22 +370,46 @@ const EditViewLocalGuest = () => {
                       </div>
                     </div> */}
                   </div>
+                  {state?.type === "Guide" && (
+                    <div className="card-footer justify-content-start">
+                      <button
+                        className="btn btn-primary"
+                        onClick={getCommision}
+                        type="button"
+                      >
+                        Update Commission
+                      </button>
+                    </div>
+                  )}
                   {state?.isEdit && (
                     <div className="card-footer justify-content-start ">
                       <button className="btn btn-primary">Save</button>
-
-                      {state?.type === "Guide" && (
-                        <button
-                          className="btn btn-primary ms-4"
-                          onClick={getCommision}
-                          type="button"
-                        >
-                          Update Commission
-                        </button>
-                      )}
                     </div>
                   )}
                 </form>
+              </div>
+            </div>
+
+            {/* Gallery Modal */}
+
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-center">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <img
+                      src={galleryIndexUrl}
+                      className="w-100 object-fit-fill"
+                      height={600}
+                      alt=""
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <div>
