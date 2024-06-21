@@ -17,17 +17,12 @@ const Guest = ({ latest }) => {
         selected: false,
       },
       {
-        label: "First Name",
-        field: "firstName",
+        label: "Name",
+        field: "name",
         width: 50,
         selected: false,
       },
-      {
-        label: "Last Name",
-        field: "lastName",
-        width: 50,
-        selected: false,
-      },
+
       {
         label: "Contact No.",
         field: "mobile",
@@ -82,8 +77,7 @@ const Guest = ({ latest }) => {
         ?.map((list, index) => {
           const returnData = {};
           returnData.sno = index + 1;
-          returnData.firstName = list?.firstName || "NA";
-          returnData.lastName = list?.lastName || "NA";
+          returnData.name = list?.fullName || "NA";
           returnData.mobile = list?.mobileNumber || "NA";
           returnData.email = list?.email || "NA";
           returnData.country = list?.countryName || "NA";

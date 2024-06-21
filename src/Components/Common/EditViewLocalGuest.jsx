@@ -54,7 +54,7 @@ const EditViewLocalGuest = () => {
         setValue("image", values?.profile_image || "NA");
         setValue("country", values?.countryName || "NA");
         setCommission(values?.commission);
-        setImageUrl(values?.profile_image);
+        setImageUrl(values?.profileImage[0]);
       }
     } catch (error) {
       console.log(error);
@@ -67,19 +67,12 @@ const EditViewLocalGuest = () => {
         console.log(data);
         setDetails(data?.results?.user);
         let values = data?.results?.user;
-        setValue("name", `${values?.firstName}` || "NA");
-        if (
-          values?.lastName &&
-          setValue(
-            "name",
-            `${values?.firstName + " " + values?.lastName}` || "NA"
-          )
-        );
+        setValue("name", `${values?.fullName}` || "NA");
         setValue("email", values?.email || "NA");
         setValue("number", values?.mobileNumber || "NA");
         setValue("dob", moment(values?.dob).format("YYYY-MM-DD") || "NA");
         setValue("image", values?.profile_image || "NA");
-        setImageUrl(values?.profile_image);
+        setImageUrl(values?.profileImage[0]);
         setValue("country", values?.countryName || "NA");
       }
     } catch (error) {
@@ -160,7 +153,7 @@ const EditViewLocalGuest = () => {
                 </div>
                 <form
                   className="profile-form"
-                  onSubmit={handleSubmit(onSubmit)}
+                  // onSubmit={handleSubmit(onSubmit)}
                 >
                   <div className="card-body">
                     <div className="row">
@@ -298,26 +291,30 @@ const EditViewLocalGuest = () => {
                         </div>
                       )}
 
-                      <div className="col-md-5 m-b30">
-                        <label className="form-label" htmlFor="img">
-                          Passport Image<sup className="mandatesign">*</sup>
-                          <div className="mt-2">
-                            <img
-                              // src="/images/0_91v0rV9LQBJdPX7s.jpg"
-                              src={imageUrl || "/images/0_91v0rV9LQBJdPX7s.jpg"}
-                              className="passport_photo_manage"
-                              alt="i"
-                            />
-                            <input
-                              type="file"
-                              onChange={onFileChange}
-                              className="d-none"
-                              name="img"
-                              id="img"
-                            />
-                          </div>
-                        </label>
-                      </div>
+                      {state?.type !== "Guide" && (
+                        <div className="col-md-5 m-b30">
+                          <label className="form-label" htmlFor="img">
+                            Passport Image<sup className="mandatesign">*</sup>
+                            <div className="mt-2">
+                              <img
+                                // src="/images/0_91v0rV9LQBJdPX7s.jpg"
+                                src={
+                                  imageUrl || "/images/0_91v0rV9LQBJdPX7s.jpg"
+                                }
+                                className="passport_photo_manage"
+                                alt="i"
+                              />
+                              <input
+                                type="file"
+                                onChange={onFileChange}
+                                className="d-none"
+                                name="img"
+                                id="img"
+                              />
+                            </div>
+                          </label>
+                        </div>
+                      )}
                       {state?.type === "Guide" && (
                         <div className="row">
                           <label className="form-label">
@@ -328,13 +325,13 @@ const EditViewLocalGuest = () => {
                             details.tripMemories.map((item, index) => (
                               <div
                                 key={index}
-                                className="col-6 col-sm-4 col-md-3 col-lg-2 my-2"
+                                className="col-6 col-sm-4 col-md-3 col-lg-2 p-1"
                               >
                                 <img
                                   src={item}
                                   alt=""
-                                  className="w-100 rounded border border-light object-fit"
-                                  height={200}
+                                  className="w-100 rounded border border-light object-fit p-1 bg-light"
+                                  height={220}
                                   onClick={() => setGalleryIndexUrl(item)}
                                   data-bs-toggle="modal"
                                   data-bs-target="#exampleModal"
