@@ -62526,3 +62526,9 @@ color:red !important;}
   border: 1px dashed grey;
   border-radius: 10px;
 }
+.gallery-close{
+  font-size: 18px;
+  z-index: 4;
+  background: #b4a5c3;
+  color: white;
+}

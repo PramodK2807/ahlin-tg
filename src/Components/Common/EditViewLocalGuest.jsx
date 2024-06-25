@@ -398,7 +398,15 @@ const EditViewLocalGuest = () => {
             >
               <div class="modal-dialog modal-dialog-center">
                 <div class="modal-content">
-                  <div class="modal-body">
+                  <div class="modal-body position-relative">
+                    <div className="position-absolute top-0 end-0 gallery-close" >
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
                     <img
                       src={galleryIndexUrl}
                       className="w-100 object-fit-fill"
