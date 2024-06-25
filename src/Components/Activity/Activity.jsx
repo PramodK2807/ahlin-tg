@@ -30,6 +30,12 @@ const Activity = () => {
         selected: false,
       },
       {
+        label: "Logo",
+        field: "logo",
+        width: 50,
+        selected: false,
+      },
+      {
         label: "Added On",
         field: "date",
         width: 100,
@@ -145,7 +151,6 @@ const Activity = () => {
 
   const getActivity = async () => {
     let { data } = await GetAllActivity();
-    console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
       let values = data?.results?.listActivity;
@@ -156,6 +161,17 @@ const Activity = () => {
           returnData.sno = index + 1;
           returnData.activity = list?.activityName || "NA";
           returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
+          returnData.logo = (
+            <span>
+              <img
+                height={25}
+                width={25}
+                className="rounded border"
+                src={list?.uploadImage[0]}
+                alt=""
+              />
+            </span>
+          );
 
           returnData.status = (
             <div className="check_toggle text-center" key={list?._id}>
@@ -257,7 +273,7 @@ const Activity = () => {
             </div>
             <div className="col-md-6 m-b30">
               <label htmlFor="formFile" className="form-label">
-                Upload Image
+                Upload Image (Upload a 20*20 image for the best display)
               </label>
               <input
                 className="form-control"

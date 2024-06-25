@@ -159,7 +159,7 @@ function App() {
           }
         />
         <Route
-          path="Booking-Management/Details/:id"
+          path="Booking-Management/Details"
           element={
             <IsLoggedIn>
               <Suspense fallback={<Loader />}>

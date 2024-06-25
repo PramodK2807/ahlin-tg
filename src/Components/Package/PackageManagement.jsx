@@ -76,6 +76,7 @@ const PackageManagement = () => {
           const returnData = {};
           returnData.sno = index + 1;
           returnData.name = list?.packageName || "NA";
+          returnData.localName = list?.local?.fullName || "NA";
           returnData.activity = list?.Activities?.map(
             (activity) => <p className="mb-0 p-0">• {activity}</p>
           );

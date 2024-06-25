@@ -25,10 +25,16 @@ const SubActivity = () => {
         width: 50,
         selected: false,
       },
-     
+
       {
         label: "Sub Activity",
         field: "subActivity",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Logo",
+        field: "logo",
         width: 50,
         selected: false,
       },
@@ -92,7 +98,17 @@ const SubActivity = () => {
           returnData.subActivity = list?.subactivityName || "NA";
           returnData.activity = list?.activity?.activityName || "NA";
           returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
-
+          returnData.logo = (
+            <span>
+              <img
+                height={25}
+                width={25}
+                className="rounded border"
+                src={list?.uploadImage[0]}
+                alt=""
+              />
+            </span>
+          );
           returnData.status = (
             <div className="check_toggle text-center" key={list?._id}>
               <input
@@ -322,7 +338,7 @@ const SubActivity = () => {
             </div>
             <div className="col-md-6 m-b30">
               <label htmlFor="formFile" className="form-label">
-                Upload Image
+                Upload Image (Upload a 20*20 image for the best display)
               </label>
               <input
                 className="form-control"

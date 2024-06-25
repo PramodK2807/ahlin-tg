@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
+import { useLocation } from "react-router-dom";
+import { GetBookingDetails } from "../../adminHttpServices/dashHttpService";
+import moment from "moment";
 
 const BookingDetails = () => {
+  const [details, setDetails] = useState();
+  const { state } = useLocation();
+  console.log(state);
+
+  useEffect(() => {
+    getBookingDetails();
+  }, [state]);
+
+  const getBookingDetails = async () => {
+    try {
+      let { data } = await GetBookingDetails(state);
+      if (data && !data.error) {
+        setDetails(data?.results?.book);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <Layout activeSlide={"Booking"}>
       <div className="content-body">
@@ -22,7 +43,7 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="James"
+                          value={details?.user?.fullName}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -32,7 +53,7 @@ const BookingDetails = () => {
                         <input
                           type="email"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="james@gmail.com"
+                          value={details?.user?.email}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -42,7 +63,7 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="+966 58966545"
+                          value={details?.user?.mobileNumber}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -52,7 +73,13 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="Complete"
+                          value={
+                            details?.status === "Complete || Completed"
+                              ? "Completed"
+                              : details?.status === "upComing"
+                              ? "Upcoming"
+                              : "Cancelled"
+                          }
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -85,7 +112,7 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="The Oberoi Madinah"
+                          value={details?.local?.fullName}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -95,7 +122,9 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="21 Non 2024"
+                          value={moment(details?.trip?.createdAt).format(
+                            "MMM Do, YYYY"
+                          )}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -105,7 +134,7 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="4 People"
+                          value={details?.trip?.noGuest}
                         />
                       </div>
                       <div className="col-md-4 m-b30">

@@ -206,7 +206,8 @@ const ActivityEdit = () => {
                                 <img
                                   src={images}
                                   alt="act"
-                                  className="activity_image w-100"
+                                  style={{ width: "80px", height: "80px" }}
+                                  className="border rounded object-fit-contain"
                                 />
                               ))}
                           </div>

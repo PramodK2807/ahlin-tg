@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { MDBDataTable } from "mdbreact";
-import { AllUsersList } from "../../adminHttpServices/dashHttpService";
+import {
+  AllUsersList,
+  BookingDetails,
+  DeleteBooking,
+  GetBookings,
+} from "../../adminHttpServices/dashHttpService";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 const BookingManagement = () => {
   const [booking, setBooking] = useState({
@@ -59,99 +66,92 @@ const BookingManagement = () => {
     rows: [],
   });
 
-  // useEffect(() => {
-  //   getBookings()
-  // }, [])
+  useEffect(() => {
+    getBookings();
+  }, []);
 
-  // const getBookings = async () => {
-  //   let { data } = await AllUsersList();
-  //   console.warn(data);
-  //   if (data && !data?.error) {
-  //     const newRows = [];
-  //     let values = data?.results?.list;
-  //     values
-  //       ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
-  //       ?.map((list, index) => {
-  //         const returnData = {};
-  //         returnData.sno = index + 1;
-  //         returnData.firstName = list?.firstName || "NA";
-  //         returnData.lastName = list?.lastName || "NA";
-  //         returnData.mobile = list?.mobileNumber || "NA";
-  //         returnData.email = list?.email || "NA";
-  //         returnData.country = list?.countryName || "NA";
+  const getBookings = async () => {
+    let { data } = await GetBookings();
+    console.warn(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results?.list;
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.id = list?.trip || "NA";
+          returnData.name = list?.user?.fullName || "NA";
+          returnData.localName = list?.local?.fullName || "NA";
+          returnData.amount = list?.package?.price || "NA";
+          returnData.status =
+            list?.status === "Complete || complete || Completed" ? (
+              <span className="badge light badge-success">Completed</span>
+            ) : list?.status === "upComing" ? (
+              <span className="badge light badge-info">Up Coming</span>
+            ) : (
+              list?.status
+            );
+          returnData.date =
+            moment(list?.createdAt).format("MMM Do YYYY") || "NA";
 
-  //         returnData.status = (
-  //           <div className="check_toggle text-center" key={list?._id}>
-  //             <input
-  //               type="checkbox"
-  //               defaultChecked={list?.status}
-  //               name="check1"
-  //               id={list?._id}
-  //               className="d-none"
-  //               onClick={() => {
-  //                 changeStatus(list?._id, list?.status);
-  //               }}
-  //             />
-  //             <label for={list?._id}></label>
-  //           </div>
-  //         );
-  //         returnData.actions = (
-  //           <div className="d-flex">
-  //             <Link
-  //               to={`/Guest-Management/Details/${list?._id}`}
-  //               state={{
-  //                 title: "Edit User Details",
-  //                 isEdit: true,
-  //                 type: "User",
-  //                 api:"editUser"
-  //               }}
-  //               className="btn btn-primary shadow btn-xs sharp me-2"
-  //             >
-  //               <i className="fa fa-edit"></i>
-  //             </Link>
-  //             <Link
-  //               to={`/Guest-Management/Details/${list?._id}`}
-  //               state={{
-  //                 title: "View User Details",
-  //                 isEdit: false,
-  //                 type: "User",
-  //               }}
-  //               className="btn btn-primary shadow btn-xs sharp me-2"
-  //             >
-  //               <i className="fa fa-eye"></i>
-  //             </Link>
-  //             <button
-  //               type="button"
-  //               onClick={() => handleDeleteItem(list?._id)}
-  //               className="btn btn-danger shadow btn-xs sharp"
-  //             >
-  //               <i className="fa fa-trash"></i>
-  //             </button>
-  //           </div>
-  //         );
+          // returnData.status = (
+          //   <div className="check_toggle text-center" key={list?._id}>
+          //     <input
+          //       type="checkbox"
+          //       defaultChecked={list?.status}
+          //       name="check1"
+          //       id={list?._id}
+          //       className="d-none"
+          //       // onClick={() => {
+          //       //   changeStatus(list?._id, list?.status);
+          //       // }}
+          //     />
+          //     <label for={list?._id}></label>
+          //   </div>
+          // );
+          returnData.actions = (
+            <div className="d-flex">
+              <Link
+                to={`/Booking-Management/Details`}
+                state={list?._id}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDeleteItem(list?._id)}
+                className="btn btn-danger shadow btn-xs sharp"
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </div>
+          );
 
-  //         newRows.push(returnData);
-  //       });
-  //     setUser({ ...user, rows: newRows });
-  //   }
-  // };
+          newRows.push(returnData);
+        });
+      setBooking({ ...booking, rows: newRows });
+    }
+  };
 
-  // const handleDeleteItem = async (id) => {
-  //   try {
-  //     let { data } = await DeleteUser(id);
-  //     if (data && !data.error) {
-  //       getUsers();
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleDeleteItem = async (id) => {
+    try {
+      let { data } = await DeleteBooking(id);
+      if (data && !data.error) {
+        getBookings();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // const changeStatus = async (id) => {
   //   try {
   //     let { data } = await ChangeUserStatus(id);
   //     if (data && !data.error) {
-  //       getUsers();
+  //       getBookings();
   //     }
   //   } catch (error) {
   //     console.log(error);
