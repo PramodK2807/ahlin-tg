@@ -273,7 +273,7 @@ const Activity = () => {
             </div>
             <div className="col-md-6 m-b30">
               <label htmlFor="formFile" className="form-label">
-                Upload Image (Upload a 20*20 image for the best display)
+                Upload Image (Please upload a 20px * 20px image.)
               </label>
               <input
                 className="form-control"
