@@ -22,7 +22,7 @@ const Layout = ({ children, activeSlide }) => {
 
   return (
     <div id="main-wrapper" className="show">
-      <div className="nav-header">
+      <div className="nav-header ms-4 ms-xl-0">
         <Link to="/Dashboard" className="brand-logo">
           Tourist Booking
         </Link>

@@ -89,7 +89,7 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="200 SAR"
+                          value={details?.package?.price}
                         />
                       </div>
                     </div>
@@ -144,7 +144,7 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          defaultValue="Package 1"
+                          value={details?.package?.packageName}
                         />
                       </div>
                       {/* <div class="col-md-5 m-b30">

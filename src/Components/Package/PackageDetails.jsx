@@ -84,7 +84,7 @@ const PackageDetails = () => {
                           type="text"
                           className="form-control"
                           value={
-                            moment(details?.createdAT).format("Do MMMM YYYY") ||
+                            moment(details?.createdAt).format("Do MMMM YYYY") ||
                             "NA"
                           }
                         />
