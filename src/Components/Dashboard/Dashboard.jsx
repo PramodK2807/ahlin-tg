@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
-import { MDBDataTable } from "mdbreact";
-import moment from "moment";
-import { Link } from "react-router-dom";
 import { GetState, TotalUsers } from "../../adminHttpServices/dashHttpService";
 import Guest from "../GuestManagement/Guest";
+import LocalAndGuestGraph from "../Graph/LocalAndGuestGraph";
+import RechartLocalAndGuest from "../Graph/RechartLocalAndGuest";
 
 const Dashboard = () => {
-  const [guestsCount, setGuestsCount] = useState(0);
-  const [guideCount, setGuideCount] = useState(0);
+  const [dashCount, setDashCount] = useState(0);
 
   useEffect(() => {
     getStateList();
   }, []);
 
   const getStateList = async () => {
-    let { data } = await GetState();
+    let { data } = await TotalUsers();
+    console.log(data);
     if (data && !data?.error) {
-      setGuestsCount(data?.results?.totalUsers);
-      setGuideCount(data?.results?.totalGuide);
+      setDashCount(data?.results);
+      // setGuideCount(data?.results?.totalGuide);
     }
   };
 
@@ -35,7 +34,7 @@ const Dashboard = () => {
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
                           <h6>Number of Guests</h6>
-                          <h3>{guestsCount} +</h3>
+                          <h3>{dashCount?.totalGuest} </h3>
                         </div>
                         <div className="icon-box icon_bg">
                           <i className="fas fa-users" />
@@ -51,7 +50,7 @@ const Dashboard = () => {
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
                           <h6>Total Locals</h6>
-                          <h3>{guideCount} +</h3>
+                          <h3>{dashCount?.totalLocal} </h3>
                         </div>
                         <div className="icon-box icon_bg">
                           <i className="fa-solid fa-person-military-pointing" />
@@ -67,7 +66,7 @@ const Dashboard = () => {
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
                           <h6>Total revenue</h6>
-                          <h3>20000 SAR</h3>
+                          <h3>{dashCount?.totalRevenue}</h3>
                         </div>
                         <div className="icon-box icon_bg">
                           <i className="fas fa-dollar-sign" />
@@ -83,7 +82,7 @@ const Dashboard = () => {
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
                           <h6>Total Pending Booking Requests</h6>
-                          <h3>150 +</h3>
+                          <h3>{dashCount?.totalPendingBookings}</h3>
                         </div>
                         <div className="icon-box icon_bg">
                           <i className="fa-solid fa-hourglass-half" />
@@ -99,7 +98,7 @@ const Dashboard = () => {
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
                           <h6>Total Pending Trip Offers</h6>
-                          <h3>5</h3>
+                          <h3>{dashCount?.totalPendingTrips}</h3>
                         </div>
                         <div className="icon-box icon_bg">
                           <i className="fa-solid fa-plane" />
@@ -112,7 +111,14 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <Guest latest={true} />
+            {/* <Guest latest={true} /> */}
+
+            <div className="row">
+              <div className="col-md-6">
+                {/* <LocalAndGuestGraph /> */}
+                <RechartLocalAndGuest />
+              </div>
+            </div>
           </div>
         </div>
       </div>

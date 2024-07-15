@@ -180,7 +180,7 @@ const Guest = ({ latest }) => {
                 hover
                 data={user}
                 noBottomColumns
-                sortable={false}
+               sortable={true}
                 paginationLabel={"«»"}
               />
             </div>

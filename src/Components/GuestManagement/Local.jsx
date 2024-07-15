@@ -36,6 +36,12 @@ const Local = () => {
         selected: false,
       },
       {
+        label: "Subscription Plan",
+        field: "plan",
+        width: 50,
+        selected: false,
+      },
+      {
         label: "Rating",
         field: "rating",
         width: 50,
@@ -81,6 +87,7 @@ const Local = () => {
           returnData.name = list?.fullName;
           returnData.mobile = list?.mobileNumber || "NA";
           returnData.email = list?.email || "NA";
+          returnData.plan = list?.plan || "None";
           returnData.rating = list?.rating || "NA";
           returnData.reviews = list?.reviews || "NA";
           returnData.status = (
@@ -182,7 +189,7 @@ const Local = () => {
                 hover
                 data={local}
                 noBottomColumns
-                sortable={false}
+               sortable={true}
                 paginationLabel={"«»"}
               />
             </div>

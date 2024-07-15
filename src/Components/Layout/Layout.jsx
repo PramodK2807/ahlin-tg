@@ -13,7 +13,7 @@ const Layout = ({ children, activeSlide }) => {
   }, [activeSlide]);
 
   const handleLogout = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     secureLocalStorage.removeItem("userAccessData");
     localStorage.removeItem("ahl-admin-token");
     document.getElementById("closeLogout").click();

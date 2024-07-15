@@ -2,23 +2,46 @@ import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UpdateContent } from "../../adminHttpServices/dashHttpService";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 
 const EditContent = () => {
-  const [contentDetails, setContentDetails] = useState({});
+  const [title, setTitle] = useState();
+  const [value, setValue] = useState("");
   const { state } = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setContentDetails(state?.data);
+    setTitle(state?.data?.title);
+    setValue(state?.data?.content);
   }, []);
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ color: [] }, { background: [] }], // Color options
+      [{ script: "sub" }, { script: "super" }], // Subscript and superscript
+      [{ align: [] }], // Text alignment
+      ["link", "image", "video", "formula"], // Link, image, video, formula
+      ["clean"], // Remove formatting
+    ],
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(contentDetails);
     try {
-      let { data } = await UpdateContent(contentDetails?._id, {
-        title: contentDetails.title,
-        content: contentDetails.content,
+      let { data } = await UpdateContent(state?._id, {
+        title: title,
+        content: value,
       });
       if (data && !data?.error) {
         navigate(-1);
@@ -46,28 +69,18 @@ const EditContent = () => {
                         <input
                           type="text"
                           className="form-control"
-                          value={contentDetails?.title}
+                          value={title}
                           disabled
-                          onChange={(e) =>
-                            setContentDetails({
-                              ...contentDetails,
-                              title: e.target.value,
-                            })
-                          }
+                          onChange={(e) => setTitle(e.target.value)}
                         />
                       </div>
                       <div className="col-12 m-b30">
                         <label className="form-label">Description</label>
-                        <textarea
-                          className="form-control edit_content_textarea"
-                          value={contentDetails?.content}
-                          onChange={(e) =>
-                            setContentDetails({
-                              ...contentDetails,
-                              content: e.target.value,
-                            })
-                          }
-                          disabled={!state?.isEdit}
+                        <ReactQuill
+                          theme="snow"
+                          value={value}
+                          onChange={setValue}
+                          modules={modules}
                         />
                       </div>
                     </div>

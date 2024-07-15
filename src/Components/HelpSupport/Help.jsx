@@ -18,6 +18,25 @@ const Help = () => {
         selected: false,
       },
       {
+        label: "User Type",
+        field: "type",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Attachment",
+        field: "file",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Booking Id",
+        field: "id",
+        width: 50,
+        selected: false,
+      },
+
+      {
         label: "Date",
         field: "date",
         width: 50,
@@ -71,7 +90,7 @@ const Help = () => {
                       hover
                       data={helpM}
                       noBottomColumns
-                      sortable={false}
+                     sortable={true}
                       paginationLabel={"«»"}
                     />
                   </div>

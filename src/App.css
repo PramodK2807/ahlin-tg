@@ -1,21 +1,3 @@
-.table-responsive::-webkit-scrollbar {
-  display: block !important;
-  width: 10px !important;
-  height: 8px !important;
-  border-radius: 50% !important;
-}
-.table-responsive::-webkit-scrollbar-track {
-  background: #f1f1f1 !important;
-}
-.table-responsive::-webkit-scrollbar-thumb {
-  background: #76b3fb !important;
-  border-radius: 50px !important;
-}
-.table-responsive::-webkit-scrollbar-thumb {
-  background: #76b3fb !important;
-  border-radius: 50px;
-}
-.table-responsive::-webkit-scrollbar-thumb:hover {
-  background: #76b3fb !important;
-  cursor: pointer !important;
+.mdb_table{
+    overflow-x: auto;
 }

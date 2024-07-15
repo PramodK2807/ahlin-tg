@@ -30,12 +30,12 @@ const PackageManagement = () => {
         width: 50,
         selected: false,
       },
-      {
-        label: "Package Activity",
-        field: "activity",
-        width: 50,
-        selected: false,
-      },
+      // {
+      //   label: "Package Activity",
+      //   field: "activity",
+      //   width: 50,
+      //   selected: false,
+      // },
       {
         label: "Price",
         field: "price",
@@ -77,9 +77,9 @@ const PackageManagement = () => {
           returnData.sno = index + 1;
           returnData.name = list?.packageName || "NA";
           returnData.localName = list?.local?.fullName || "NA";
-          returnData.activity = list?.Activities?.map(
-            (activity) => <p className="mb-0 p-0">• {activity}</p>
-          );
+          // returnData.activity = list?.Activities?.map(
+          //   (activity) => <p className="mb-0 p-0">• {activity}</p>
+          // );
 
           returnData.price = list?.price || "NA";
           // returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
@@ -100,7 +100,7 @@ const PackageManagement = () => {
             </div>
           );
           returnData.actions = (
-            <div className="d-flex">
+            <div className="d-flex ">
               {/* <Link
                 to={`/Activity-Management/Details/${list?._id}`}
                 state={{
@@ -124,13 +124,13 @@ const PackageManagement = () => {
               >
                 <i className="fa fa-eye"></i>
               </Link>
-              <button
+              {/* <button
                 type="button"
                 onClick={() => handleDeleteItem(list?._id)}
                 className="btn btn-danger shadow btn-xs sharp"
               >
                 <i className="fa fa-trash"></i>
-              </button>
+              </button> */}
             </div>
           );
 
@@ -182,7 +182,7 @@ const PackageManagement = () => {
                       hover
                       data={packageManag}
                       noBottomColumns
-                      sortable={false}
+                     sortable={true}
                       paginationLabel={"«»"}
                       // navigate to view ==== /Dashboard/Guests-Details/:123
                     />

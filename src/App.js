@@ -219,6 +219,16 @@ function App() {
           }
         />
         <Route
+          path="Add-Subscription"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <SubscriptionDetails />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        />
+        <Route
           path="Subscription-Management/Details/:id"
           element={
             <IsLoggedIn>

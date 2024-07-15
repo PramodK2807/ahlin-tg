@@ -18,14 +18,26 @@ const TransManag = () => {
         selected: false,
       },
       {
+        label: "Booking Id ",
+        field: "bookingId",
+        width: 50,
+        selected: false,
+      },
+      {
         label: "Date",
         field: "date",
         width: 50,
         selected: false,
       },
       {
-        label: " Name",
-        field: "name",
+        label: "Guest Name",
+        field: "gname",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Local Name",
+        field: "lname",
         width: 50,
         selected: false,
       },
@@ -42,7 +54,7 @@ const TransManag = () => {
         selected: false,
       },
       {
-        label: "Payment mode",
+        label: "Payment Method",
         field: "payment",
         width: 50,
         selected: false,
@@ -92,7 +104,7 @@ const TransManag = () => {
                       hover
                       data={transM}
                       noBottomColumns
-                      sortable={false}
+                     sortable={true}
                       paginationLabel={"«»"}
                     />
                   </div>

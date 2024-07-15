@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 const BookingManagement = () => {
+  const [count, setCount] = useState(0);
   const [booking, setBooking] = useState({
     columns: [
       {
@@ -76,20 +77,21 @@ const BookingManagement = () => {
     if (data && !data?.error) {
       const newRows = [];
       let values = data?.results?.list;
+      setCount(values?.length || 0);
       values
         ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
         ?.map((list, index) => {
           const returnData = {};
           returnData.sno = index + 1;
-          returnData.id = list?.trip || "NA";
+          returnData.id = list?.bookingId || "NA";
           returnData.name = list?.user?.fullName || "NA";
           returnData.localName = list?.local?.fullName || "NA";
           returnData.amount = list?.package?.price || "NA";
           returnData.status =
-            list?.status === "Complete || complete || Completed" ? (
+            list?.status === "completed" ? (
               <span className="badge light badge-success">Completed</span>
             ) : list?.status === "upComing" ? (
-              <span className="badge light badge-info">Up Coming</span>
+              <span className="badge light badge-info">Upcoming</span>
             ) : (
               list?.status
             );
@@ -167,7 +169,7 @@ const BookingManagement = () => {
                 <div className="col-12 card-body position-relative card-body-2">
                   <div className="d-flex card_title_container">
                     <h4 className="card-title">Booking Management</h4>
-                    <p className="ps-2">( 2,35,545 )</p>
+                    <p className="ps-2">{`(${count})`}</p>
                   </div>
                   <div className="search_icon">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -184,18 +186,21 @@ const BookingManagement = () => {
                       <i className="fa-solid fa-filter" />
                     </button>
                   </div>
-                  <div className="table-responsive mdb_table">
-                    <MDBDataTable
-                      bordered
-                      displayEntries={false}
-                      entries={10}
-                      className="text-nowrap"
-                      hover
-                      data={booking}
-                      noBottomColumns
-                      sortable={false}
-                      paginationLabel={"«»"}
-                    />
+                  <div className="mdb_table">
+                    <div className="table-responsive">
+                      <MDBDataTable
+                        bordered
+                        displayEntries={false}
+                        entries={10}
+                        className="text-nowrap"
+                        hover
+                        maxWidth="100%"
+                        data={booking}
+                        noBottomColumns
+                       sortable={true}
+                        paginationLabel={"«»"}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -239,12 +244,12 @@ const BookingManagement = () => {
                         From:
                       </label>
                       <div className="searchh_box">
-                        <form>
+                        <div>
                           <input className="form-control ps-3" type="date" />
                           <button className>
                             <i className="fa-regular fa-calendar" />
                           </button>
-                        </form>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -257,12 +262,12 @@ const BookingManagement = () => {
                         To:
                       </label>
                       <div className="searchh_box">
-                        <form>
+                        <div>
                           <input className="form-control ps-3" type="date" />
                           <button className>
                             <i className="fa-regular fa-calendar" />
                           </button>
-                        </form>
+                        </div>
                       </div>
                     </div>
                   </div>

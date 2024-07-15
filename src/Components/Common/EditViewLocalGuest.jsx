@@ -11,9 +11,11 @@ import {
 } from "../../adminHttpServices/dashHttpService";
 import Swal from "sweetalert2";
 import moment from "moment";
+import Info from "./Info";
 
 const EditViewLocalGuest = () => {
   const [details, setDetails] = useState();
+  const [bookings, setBookings] = useState([]);
   const [galleryIndexUrl, setGalleryIndexUrl] = useState("");
   const [imageUrl, setImageUrl] = useState();
   const [commission, setCommission] = useState(0);
@@ -47,6 +49,8 @@ const EditViewLocalGuest = () => {
       if (data && !data?.error) {
         setDetails(data?.results?.guide);
         let values = data?.results?.guide;
+        console.log(values);
+        setBookings(data?.results?.bookings);
         setValue("name", values?.fullName || "NA");
         setValue("number", values?.mobileNumber || "NA");
         setValue("email", values?.email || "NA");
@@ -67,6 +71,7 @@ const EditViewLocalGuest = () => {
         console.log(data);
         setDetails(data?.results?.user);
         let values = data?.results?.user;
+        setBookings(data?.results?.bookings);
         setValue("name", `${values?.fullName}` || "NA");
         setValue("email", values?.email || "NA");
         setValue("number", values?.mobileNumber || "NA");
@@ -279,8 +284,13 @@ const EditViewLocalGuest = () => {
 
                       {state?.type === "Guide" && (
                         <div className="col-md-3 m-b30">
-                          <label className="form-label">
-                            Commission<sup className="mandatesign">*</sup>
+                          <label className="form-label d-flex position-relative">
+                            Commission<sup className="mandatesign">*</sup>{" "}
+                            <Info
+                              title={
+                                "Commission percentage: Indicates the percentage of the trip cost that goes to Ahlain."
+                              }
+                            />
                           </label>
                           <input
                             type="number"
@@ -290,6 +300,19 @@ const EditViewLocalGuest = () => {
                           />
                         </div>
                       )}
+
+                      <div className="col-md-3 m-b30">
+                        <label className="form-label">
+                          Joined<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          type="text"
+                          // value={commission}
+                          value={moment(details?.createdAt).format("L")}
+                          className="form-control"
+                          // onChange={(e) => setCommission(e.target.value)}
+                        />
+                      </div>
 
                       {state?.type !== "Guide" && (
                         <div className="col-md-5 m-b30">
@@ -315,31 +338,32 @@ const EditViewLocalGuest = () => {
                           </label>
                         </div>
                       )}
-                      {state?.type === "Guide" && (
-                        <div className="row">
-                          <label className="form-label">
-                            Gallery<sup className="mandatesign"></sup>
-                          </label>
-                          {details?.tripMemories &&
-                            details.tripMemories.length > 0 &&
-                            details.tripMemories.map((item, index) => (
-                              <div
-                                key={index}
-                                className="col-6 col-sm-4 col-md-3 col-lg-2 p-1"
-                              >
-                                <img
-                                  src={item}
-                                  alt=""
-                                  className="w-100 rounded border border-light object-fit p-1 bg-light"
-                                  height={220}
-                                  onClick={() => setGalleryIndexUrl(item)}
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                />
-                              </div>
-                            ))}
-                        </div>
-                      )}
+                      {state?.type === "Guide" &&
+                        details?.tripMemories?.length > 0 && (
+                          <div className="row">
+                            <label className="form-label">
+                              Gallery<sup className="mandatesign"></sup>
+                            </label>
+                            {details?.tripMemories &&
+                              details?.tripMemories?.length > 0 &&
+                              details?.tripMemories?.map((item, index) => (
+                                <div
+                                  key={index}
+                                  className="col-6 col-sm-4 col-md-3 col-lg-2 p-1"
+                                >
+                                  <img
+                                    src={item}
+                                    alt=""
+                                    className="w-100 rounded border border-light object-fit p-1 bg-light"
+                                    height={220}
+                                    onClick={() => setGalleryIndexUrl(item)}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                  />
+                                </div>
+                              ))}
+                          </div>
+                        )}
                     </div>
 
                     {/* <div className="row border p-4 m-b30 rounded">
@@ -370,11 +394,11 @@ const EditViewLocalGuest = () => {
                   {state?.type === "Guide" && (
                     <div className="card-footer justify-content-start">
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-primary d-flex align-items-center"
                         onClick={getCommision}
                         type="button"
                       >
-                        Update Commission
+                        <span className="me-3">Update Commission</span> <Info title={"Only commission will be updated"} />
                       </button>
                     </div>
                   )}
@@ -399,7 +423,7 @@ const EditViewLocalGuest = () => {
               <div class="modal-dialog modal-dialog-center">
                 <div class="modal-content">
                   <div class="modal-body position-relative">
-                    <div className="position-absolute top-0 end-0 gallery-close" >
+                    <div className="position-absolute top-0 end-0 gallery-close">
                       <button
                         type="button"
                         class="btn-close"
@@ -418,7 +442,7 @@ const EditViewLocalGuest = () => {
               </div>
             </div>
             <div>
-              <TripBooking />
+              <TripBooking bookings={bookings} />
             </div>
           </div>
         </div>

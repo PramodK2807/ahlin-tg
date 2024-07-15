@@ -30,7 +30,12 @@ const SubscriptionManag = () => {
         width: 50,
         selected: false,
       },
-
+      {
+        label: " Number of Subscribers",
+        field: "number",
+        width: 50,
+        selected: false,
+      },
       {
         label: "Status",
         field: "status",
@@ -66,6 +71,7 @@ const SubscriptionManag = () => {
           returnData.name = list?.plan || "NA";
           returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
           returnData.cost = list?.price || "NA";
+          returnData.number = list?.number || "0";
 
           returnData.status = (
             <div className="check_toggle text-center" key={list?._id}>
@@ -84,26 +90,25 @@ const SubscriptionManag = () => {
           );
           returnData.actions = (
             <div className="d-flex">
-              {/* <Link
-                to={`/Activity-Management/Details/${list?._id}`}
+              <Link
+                to={`/Subscription-Management/Details/${list?._id}`}
                 state={{
-                  title: "Edit Activity Details",
+                  title: "Edit Subscription Details",
                   isEdit: true,
-                  type: "activity",
-                  api: "editActivity",
+                  data: list,
                 }}
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >
                 <i className="fa fa-edit"></i>
-              </Link> */}
+              </Link>
               <Link
                 to={`/Subscription-Management/Details/${list?._id}`}
-                // state={{
-                //   title: "View Activity Details",
-                //   isEdit: false,
-                //   type: "activity",
-                // }}
-                state={list}
+                state={{
+                  title: "View Subscription Details",
+                  isEdit: false,
+                  data: list,
+                }}
+                // state={list}
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >
                 <i className="fa fa-eye"></i>
@@ -152,6 +157,17 @@ const SubscriptionManag = () => {
           <div className="row">
             <div className="col-xl-12 pt-4">
               <div className="card dz-card" id="bootstrap-table1">
+                <div className="d-flex align-items-center justify-content-end mt-2 me-2">
+                  <Link
+                    to={"/Add-Subscription"}
+                    state={{ title: "Add Subscription", data: null }}
+                    className="btn btn-primary "
+                    style={{ width: "200px" }}
+                  >
+                    Add New Subscription
+                  </Link>
+                </div>
+
                 <div className="col-12 card-body position-relative card-body-2">
                   <div className="card_title_container">
                     <h4 className="card-title">Subscription Plan Management</h4>
@@ -179,7 +195,7 @@ const SubscriptionManag = () => {
                       hover
                       data={subscriptionM}
                       noBottomColumns
-                      sortable={false}
+                      sortable={true}
                       paginationLabel={"«»"}
                       // navigate to view ==== /Dashboard/Guests-Details/:123
                     />

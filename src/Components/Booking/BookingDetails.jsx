@@ -129,7 +129,7 @@ const BookingDetails = () => {
                       </div>
                       <div className="col-md-4 m-b30">
                         <label className="form-label">
-                          Total Guests<sup className="mandatesign">*</sup>
+                          Number of Guests<sup className="mandatesign">*</sup>
                         </label>
                         <input
                           type="text"

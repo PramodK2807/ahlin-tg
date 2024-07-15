@@ -1,7 +1,8 @@
 import { MDBDataTable } from "mdbreact";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import moment from "moment";
 
-const TripBooking = () => {
+const TripBooking = ({ bookings }) => {
   const [trip, setTrip] = useState({
     columns: [
       {
@@ -17,8 +18,14 @@ const TripBooking = () => {
         selected: false,
       },
       {
-        label: "Customer Name",
+        label: "Local Name",
         field: "name",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Guest Name",
+        field: "gname",
         width: 50,
         selected: false,
       },
@@ -40,15 +47,36 @@ const TripBooking = () => {
         width: 50,
         selected: false,
       },
-      {
-        label: "Action",
-        field: "action",
-        width: 100,
-        selected: false,
-      },
+      // {
+      //   label: "Action",
+      //   field: "action",
+      //   width: 100,
+      //   selected: false,
+      // },
     ],
     rows: [],
   });
+
+  useEffect(() => {
+    showBookings();
+  }, [bookings]);
+
+  const showBookings = () => {
+    const newRows = [];
+    bookings?.map((list, index) => {
+      const returnData = {};
+      returnData.sno = index + 1;
+      returnData.name = list?.packageName || "NA";
+      returnData.id = list?.bookingId || "NA";
+      returnData.name = list?.local?.fullName || "NA";
+      returnData.mobile = list?.local?.mobileNumber || "NA";
+      returnData.amount = list?.package?.price || "NA";
+      returnData.date = moment(list?.createdAt).format("L") || "NA";
+
+      newRows.push(returnData);
+    });
+    setTrip({ ...trip, rows: newRows });
+  };
   return (
     <div className="col-xl-12 pt-4">
       <div className="card dz-card" id="bootstrap-table1">
@@ -68,7 +96,7 @@ const TripBooking = () => {
               hover
               data={trip}
               noBottomColumns
-              sortable={false}
+             sortable={true}
               paginationLabel={"«»"}
             />
           </div>

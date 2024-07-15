@@ -383,7 +383,7 @@ const SubActivity = () => {
                 hover
                 data={subActivity}
                 noBottomColumns
-                sortable={false}
+               sortable={true}
                 paginationLabel={"«»"}
                 // navigate to view ==== /Dashboard/Guests-Details/:123
               />

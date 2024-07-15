@@ -16,8 +16,7 @@ const PackageDetails = () => {
     try {
       let { data } = await GetPackageDetails(id);
       if (data && !data?.error) {
-        console.log(data);
-        setDetails(data?.results?.details);
+        setDetails(data?.results?.packageDetails);
       }
     } catch (error) {
       console.log(error);
@@ -42,6 +41,7 @@ const PackageDetails = () => {
                         </label>
                         <input
                           type="text"
+                          disabled
                           className="form-control"
                           value={details?.packageName || "NA"}
                         />
@@ -52,8 +52,9 @@ const PackageDetails = () => {
                         </label>
                         <input
                           type="text"
+                          disabled
                           className="form-control"
-                          value={details?.localName || "NA"}
+                          value={details?.local?.fullName || "NA"}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -62,6 +63,7 @@ const PackageDetails = () => {
                         </label>
                         <input
                           type="text"
+                          disabled
                           className="form-control"
                           value={details?.price || "NA"}
                         />
@@ -72,6 +74,7 @@ const PackageDetails = () => {
                         </label>
                         <input
                           type="text"
+                          disabled
                           className="form-control"
                           defaultValue="100 Guests"
                         />
@@ -82,6 +85,7 @@ const PackageDetails = () => {
                         </label>
                         <input
                           type="text"
+                          disabled
                           className="form-control"
                           value={
                             moment(details?.createdAt).format("Do MMMM YYYY") ||
@@ -101,6 +105,7 @@ const PackageDetails = () => {
                           className="form-control"
                           placeholder="A supplier is a person or a company who provides goods or services to another person or entity. For every business transaction, there are two parties."
                           value={details?.description}
+                          disabled
                         />
                       </div>
                       <div className="col-md-6 m-b30">
@@ -109,6 +114,7 @@ const PackageDetails = () => {
                         </label>
                         <input
                           type="text"
+                          disabled
                           className="form-control"
                           value={details?.includes}
                         />
@@ -119,6 +125,7 @@ const PackageDetails = () => {
                         </label>
                         <input
                           type="text"
+                          disabled
                           className="form-control"
                           value={details?.excludes}
                         />
