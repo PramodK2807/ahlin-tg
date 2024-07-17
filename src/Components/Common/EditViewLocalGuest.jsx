@@ -123,6 +123,10 @@ const EditViewLocalGuest = () => {
     setFile(e.target.files[0]);
   };
 
+  const handleDelete = async (link) => {
+    alert(link);
+  };
+
   const onSubmit = async (info) => {
     console.log(info);
     try {
@@ -349,7 +353,7 @@ const EditViewLocalGuest = () => {
                               details?.tripMemories?.map((item, index) => (
                                 <div
                                   key={index}
-                                  className="col-6 col-sm-4 col-md-3 col-lg-2 p-1"
+                                  className="col-6 col-sm-4 col-md-3 col-lg-2 p-1 position-relative"
                                 >
                                   <img
                                     src={item}
@@ -360,6 +364,10 @@ const EditViewLocalGuest = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#exampleModal"
                                   />
+                                  <i
+                                    class="fa-solid fa-trash-can delete_image"
+                                    onClick={() => handleDelete(item)}
+                                  ></i>
                                 </div>
                               ))}
                           </div>
@@ -398,7 +406,8 @@ const EditViewLocalGuest = () => {
                         onClick={getCommision}
                         type="button"
                       >
-                        <span className="me-3">Update Commission</span> <Info title={"Only commission will be updated"} />
+                        <span className="me-3">Update Commission</span>{" "}
+                        <Info title={"Only commission will be updated"} />
                       </button>
                     </div>
                   )}

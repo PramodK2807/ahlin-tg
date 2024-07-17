@@ -78,7 +78,7 @@ const Guest = ({ latest }) => {
           const returnData = {};
           returnData.sno = index + 1;
           returnData.name = list?.fullName || "NA";
-          returnData.mobile = list?.mobileNumber || "NA";
+          returnData.mobile = +list?.mobileNumber || "NA";
           returnData.email = list?.email || "NA";
           returnData.country = list?.countryName || "NA";
 
@@ -184,6 +184,8 @@ const Guest = ({ latest }) => {
                 paginationLabel={"«»"}
               />
             </div>
+            <div className="table-responsive mdb_table"></div>
+
           </div>
         </div>
       </div>

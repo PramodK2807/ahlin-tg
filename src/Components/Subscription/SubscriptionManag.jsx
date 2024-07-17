@@ -90,7 +90,7 @@ const SubscriptionManag = () => {
           );
           returnData.actions = (
             <div className="d-flex">
-              <Link
+              {/* <Link
                 to={`/Subscription-Management/Details/${list?._id}`}
                 state={{
                   title: "Edit Subscription Details",
@@ -100,7 +100,7 @@ const SubscriptionManag = () => {
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >
                 <i className="fa fa-edit"></i>
-              </Link>
+              </Link> */}
               <Link
                 to={`/Subscription-Management/Details/${list?._id}`}
                 state={{
@@ -158,14 +158,14 @@ const SubscriptionManag = () => {
             <div className="col-xl-12 pt-4">
               <div className="card dz-card" id="bootstrap-table1">
                 <div className="d-flex align-items-center justify-content-end mt-2 me-2">
-                  <Link
+                  {/* <Link
                     to={"/Add-Subscription"}
                     state={{ title: "Add Subscription", data: null }}
                     className="btn btn-primary "
                     style={{ width: "200px" }}
                   >
                     Add New Subscription
-                  </Link>
+                  </Link> */}
                 </div>
 
                 <div className="col-12 card-body position-relative card-body-2">
@@ -200,6 +200,8 @@ const SubscriptionManag = () => {
                       // navigate to view ==== /Dashboard/Guests-Details/:123
                     />
                   </div>
+                  <div className="table-responsive mdb_table"></div>
+
                 </div>
               </div>
             </div>

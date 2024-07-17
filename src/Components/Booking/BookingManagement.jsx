@@ -12,6 +12,12 @@ import moment from "moment";
 
 const BookingManagement = () => {
   const [count, setCount] = useState(0);
+  const [filterFields, setFilterFields] = useState({
+    from: "",
+    to: "",
+    status: "",
+    cancelledBy: "",
+  });
   const [booking, setBooking] = useState({
     columns: [
       {
@@ -69,10 +75,10 @@ const BookingManagement = () => {
 
   useEffect(() => {
     getBookings();
-  }, []);
+  }, [filterFields]);
 
   const getBookings = async () => {
-    let { data } = await GetBookings();
+    let { data } = await GetBookings(filterFields);
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
@@ -92,6 +98,8 @@ const BookingManagement = () => {
               <span className="badge light badge-success">Completed</span>
             ) : list?.status === "upComing" ? (
               <span className="badge light badge-info">Upcoming</span>
+            ) : list?.status === "Pending" ? (
+              <span className="badge light badge-warning">Pending</span>
             ) : (
               list?.status
             );
@@ -186,22 +194,22 @@ const BookingManagement = () => {
                       <i className="fa-solid fa-filter" />
                     </button>
                   </div>
-                  <div className="mdb_table">
-                    <div className="table-responsive">
-                      <MDBDataTable
-                        bordered
-                        displayEntries={false}
-                        entries={10}
-                        className="text-nowrap"
-                        hover
-                        maxWidth="100%"
-                        data={booking}
-                        noBottomColumns
-                       sortable={true}
-                        paginationLabel={"«»"}
-                      />
-                    </div>
+
+                  <div className="table-responsive mdb_table">
+                    <MDBDataTable
+                      bordered
+                      displayEntries={false}
+                      entries={10}
+                      className="text-nowrap"
+                      hover
+                      maxWidth="100%"
+                      data={booking}
+                      noBottomColumns
+                      sortable={true}
+                      paginationLabel={"«»"}
+                    />
                   </div>
+                  <div className="table-responsive mdb_table"></div>
                 </div>
               </div>
             </div>
@@ -245,10 +253,20 @@ const BookingManagement = () => {
                       </label>
                       <div className="searchh_box">
                         <div>
-                          <input className="form-control ps-3" type="date" />
-                          <button className>
+                          <input
+                            className="form-control ps-3"
+                            type="date"
+                            value={filterFields?.to}
+                            onChange={(e) =>
+                              setFilterFields({
+                                ...filterFields,
+                                to: e.target.value,
+                              })
+                            }
+                          />
+                          {/* <button className>
                             <i className="fa-regular fa-calendar" />
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -263,10 +281,20 @@ const BookingManagement = () => {
                       </label>
                       <div className="searchh_box">
                         <div>
-                          <input className="form-control ps-3" type="date" />
-                          <button className>
+                          <input
+                            className="form-control ps-3"
+                            type="date"
+                            value={filterFields?.from}
+                            onChange={(e) =>
+                              setFilterFields({
+                                ...filterFields,
+                                from: e.target.value,
+                              })
+                            }
+                          />
+                          {/* <button className>
                             <i className="fa-regular fa-calendar" />
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -282,6 +310,12 @@ const BookingManagement = () => {
                           type="radio"
                           name="flexRadioDefault"
                           id="flexRadioDefault1"
+                          onClick={() =>
+                            setFilterFields({
+                              ...filterFields,
+                              status: "Completed",
+                            })
+                          }
                         />
                         <label
                           className="form-check-label"
@@ -296,13 +330,63 @@ const BookingManagement = () => {
                           type="radio"
                           name="flexRadioDefault"
                           id="flexRadioDefault2"
-                          defaultChecked
+                          onClick={() =>
+                            setFilterFields({
+                              ...filterFields,
+                              status: "Upcoming",
+                            })
+                          }
                         />
                         <label
                           className="form-check-label"
                           htmlFor="flexRadioDefault2"
                         >
                           Upcoming
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-8">
+                    <label htmlFor="message-text" className="col-form-label">
+                      Cancelled by :
+                    </label>
+                    <div className="d-flex justify-content-between">
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="cancel"
+                          id="local"
+                          onClick={() =>
+                            setFilterFields({
+                              ...filterFields,
+                              cancelledBy: "Local",
+                            })
+                          }
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="local"
+                          name="cancel"
+                        >
+                          Local
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          id="guest"
+                          name="cancel"
+                          onClick={() =>
+                            setFilterFields({
+                              ...filterFields,
+                              cancelledBy: "Guest",
+                            })
+                          }
+                        />
+                        <label className="form-check-label" htmlFor="guest">
+                          Guest
                         </label>
                       </div>
                     </div>

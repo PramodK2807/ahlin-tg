@@ -102,6 +102,45 @@ const SubscriptionDetails = () => {
                           defaultValue="30 Days"
                         />
                       </div>
+                      <div className="col-md-8 m-b30">
+                        <label className="form-label">
+                          Features<sup className="mandatesign">*</sup>
+                        </label>
+                        <textarea
+                          className={`form-control ${
+                            errors.features ? "is-invalid" : ""
+                          }`}
+                          {...register("features", {
+                            required: "* Features is required",
+                          })}
+                          placeholder="Videography"
+                        />
+                        {errors.features && (
+                          <div className="invalid-feedback">
+                            {errors.features.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Subscribers<sup className="mandatesign">*</sup>
+                        </label>
+                        <textarea type="number" value={"20"} className="form-control" />
+                        {/* <textarea
+                          className={`form-control ${
+                            errors.features ? "is-invalid" : ""
+                          }`}
+                          {...register("features", {
+                            required: "* Features is required",
+                          })}
+                          placeholder="Videography"
+                        />
+                        {errors.features && (
+                          <div className="invalid-feedback">
+                            {errors.features.message}
+                          </div>
+                        )} */}
+                      </div>
                       <div className="col-md-12 m-b30">
                         <label className="form-label">
                           Description<sup className="mandatesign">*</sup>
@@ -129,25 +168,7 @@ const SubscriptionDetails = () => {
                           </div>
                         )}
                       </div>
-                      <div className="col-md-12 m-b30">
-                        <label className="form-label">
-                          Features<sup className="mandatesign">*</sup>
-                        </label>
-                        <textarea
-                          className={`form-control ${
-                            errors.features ? "is-invalid" : ""
-                          }`}
-                          {...register("features", {
-                            required: "* Features is required",
-                          })}
-                          placeholder="Videography"
-                        />
-                        {errors.features && (
-                          <div className="invalid-feedback">
-                            {errors.features.message}
-                          </div>
-                        )}
-                      </div>
+                     
                     </div>
                   </div>
                 </form>

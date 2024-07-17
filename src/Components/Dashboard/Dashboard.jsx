@@ -4,6 +4,7 @@ import { GetState, TotalUsers } from "../../adminHttpServices/dashHttpService";
 import Guest from "../GuestManagement/Guest";
 import LocalAndGuestGraph from "../Graph/LocalAndGuestGraph";
 import RechartLocalAndGuest from "../Graph/RechartLocalAndGuest";
+import TotalRevenue from "../Graph/TotalRevenue";
 
 const Dashboard = () => {
   const [dashCount, setDashCount] = useState(0);
@@ -76,7 +77,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-6 col-sm-6">
+                <div className="col-xl-4 col-sm-6">
                   <div className="card chart-grd same-card">
                     <div className="card-body depostit-card p-0">
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
@@ -92,7 +93,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-6 col-sm-6">
+                <div className="col-xl-4 col-sm-6">
                   <div className="card chart-grd same-card">
                     <div className="card-body depostit-card p-0">
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
@@ -108,15 +109,81 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
+                <div className="col-xl-4 col-sm-6">
+                  <div className="card chart-grd same-card">
+                    <div className="card-body depostit-card p-0">
+                      <div className="depostit-card-media d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6>Total Completed Bookings</h6>
+                          <h3>{dashCount?.totalCompletedBookings}</h3>
+                        </div>
+                        <div className="icon-box icon_bg">
+                          <i class="fa-solid fa-square-check"></i>
+                        </div>
+                      </div>
+                      <div id="NewExperience" />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xl-6 col-sm-6">
+                  <div className="card chart-grd same-card">
+                    <div className="card-body depostit-card p-0">
+                      <div className="depostit-card-media d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6>Cancelled by Guests</h6>
+                          <h3>{dashCount?.cancelledByGuest || 0}</h3>
+                        </div>
+                        <div className="icon-box icon_bg">
+                          <i class="fa-solid fa-plane-slash"></i>
+                        </div>
+                      </div>
+                      <div id="NewExperience" />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xl-6 col-sm-6">
+                  <div className="card chart-grd same-card">
+                    <div className="card-body depostit-card p-0">
+                      <div className="depostit-card-media d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6>Cancelled by Local</h6>
+                          <h3>{dashCount?.cancelledByLocal || 0}</h3>
+                        </div>
+                        <div className="icon-box icon_bg">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </div>
+                      </div>
+                      <div id="NewExperience" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* <Guest latest={true} /> */}
 
-            <div className="row">
-              <div className="col-md-6">
-                {/* <LocalAndGuestGraph /> */}
-                <RechartLocalAndGuest />
+            <div id="revenue" className="col-xl-6 d-flex align-items-stretch">
+              <div className="card w-100 o-hidden card-hover">
+                <div className="card-header border-0 pb-1">
+                  <div className="card-header-title">
+                    <h4>Total Order & Total Products</h4>
+                  </div>
+                </div>
+                <div className="card-body p-0">
+                  <LocalAndGuestGraph />
+                </div>
+              </div>
+            </div>
+            <div id="revenue" className="col-xl-6 d-flex align-items-stretch">
+              <div className="card w-100 o-hidden card-hover">
+                <div className="card-header border-0 pb-1">
+                  <div className="card-header-title">
+                    <h4>Total Revenue & Trips</h4>
+                  </div>
+                </div>
+                <div className="card-body p-0">
+                  <TotalRevenue />
+                </div>
               </div>
             </div>
           </div>

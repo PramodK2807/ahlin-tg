@@ -6,11 +6,11 @@ const LocalAndGuestGraph = () => {
     series: [
       {
         name: "series1",
-        data: [31, 40, 28, 51, 42, 109, 100, 40, 28, 51, 42, 100],
+        data: [31, 40, 28],
       },
       {
         name: "series2",
-        data: [11, 32, 45, 32, 34, 52, 41, 40, 2, 51, 42, 19],
+        data: [11, 32, 45],
       },
     ],
     // series: [
@@ -40,7 +40,7 @@ const LocalAndGuestGraph = () => {
       },
       xaxis: {
         type: "category",
-        categories: [],
+        categories: ["Jan", "Feb", "Mar"],
         tickPlacement: "between",
       },
       tooltip: {
@@ -49,7 +49,7 @@ const LocalAndGuestGraph = () => {
         },
       },
       grid: {
-        show: false,
+        show: true,
       },
     },
   });
@@ -135,21 +135,14 @@ const LocalAndGuestGraph = () => {
       : chartState.series[0].data.length * 80;
 
   return (
-    <div className=" pt-4">
-      <div className="card dz-card" id="bootstrap-table1">
-        <div className="col-12 card-body position-relative card-body-2">
-          <p>Guest & Locals</p>
-          <div className="apex_chart_box overflow-auto">
-            <div id="chart" style={{ width: chartWidth }}>
-              <ReactApexChart
-                options={chartState.options}
-                series={chartState.series}
-                type="area"
-                height={350}
-              />
-            </div>
-          </div>
-        </div>
+    <div className="apex_chart_box overflow-scroll">
+      <div id="chart" style={{ width: chartWidth }}>
+        <ReactApexChart
+          options={chartState.options}
+          series={chartState.series}
+          type="area"
+          height={350}
+        />
       </div>
     </div>
   );

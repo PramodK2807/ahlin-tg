@@ -5,11 +5,11 @@ var W3Crm = function(){
 	var screenHeight = $( window ).height();
 	
 	
-	var handleSelectPicker = function(){
-		if(jQuery('.default-select,.table-responsive select').length > 0 ){
-			jQuery('.default-select,.table-responsive select').selectpicker();
-		}
-	}
+	// var handleSelectPicker = function(){
+	// 	if(jQuery('.default-select,.table-responsive select').length > 0 ){
+	// 		jQuery('.default-select,.table-responsive select').selectpicker();
+	// 	}
+	// }
 	var handlePreloader = function(){
 		setTimeout(function() {
 			jQuery('#preloader').remove();
@@ -655,7 +655,7 @@ var W3Crm = function(){
 			handleDraggableCard();
 			handleConverterTheme();
 			//handleImageSelect();
-			handleSelectPicker();
+			// handleSelectPicker();
 			handlePageOnScroll();
 			handleImageSelect();
 			tagify();

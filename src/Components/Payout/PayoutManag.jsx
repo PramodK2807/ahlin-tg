@@ -18,6 +18,12 @@ const PayoutManag = () => {
         selected: false,
       },
       {
+        label: "Invoice Id ",
+        field: "invoiceId",
+        width: 50,
+        selected: false,
+      },
+      {
         label: "Guest Name",
         field: "gName",
         width: 50,
@@ -38,6 +44,24 @@ const PayoutManag = () => {
       {
         label: "Booking Amount",
         field: "amount",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Vat Amount",
+        field: "vat",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Ahlain Fees",
+        field: "ahlainFee",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Total Amount",
+        field: "total",
         width: 50,
         selected: false,
       },
@@ -93,11 +117,11 @@ const PayoutManag = () => {
                       hover
                       data={payoutM}
                       noBottomColumns
-                     sortable={true}
+                      sortable={true}
                       paginationLabel={"«»"}
-                      // navigate to view ==== /Dashboard/Guests-Details/:123
                     />
                   </div>
+                  <div className="table-responsive mdb_table"></div>
                 </div>
               </div>
             </div>

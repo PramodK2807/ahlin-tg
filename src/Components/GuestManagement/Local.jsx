@@ -85,7 +85,7 @@ const Local = () => {
           const returnData = {};
           returnData.sno = index + 1;
           returnData.name = list?.fullName;
-          returnData.mobile = list?.mobileNumber || "NA";
+          returnData.mobile = +list?.mobileNumber || "NA";
           returnData.email = list?.email || "NA";
           returnData.plan = list?.plan || "None";
           returnData.rating = list?.rating || "NA";
@@ -193,6 +193,8 @@ const Local = () => {
                 paginationLabel={"«»"}
               />
             </div>
+            <div className="table-responsive mdb_table"></div>
+
           </div>
         </div>
       </div>

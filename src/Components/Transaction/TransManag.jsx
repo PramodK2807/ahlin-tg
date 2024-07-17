@@ -108,6 +108,8 @@ const TransManag = () => {
                       paginationLabel={"«»"}
                     />
                   </div>
+                  <div className="table-responsive mdb_table"></div>
+
                 </div>
               </div>
             </div>
