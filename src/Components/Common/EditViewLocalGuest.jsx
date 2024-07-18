@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Commission,
+  DeleteGalleryImage,
   GuideDetails,
   UpdateDetails,
   UserDetails,
@@ -124,31 +125,47 @@ const EditViewLocalGuest = () => {
   };
 
   const handleDelete = async (link) => {
-    alert(link);
-  };
-
-  const onSubmit = async (info) => {
-    console.log(info);
     try {
-      let formData = new FormData();
-      formData.append("fullName", info?.name || "NA");
-      formData.append("mobileNumber", info?.number || "NA");
-      formData.append("email", info?.email || "NA");
-      formData.append("Dob", info?.dob || "2024-12-04");
-      if (state?.type === "User") {
-        formData.append("userImage", file);
-      }
-      if (state?.type === "Guide") {
-        formData.append("guideImage", file);
-      }
-      let { data } = await UpdateDetails(state?.api, id, formData);
+      let { data } = await DeleteGalleryImage(id, { url: link });
       if (data && !data?.error) {
-        navigate(-1);
+        Swal.fire({
+          toast: true,
+          icon: "success",
+          position: "top-end",
+          title: "Image deleted successfully",
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 3000,
+        });
       }
+      getUserDetails();
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const onSubmit = async (info) => {
+  //   console.log(info);
+  //   try {
+  //     let formData = new FormData();
+  //     formData.append("fullName", info?.name || "NA");
+  //     formData.append("mobileNumber", info?.number || "NA");
+  //     formData.append("email", info?.email || "NA");
+  //     formData.append("Dob", info?.dob || "2024-12-04");
+  //     if (state?.type === "User") {
+  //       formData.append("userImage", file);
+  //     }
+  //     if (state?.type === "Guide") {
+  //       formData.append("guideImage", file);
+  //     }
+  //     let { data } = await UpdateDetails(state?.api, id, formData);
+  //     if (data && !data?.error) {
+  //       navigate(-1);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Layout activeSlide={"Guest"}>
