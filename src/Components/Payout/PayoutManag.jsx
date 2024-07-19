@@ -111,7 +111,7 @@ const PayoutManag = () => {
                   <div className="table-responsive mdb_table">
                     <MDBDataTable
                       bordered
-                      displayEntries={false}
+                  displayEntries={true}
                       entries={10}
                       className="text-nowrap"
                       hover
@@ -121,7 +121,7 @@ const PayoutManag = () => {
                       paginationLabel={"«»"}
                     />
                   </div>
-                  <div className="table-responsive mdb_table"></div>
+                  <div className="table-responsive mdb_table2"></div>
                 </div>
               </div>
             </div>

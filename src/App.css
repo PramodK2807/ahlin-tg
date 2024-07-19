@@ -1,28 +1,11 @@
 .mdb_table {
   overflow-x: auto;
-  padding-top: 80px !important;
+  padding-top: 25px !important;
 }
-/* .mdb_table ::-webkit-scrollbar {
-  display: block !important;
-  width: 10px !important;
-  height: 8px !important;
-  border-radius: 50% !important;
+[data-test="datatable-entries"] {
+  position: sticky;
+  left: 0 !important;
 }
-.mdb_table ::-webkit-scrollbar-track {
-  background: #f1f1f1 !important;
-}
-.mdb_table ::-webkit-scrollbar-thumb {
-  background: #76b3fb !important;
-  border-radius: 50px !important;
-}
-.mdb_table ::-webkit-scrollbar-thumb {
-  background: #76b3fb !important;
-  border-radius: 50px;
-}
-.mdb_table ::-webkit-scrollbar-thumb:hover {
-  background: #76b3fb !important;
-  cursor: pointer !important;
-} */
 .delete_image {
   position: absolute;
   top: 9px;

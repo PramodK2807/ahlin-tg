@@ -374,22 +374,32 @@ const SubActivity = () => {
             <div className="search_icon">
               <i class="fa-solid fa-magnifying-glass"></i>
             </div>
+            <div className="d-flex filter_modal">
+              <button
+                type="button"
+                className="btn filter_manage px-3 py-2"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                data-bs-whatever="@mdo"
+              >
+                <i className="fa-solid fa-filter" />
+              </button>
+            </div>
             <div className="table-responsive mdb_table">
               <MDBDataTable
                 bordered
-                displayEntries={false}
+                displayEntries={true}
                 entries={10}
                 className="text-nowrap"
                 hover
                 data={subActivity}
                 noBottomColumns
-               sortable={true}
+                sortable={true}
                 paginationLabel={"«»"}
                 // navigate to view ==== /Dashboard/Guests-Details/:123
               />
             </div>
-            <div className="table-responsive mdb_table"></div>
-
+            <div className="table-responsive mdb_table2"></div>
           </div>
         </div>
       </div>

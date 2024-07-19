@@ -98,7 +98,7 @@ const TransManag = () => {
                   <div className="table-responsive mdb_table">
                     <MDBDataTable
                       bordered
-                      displayEntries={false}
+                  displayEntries={true}
                       entries={10}
                       className="text-nowrap"
                       hover
@@ -108,7 +108,7 @@ const TransManag = () => {
                       paginationLabel={"«»"}
                     />
                   </div>
-                  <div className="table-responsive mdb_table"></div>
+                  <div className="table-responsive mdb_table2"></div>
 
                 </div>
               </div>

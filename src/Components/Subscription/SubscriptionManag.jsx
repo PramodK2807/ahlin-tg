@@ -189,7 +189,7 @@ const SubscriptionManag = () => {
                   <div className="table-responsive mdb_table">
                     <MDBDataTable
                       bordered
-                      displayEntries={false}
+                  displayEntries={true}
                       entries={10}
                       className="text-nowrap"
                       hover
@@ -200,7 +200,7 @@ const SubscriptionManag = () => {
                       // navigate to view ==== /Dashboard/Guests-Details/:123
                     />
                   </div>
-                  <div className="table-responsive mdb_table"></div>
+                  <div className="table-responsive mdb_table2"></div>
 
                 </div>
               </div>
