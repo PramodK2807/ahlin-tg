@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { MDBDataTable } from "mdbreact";
 import {
-  AllUsersList,
-  BookingDetails,
   DeleteBooking,
   GetBookings,
 } from "../../adminHttpServices/dashHttpService";
@@ -16,7 +14,7 @@ const BookingManagement = () => {
     from: "",
     to: "",
     status: "",
-    cancelledBy: "",
+    canceledBy: "",
   });
   const [booking, setBooking] = useState({
     columns: [
@@ -76,6 +74,7 @@ const BookingManagement = () => {
   useEffect(() => {
     const controller = new AbortController();
     let signal = controller.signal;
+
     getBookings(signal);
 
     return () => {
@@ -88,7 +87,7 @@ const BookingManagement = () => {
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
-      let values = data?.results?.list;
+      let values = data?.results?.bookingList;
       setCount(values?.length || 0);
       values
         ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
@@ -250,168 +249,204 @@ const BookingManagement = () => {
                 />
               </div>
               <div className="modal-body">
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="recipient-name"
-                        className="col-form-label"
-                      >
-                        From:
+                <form>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="recipient-name"
+                          className="col-form-label"
+                        >
+                          From:
+                        </label>
+                        <div className="searchh_box">
+                          <div>
+                            <input
+                              className="form-control ps-3"
+                              type="date"
+                              value={filterFields?.to}
+                              onChange={(e) =>
+                                setFilterFields({
+                                  ...filterFields,
+                                  to: e.target.value,
+                                })
+                              }
+                            />
+                            {/* <button className>
+                            <i className="fa-regular fa-calendar" />
+                          </button> */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="recipient-name"
+                          className="col-form-label"
+                        >
+                          To:
+                        </label>
+                        <div className="searchh_box">
+                          <div>
+                            <input
+                              className="form-control ps-3"
+                              type="date"
+                              value={filterFields?.from}
+                              onChange={(e) =>
+                                setFilterFields({
+                                  ...filterFields,
+                                  from: e.target.value,
+                                })
+                              }
+                            />
+                            {/* <button className>
+                            <i className="fa-regular fa-calendar" />
+                          </button> */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <label htmlFor="message-text" className="col-form-label">
+                        Status
                       </label>
-                      <div className="searchh_box">
-                        <div>
+                      <div className="d-flex justify-content-between">
+                        <div className="form-check">
                           <input
-                            className="form-control ps-3"
-                            type="date"
-                            value={filterFields?.to}
-                            onChange={(e) =>
+                            className="form-check-input"
+                            type="radio"
+                            name="flexRadioDefault"
+                            id="flexRadioDefault1"
+                            onClick={() =>
                               setFilterFields({
                                 ...filterFields,
-                                to: e.target.value,
+                                status: "completed",
                               })
                             }
                           />
-                          {/* <button className>
-                            <i className="fa-regular fa-calendar" />
-                          </button> */}
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexRadioDefault1"
+                          >
+                            Complete
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="flexRadioDefault"
+                            id="flexRadioDefault2"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: "upComing",
+                              })
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexRadioDefault2"
+                          >
+                            Upcoming
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="flexRadioDefault"
+                            id="flexRadioDefault3"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: "Pending",
+                              })
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexRadioDefault3"
+                          >
+                            Upcoming
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-8">
+                      <label htmlFor="message-text" className="col-form-label">
+                        Cancelled by :
+                      </label>
+                      <div className="d-flex justify-content-between">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="cancel"
+                            id="local"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: "",
+                                canceledBy: "local",
+                              })
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="local"
+                            name="cancel"
+                          >
+                            Local
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="guest"
+                            name="cancel"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: "",
+                                canceledBy: "guest",
+                              })
+                            }
+                          />
+                          <label className="form-check-label" htmlFor="guest">
+                            Guest
+                          </label>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="recipient-name"
-                        className="col-form-label"
-                      >
-                        To:
-                      </label>
-                      <div className="searchh_box">
-                        <div>
-                          <input
-                            className="form-control ps-3"
-                            type="date"
-                            value={filterFields?.from}
-                            onChange={(e) =>
-                              setFilterFields({
-                                ...filterFields,
-                                from: e.target.value,
-                              })
-                            }
-                          />
-                          {/* <button className>
-                            <i className="fa-regular fa-calendar" />
-                          </button> */}
-                        </div>
-                      </div>
-                    </div>
+                  <div className="modal-footer">
+                    <button
+                      type="reset"
+                      className="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      onClick={() =>
+                        setFilterFields({
+                          from: "",
+                          to: "",
+                          status: "",
+                          canceledBy: "",
+                        })
+                      }
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-bs-dismiss="modal"
+                    >
+                      Save
+                    </button>
                   </div>
-                  <div className="col-md-8">
-                    <label htmlFor="message-text" className="col-form-label">
-                      Status
-                    </label>
-                    <div className="d-flex justify-content-between">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault1"
-                          onClick={() =>
-                            setFilterFields({
-                              ...filterFields,
-                              status: "Completed",
-                            })
-                          }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="flexRadioDefault1"
-                        >
-                          Complete
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault2"
-                          onClick={() =>
-                            setFilterFields({
-                              ...filterFields,
-                              status: "Upcoming",
-                            })
-                          }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="flexRadioDefault2"
-                        >
-                          Upcoming
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-8">
-                    <label htmlFor="message-text" className="col-form-label">
-                      Cancelled by :
-                    </label>
-                    <div className="d-flex justify-content-between">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="cancel"
-                          id="local"
-                          onClick={() =>
-                            setFilterFields({
-                              ...filterFields,
-                              cancelledBy: "Local",
-                            })
-                          }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="local"
-                          name="cancel"
-                        >
-                          Local
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          id="guest"
-                          name="cancel"
-                          onClick={() =>
-                            setFilterFields({
-                              ...filterFields,
-                              cancelledBy: "Guest",
-                            })
-                          }
-                        />
-                        <label className="form-check-label" htmlFor="guest">
-                          Guest
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Save
-                </button>
+                </form>
               </div>
             </div>
           </div>

@@ -130,7 +130,7 @@ const Dashboard = () => {
                     <div className="card-body depostit-card p-0">
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
-                          <h6>Cancelled by Guests</h6>
+                          <h6>Cancelled Booking by Guests</h6>
                           <h3>{dashCount?.totalBookingCancelByGuest || 0}</h3>
                         </div>
                         <div className="icon-box icon_bg">
@@ -146,7 +146,7 @@ const Dashboard = () => {
                     <div className="card-body depostit-card p-0">
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
-                          <h6>Cancelled by Local</h6>
+                          <h6>Cancelled Booking by Local</h6>
                           <h3>{dashCount?.totalBookingCancelByLocal || 0}</h3>
                         </div>
                         <div className="icon-box icon_bg">
