@@ -1379,10 +1379,11 @@ export async function DeleteContent(id) {
 }
 // BOOKING MANAGEMENT
 
-export async function GetBookings() {
+export async function GetBookings(signal) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/bookList`
+      `${process.env.REACT_APP_API}/api/admin/bookList`,
+      signal
     );
 
     if (!data?.error) {

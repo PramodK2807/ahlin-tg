@@ -5,11 +5,11 @@ const LocalAndGuestGraph = () => {
   const [chartState, setChartState] = useState({
     series: [
       {
-        name: "series1",
+        name: "Guests",
         data: [31, 40, 28],
       },
       {
-        name: "series2",
+        name: "Locals",
         data: [11, 32, 45],
       },
     ],

@@ -74,11 +74,17 @@ const BookingManagement = () => {
   });
 
   useEffect(() => {
-    getBookings();
+    const controller = new AbortController();
+    let signal = controller.signal;
+    getBookings(signal);
+
+    return () => {
+      controller.abort();
+    };
   }, [filterFields]);
 
-  const getBookings = async () => {
-    let { data } = await GetBookings(filterFields);
+  const getBookings = async (signal) => {
+    let { data } = await GetBookings(filterFields, { signal });
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
@@ -94,12 +100,14 @@ const BookingManagement = () => {
           returnData.localName = list?.local?.fullName || "NA";
           returnData.amount = list?.package?.price || "NA";
           returnData.status =
-            list?.status === "completed" ? (
+            list?.status && list?.status === "completed" ? (
               <span className="badge light badge-success">Completed</span>
             ) : list?.status === "upComing" ? (
               <span className="badge light badge-info">Upcoming</span>
             ) : list?.status === "Pending" ? (
               <span className="badge light badge-warning">Pending</span>
+            ) : list?.status === "Canceled" ? (
+              <span className="badge light badge-danger">Cancelled</span>
             ) : (
               list?.status
             );

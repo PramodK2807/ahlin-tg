@@ -131,7 +131,7 @@ const Dashboard = () => {
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
                           <h6>Cancelled by Guests</h6>
-                          <h3>{dashCount?.cancelledByGuest || 0}</h3>
+                          <h3>{dashCount?.totalBookingCancelByGuest || 0}</h3>
                         </div>
                         <div className="icon-box icon_bg">
                           <i class="fa-solid fa-plane-slash"></i>
@@ -147,7 +147,7 @@ const Dashboard = () => {
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
                           <h6>Cancelled by Local</h6>
-                          <h3>{dashCount?.cancelledByLocal || 0}</h3>
+                          <h3>{dashCount?.totalBookingCancelByLocal || 0}</h3>
                         </div>
                         <div className="icon-box icon_bg">
                           <i class="fa-solid fa-trash-can"></i>
@@ -166,7 +166,7 @@ const Dashboard = () => {
               <div className="card w-100 o-hidden card-hover">
                 <div className="card-header border-0 pb-1">
                   <div className="card-header-title">
-                    <h4>Total Order & Total Products</h4>
+                    <h4>Total Guests & Locals</h4>
                   </div>
                 </div>
                 <div className="card-body p-0">

@@ -320,13 +320,12 @@ const Activity = () => {
                 hover
                 data={activity}
                 noBottomColumns
-               sortable={true}
+                sortable={true}
                 paginationLabel={"«»"}
                 // navigate to view ==== /Dashboard/Guests-Details/:123
               />
             </div>
             <div className="table-responsive mdb_table"></div>
-
           </div>
         </div>
       </div>

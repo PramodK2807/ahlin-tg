@@ -6,16 +6,11 @@ const TotalRevenue = () => {
     series: [
       {
         name: "Revenue",
-        data: [
-          100, 102, 90, 60, 80, 110, 130, 150, 120, 140, 160, 180, 200, 220,
-          240,
-        ],
+        data: [100, 102, 90, 60, 80],
       },
       {
         name: "Trips",
-        data: [
-          80, 85, 70, 50, 75, 95, 115, 140, 100, 120, 150, 170, 190, 210, 230,
-        ],
+        data: [80, 85, 70, 50, 75],
       },
     ],
     options: {
@@ -46,23 +41,7 @@ const TotalRevenue = () => {
         enabled: false,
       },
       xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-          "Jan",
-          "Feb",
-          "Mar",
-        ],
+        categories: ["Jan", "Feb", "Mar", "Apr", "May"],
         position: "bottom",
         tickPlacement: "between",
       },
