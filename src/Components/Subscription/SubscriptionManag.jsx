@@ -10,6 +10,11 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 const SubscriptionManag = () => {
+  const [filterFields, setFilterFields] = useState({
+    from: "",
+    to: "",
+    status: "",
+  });
   const [subscriptionM, setSubscriptionM] = useState({
     columns: [
       {
@@ -54,35 +59,41 @@ const SubscriptionManag = () => {
   });
 
   useEffect(() => {
-    getSubscription();
-  }, []);
+    const controller = new AbortController();
+    let signal = controller.signal;
+    getSubscription(signal);
 
-  const getSubscription = async () => {
-    let { data } = await GetAllSubscription();
+    return () => {
+      controller.abort();
+    };
+  }, [filterFields]);
+
+  const getSubscription = async (signal) => {
+    let { data } = await GetAllSubscription(filterFields, { signal });
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
-      let values = data?.results?.groupedPlan[0]?.plan;
+      let values = data?.results?.list;
       values
         ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
         ?.map((list, index) => {
           const returnData = {};
           returnData.sno = index + 1;
-          returnData.name = list?.plan || "NA";
+          returnData.name = list?.subscriptionName || "NA";
           returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
-          returnData.cost = list?.price || "NA";
+          returnData.cost = list?.planCost || "NA";
           returnData.number = list?.number || "0";
 
           returnData.status = (
             <div className="check_toggle text-center" key={list?._id}>
               <input
                 type="checkbox"
-                defaultChecked={list?.status}
+                defaultChecked={list?.isActive}
                 name="check1"
                 id={list?._id}
                 className="d-none"
                 onClick={() => {
-                  changeStatus(list?._id, list?.status);
+                  changeStatus(list?._id, list?.isActive);
                 }}
               />
               <label for={list?._id}></label>
@@ -189,7 +200,7 @@ const SubscriptionManag = () => {
                   <div className="table-responsive mdb_table">
                     <MDBDataTable
                       bordered
-                  displayEntries={true}
+                      displayEntries={true}
                       entries={10}
                       className="text-nowrap"
                       hover
@@ -201,7 +212,6 @@ const SubscriptionManag = () => {
                     />
                   </div>
                   <div className="table-responsive mdb_table2"></div>
-
                 </div>
               </div>
             </div>
@@ -209,70 +219,157 @@ const SubscriptionManag = () => {
         </div>
 
         <div
-          class="modal fade"
+          className="modal fade"
           id="exampleModal"
-          tabindex="-1"
+          tabIndex={-1}
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-3 fw-semibold" id="exampleModalLabel">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1
+                  className="modal-title fs-3 fw-semibold"
+                  id="exampleModalLabel"
+                >
                   Filter
                 </h1>
                 <button
                   type="button"
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                ></button>
+                />
               </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-7 pt-2">
-                    <label for="message-text" class="col-form-label">
-                      Status
-                    </label>
-                    <div class="d-flex justify-content-between">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault1"
-                        />
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          Active
+              <div className="modal-body">
+                <form>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="recipient-name"
+                          className="col-form-label"
+                        >
+                          From:
                         </label>
+                        <div className="searchh_box">
+                          <div>
+                            <input
+                              className="form-control ps-3"
+                              type="date"
+                              value={filterFields?.to}
+                              onChange={(e) =>
+                                setFilterFields({
+                                  ...filterFields,
+                                  to: e.target.value,
+                                })
+                              }
+                            />
+                            {/* <button type="button" className>
+                              <i className="fa-regular fa-calendar" />
+                            </button> */}
+                          </div>
+                        </div>
                       </div>
-                      <div class="form-check ms-4">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault2"
-                          checked
-                        />
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Inactive
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="recipient-name"
+                          className="col-form-label"
+                        >
+                          To:
                         </label>
+                        <div className="searchh_box">
+                          <div>
+                            <input
+                              className="form-control ps-3"
+                              type="date"
+                              value={filterFields?.from}
+                              onChange={(e) =>
+                                setFilterFields({
+                                  ...filterFields,
+                                  from: e.target.value,
+                                })
+                              }
+                            />
+                            {/* <button className>
+                            <i className="fa-regular fa-calendar" />
+                          </button> */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="message-text" class="col-form-label">
+                        Status
+                      </label>
+                      <div class="d-flex gx-5">
+                        <div class="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="flexRadioDefault"
+                            id="flexRadioDefault1"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: true,
+                              })
+                            }
+                          />
+                          <label
+                            class="form-check-label"
+                            for="flexRadioDefault1"
+                          >
+                            Active
+                          </label>
+                        </div>
+                        <div class="form-check ms-4">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="flexRadioDefault"
+                            id="Inactive"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: false,
+                              })
+                            }
+                          />
+                          <label class="form-check-label" for="Inactive">
+                            Inactive
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary me-5"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Save
-                </button>
+                  <div className="modal-footer p-0 pt-2">
+                    <button
+                      type="reset"
+                      className="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      onClick={() =>
+                        setFilterFields({
+                          from: "",
+                          to: "",
+                          status: "",
+                          canceledBy: "",
+                        })
+                      }
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-bs-dismiss="modal"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

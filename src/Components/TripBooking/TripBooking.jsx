@@ -87,21 +87,20 @@ const TripBooking = ({ bookings }) => {
           <div className="search_icon">
             <i class="fa-solid fa-magnifying-glass"></i>
           </div>
-          <div className="table-responsive mdb_table">
+          <div className="table-responsive mdb_table mdb_table_new">
             <MDBDataTable
               bordered
-          displayEntries={true}
+              displayEntries={true}
               entries={10}
               className="text-nowrap"
               hover
               data={trip}
               noBottomColumns
-             sortable={true}
+              sortable={true}
               paginationLabel={"«»"}
             />
           </div>
           <div className="table-responsive mdb_table2"></div>
-
         </div>
       </div>
     </div>

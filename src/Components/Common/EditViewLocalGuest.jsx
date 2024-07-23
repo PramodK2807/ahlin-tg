@@ -94,7 +94,7 @@ const EditViewLocalGuest = () => {
           toast: true,
           icon: "warning",
           position: "top-end",
-          title: "Please enter a valid commission percentage",
+          title: "Please enter a valid Ahlain Fee percentage",
           showConfirmButton: false,
           timerProgressBar: true,
           timer: 3000,
@@ -108,7 +108,7 @@ const EditViewLocalGuest = () => {
           toast: true,
           icon: "success",
           position: "top-end",
-          title: "Commission updated successfully",
+          title: "Ahlain Fee updated successfully",
           showConfirmButton: false,
           timerProgressBar: true,
           timer: 3000,
@@ -239,7 +239,7 @@ const EditViewLocalGuest = () => {
                       </div>
                       <div className="col-md-3 m-b30">
                         <label className="form-label">
-                          EMAIL ID<sup className="mandatesign">*</sup>
+                          Email Id<sup className="mandatesign">*</sup>
                         </label>
                         <input
                           disabled
@@ -306,10 +306,10 @@ const EditViewLocalGuest = () => {
                       {state?.type === "Guide" && (
                         <div className="col-md-3 m-b30">
                           <label className="form-label d-flex position-relative">
-                            Commission<sup className="mandatesign">*</sup>{" "}
+                          Ahlain Fee<sup className="mandatesign">*</sup>{" "}
                             <Info
                               title={
-                                "Commission percentage: Indicates the percentage of the trip cost that goes to Ahlain."
+                                "Ahlain Fee percentage: Indicates the percentage of the trip cost that goes to Ahlain."
                               }
                             />
                           </label>
@@ -324,7 +324,7 @@ const EditViewLocalGuest = () => {
 
                       <div className="col-md-3 m-b30">
                         <label className="form-label">
-                          Joined<sup className="mandatesign">*</sup>
+                          Joined on<sup className="mandatesign">*</sup>
                         </label>
                         <input
                           type="text"
@@ -423,8 +423,8 @@ const EditViewLocalGuest = () => {
                         onClick={getCommision}
                         type="button"
                       >
-                        <span className="me-3">Update Commission</span>{" "}
-                        <Info title={"Only commission will be updated"} />
+                        <span className="me-3">Update Ahlain Fee</span>{" "}
+                        <Info title={"Only Ahlain Fee will be updated"} />
                       </button>
                     </div>
                   )}

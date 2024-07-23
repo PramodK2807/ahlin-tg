@@ -18,17 +18,17 @@ const SubscriptionDetails = () => {
   useEffect(() => {
     if (state) {
       let values = state?.data;
-      setValue("plan", values?.plan);
-      setValue("price", values?.price);
-      setValue("validity", values?.validity);
+      setValue("plan", values?.subscriptionName);
+      setValue("price", values?.planCost);
+      setValue("validity", values?.validation);
       setValue("description", values?.description);
-      setValue("features", values?.features.join(", "));
+      setValue("features", values?.features);
     }
   }, [state?.data]);
 
-  const onSubmit = async(info) => {
-    console.log(info)
-  }
+  const onSubmit = async (info) => {
+    console.log(info);
+  };
 
   return (
     <Layout activeSlide={"Subscription"}>
@@ -94,12 +94,16 @@ const SubscriptionDetails = () => {
                       </div>
                       <div className="col-md-4 m-b30">
                         <label className="form-label">
-                          Valitidy<sup className="mandatesign">*</sup>
+                          Validity (in days)<sup className="mandatesign">*</sup>
                         </label>
                         <input
                           type="text"
-                          className="form-control"
-                          defaultValue="30 Days"
+                          className={`form-control ${
+                            errors.validity ? "is-invalid" : ""
+                          }`}
+                          {...register("validity", {
+                            required: "* validity is required",
+                          })}
                         />
                       </div>
                       <div className="col-md-8 m-b30">
@@ -125,7 +129,11 @@ const SubscriptionDetails = () => {
                         <label className="form-label">
                           Subscribers<sup className="mandatesign">*</sup>
                         </label>
-                        <textarea type="number" value={"20"} className="form-control" />
+                        <textarea
+                          type="number"
+                          value={"20"}
+                          className="form-control"
+                        />
                         {/* <textarea
                           className={`form-control ${
                             errors.features ? "is-invalid" : ""
@@ -168,7 +176,6 @@ const SubscriptionDetails = () => {
                           </div>
                         )}
                       </div>
-                     
                     </div>
                   </div>
                 </form>

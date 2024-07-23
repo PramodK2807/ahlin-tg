@@ -153,7 +153,7 @@ const ContentManagement = () => {
                   <div className="search_icon">
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
-                  <div className="d-flex filter_modal">
+                  {/* <div className="d-flex filter_modal">
                     <button
                       type="button"
                       className="btn filter_manage px-3 py-2"
@@ -163,9 +163,9 @@ const ContentManagement = () => {
                     >
                       <i className="fa-solid fa-filter" />
                     </button>
-                  </div>
+                  </div> */}
 
-                  <div className="table-responsive mdb_table">
+                  <div className="table-responsive mdb_table mdb_table_new">
                     <MDBDataTable
                       bordered
                       displayEntries={true}
@@ -176,7 +176,7 @@ const ContentManagement = () => {
                       noBottomColumns
                       sortable={true}
                       paginationLabel={"«»"}
-                      // navigate to view ==== /Dashboard/Guests-Details/123
+                      // entriesOptions={[5,10,20,30,50,100,150,200]}
                     />
                   </div>
                   <div className="table-responsive mdb_table2"></div>

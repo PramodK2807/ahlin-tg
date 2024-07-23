@@ -4,6 +4,7 @@ import secureLocalStorage from "react-secure-storage";
 
 const Layout = ({ children, activeSlide }) => {
   const [slide, setSlide] = useState("");
+  const [navShow, setNavShow] = useState(false);
 
   const navigate = useNavigate();
   const userData = secureLocalStorage.getItem("userAccessData");
@@ -21,12 +22,12 @@ const Layout = ({ children, activeSlide }) => {
   };
 
   return (
-    <div id="main-wrapper" className="show">
+    <div id="main-wrapper" className={`show ${navShow ? "menu-toggle" : ""}`}>
       <div className="nav-header ms-4 ms-xl-0">
         <Link to="/Dashboard" className="brand-logo">
           Tourist Booking
         </Link>
-        <div className="nav-control">
+        <div className="nav-control" onClick={() => setNavShow(!navShow)}>
           <div className="hamburger">
             <span className="line" />
             <span className="line" />
@@ -136,6 +137,18 @@ const Layout = ({ children, activeSlide }) => {
                   <i className="fa-solid fa-bookmark" />
                 </div>
                 <span className="nav-text">Booking Management</span>
+              </Link>
+            </li>
+            <li
+              onClick={() => setSlide("Trip")}
+              className={slide === "Trip" ? "mm-active" : ""}
+            >
+              <Link to="/Trip-Management" aria-expanded="false">
+                <div className="menu-icon">
+                  {/* <i className="fa-solid fa-bookmark" /> */}
+                  <i class="fa-solid fa-plane-departure"></i>
+                </div>
+                <span className="nav-text">Trip Management</span>
               </Link>
             </li>
             <li

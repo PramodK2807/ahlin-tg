@@ -3897,9 +3897,10 @@ fieldset:disabled .btn {
   border-radius: 5px;
 }
 .activity_image {
-  padding: 20px;
-  width: 180px;
-  height: 150px;
+border-radius: 50%;
+border: 1px solid white ;
+background-color: white !important;
+padding: 2px !important;
 }
 .activity_image1 {
   width: 162px;

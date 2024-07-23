@@ -36,6 +36,40 @@ export async function DeleteGalleryImage(id, formData) {
     return { error };
   }
 }
+export async function TripList(formData, signal) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/tripListForLocal`,
+      formData,
+      signal
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
 
 // DASHBOARD
 
@@ -174,7 +208,7 @@ export async function TotalUsers() {
 
 export async function AllGuidesList() {
   try {
-    const { data } = await adminHttpService.get(
+    const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/guideList`
     );
 
@@ -320,10 +354,12 @@ export async function DeleteGuide(id) {
 }
 
 // USER
-export async function AllUsersList() {
+export async function AllUsersList(formData, signal) {
   try {
-    const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/userList`
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/userList`,
+      formData,
+      signal
     );
 
     if (!data?.error) {
@@ -513,10 +549,12 @@ export async function UpdateDetails(api, id, formData) {
 
 //  ACTIVITY
 
-export async function GetAllActivity() {
+export async function GetAllActivity(formData, signal) {
   try {
-    const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/activityList`
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/activityList`,
+      formData,
+      signal
     );
 
     if (!data?.error) {
@@ -786,10 +824,12 @@ export async function CreateSubActivity(formData) {
     return { error };
   }
 }
-export async function GetAllSubActivity() {
+export async function GetAllSubActivity(formData, signal) {
   try {
-    const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/subActivityList`
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/subActivityList`,
+      formData,
+      signal
     );
 
     if (!data?.error) {
@@ -934,10 +974,12 @@ export async function DeleteSubActivity(id) {
 }
 
 // PACKAGE MANAG.
-export async function GetAllPackage() {
+export async function GetAllPackage(formData, signal) {
   try {
-    const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/packageList`
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/packageList`,
+      formData,
+      signal
     );
 
     if (!data?.error) {
@@ -1082,10 +1124,12 @@ export async function DeletePackage(id) {
 }
 
 // SUBSCRIPTION MANAGEMENT
-export async function GetAllSubscription() {
+export async function GetAllSubscription(formData, signal) {
   try {
-    const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/getAllPlan`
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/subscriptionList`,
+      formData,
+      signal
     );
 
     if (!data?.error) {

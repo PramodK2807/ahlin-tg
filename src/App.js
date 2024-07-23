@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import Loader from "./Components/Loader";
 import IsLoggedIn from "../src/utils/IsLoggedIn";
+import TripManagement from "./Components/Trip/TripManagement";
+import ViewTrip from "./Components/Trip/ViewTrip";
 
 // Lazy imports
 const Login = lazy(() => import("./Components/Login"));
@@ -154,6 +156,26 @@ function App() {
             <IsLoggedIn>
               <Suspense fallback={<Loader />}>
                 <BookingManagement />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="Trip-Management"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <TripManagement />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="Trip-Management/Details"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <ViewTrip />
               </Suspense>
             </IsLoggedIn>
           }

@@ -16,6 +16,11 @@ const SubActivity = () => {
   const [errors, setErrors] = useState({});
   const [activity, setActivity] = useState([]);
   const [activityId, setActivityId] = useState();
+  const [filterFields, setFilterFields] = useState({
+    from: "",
+    to: "",
+    status: "",
+  });
 
   const [subActivity, setSubActivity] = useState({
     columns: [
@@ -69,7 +74,16 @@ const SubActivity = () => {
   });
 
   useEffect(() => {
-    getSubActivity();
+    const controller = new AbortController();
+    let signal = controller.signal;
+    getSubActivity(signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, [filterFields]);
+
+  useEffect(() => {
     getActivity();
   }, []);
 
@@ -84,8 +98,8 @@ const SubActivity = () => {
     }
   };
 
-  const getSubActivity = async () => {
-    let { data } = await GetAllSubActivity();
+  const getSubActivity = async (signal) => {
+    let { data } = await GetAllSubActivity(filterFields, { signal });
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
@@ -400,6 +414,163 @@ const SubActivity = () => {
               />
             </div>
             <div className="table-responsive mdb_table2"></div>
+          </div>
+        </div>
+
+        <div
+          className="modal fade"
+          id="exampleModal"
+          tabIndex={-1}
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1
+                  className="modal-title fs-3 fw-semibold"
+                  id="exampleModalLabel"
+                >
+                  Filter
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                />
+              </div>
+              <div className="modal-body">
+                <form>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="recipient-name"
+                          className="col-form-label"
+                        >
+                          From:
+                        </label>
+                        <div className="searchh_box">
+                          <div>
+                            <input
+                              className="form-control ps-3"
+                              type="date"
+                              value={filterFields?.to}
+                              onChange={(e) =>
+                                setFilterFields({
+                                  ...filterFields,
+                                  to: e.target.value,
+                                })
+                              }
+                            />
+                            {/* <button type="button" className>
+                              <i className="fa-regular fa-calendar" />
+                            </button> */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label
+                          htmlFor="recipient-name"
+                          className="col-form-label"
+                        >
+                          To:
+                        </label>
+                        <div className="searchh_box">
+                          <div>
+                            <input
+                              className="form-control ps-3"
+                              type="date"
+                              value={filterFields?.from}
+                              onChange={(e) =>
+                                setFilterFields({
+                                  ...filterFields,
+                                  from: e.target.value,
+                                })
+                              }
+                            />
+                            {/* <button className>
+                            <i className="fa-regular fa-calendar" />
+                          </button> */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="message-text" class="col-form-label">
+                        Status
+                      </label>
+                      <div class="d-flex gx-5">
+                        <div class="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="flexRadioDefault"
+                            id="flexRadioDefault1"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: true,
+                              })
+                            }
+                          />
+                          <label
+                            class="form-check-label"
+                            for="flexRadioDefault1"
+                          >
+                            Active
+                          </label>
+                        </div>
+                        <div class="form-check ms-4">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="flexRadioDefault"
+                            id="Inactive"
+                            onClick={() =>
+                              setFilterFields({
+                                ...filterFields,
+                                status: false,
+                              })
+                            }
+                          />
+                          <label class="form-check-label" for="Inactive">
+                            Inactive
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="modal-footer p-0 pt-2">
+                    <button
+                      type="reset"
+                      className="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      onClick={() =>
+                        setFilterFields({
+                          from: "",
+                          to: "",
+                          status: "",
+                          canceledBy: "",
+                        })
+                      }
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-bs-dismiss="modal"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>

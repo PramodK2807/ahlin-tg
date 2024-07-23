@@ -6,6 +6,9 @@
   position: sticky;
   left: 0 !important;
 }
+.mdb_table_new{
+  padding-top: 80px !important;
+}
 .delete_image {
   position: absolute;
   top: 9px;

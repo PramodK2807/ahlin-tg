@@ -50,7 +50,7 @@ const Dashboard = () => {
                     <div className="card-body depostit-card p-0">
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
                         <div>
-                          <h6>Total Locals</h6>
+                          <h6>Number of Locals</h6>
                           <h3>{dashCount?.totalLocal} </h3>
                         </div>
                         <div className="icon-box icon_bg">
