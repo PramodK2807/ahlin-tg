@@ -12,8 +12,13 @@ const EditContent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTitle(state?.data?.title);
-    setValue(state?.data?.content);
+    if (state?.isNew) {
+      setTitle("");
+      setValue("");
+    } else {
+      setTitle(state?.data?.title);
+      setValue(state?.data?.content);
+    }
   }, []);
 
   const modules = {
@@ -51,6 +56,10 @@ const EditContent = () => {
     }
   };
 
+  const handleCreateNew = () => {
+    console.log("object");
+  };
+
   return (
     <Layout activeSlide={"Content"}>
       <div className="content-body">
@@ -70,7 +79,7 @@ const EditContent = () => {
                           type="text"
                           className="form-control"
                           value={title}
-                          disabled
+                          disabled={!state?.isNew}
                           onChange={(e) => setTitle(e.target.value)}
                         />
                       </div>
@@ -89,6 +98,17 @@ const EditContent = () => {
                     <div className="card-footer">
                       <button className="btn btn-primary" type="submit">
                         Update
+                      </button>
+                    </div>
+                  )}
+                  {state?.isNew && (
+                    <div className="card-footer">
+                      <button
+                        className="btn btn-primary"
+                        type="button"
+                        onClick={handleCreateNew}
+                      >
+                        Create
                       </button>
                     </div>
                   )}

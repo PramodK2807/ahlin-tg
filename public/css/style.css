@@ -62402,6 +62402,11 @@ html[dir="rtl"]
   top: 80px;
 }
 
+.mdb_table_new .mdb-datatable-filter{
+  position: absolute;
+  top: 133px;
+}
+
 .card-body-2 {
   padding: 4.5rem 0 !important;
 }
@@ -62477,7 +62482,9 @@ div.dataTables_wrapper div.dataTables_paginate {
   font-size: 17px;
   color: black;
 }
-
+ .search_icon2 {
+  top: 142px !important;
+}
 .filter_modal {
   justify-content: end !important;
   /* position: absolute;

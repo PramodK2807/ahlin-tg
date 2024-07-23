@@ -330,6 +330,16 @@ function App() {
             </IsLoggedIn>
           }
         />
+        <Route
+          path="Content-Management/Create-New"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <EditContent />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        />
       </Routes>
     </Suspense>
   );

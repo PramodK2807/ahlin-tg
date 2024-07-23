@@ -88,6 +88,7 @@ const ContentManagement = () => {
                 state={{
                   isEdit: true,
                   data: list,
+                  title: "Edit Content",
                 }}
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >
@@ -98,6 +99,7 @@ const ContentManagement = () => {
                 state={{
                   isEdit: false,
                   data: list,
+                  title: "View Content",
                 }}
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >
@@ -150,7 +152,19 @@ const ContentManagement = () => {
                     <h4 className="card-title">Content Management</h4>
                     <p className="ps-2 d-none">(14,555)</p>
                   </div>
-                  <div className="search_icon">
+                  <div className="d-flex justify-content-end">
+                    <Link
+                      className="btn btn-primary rounded"
+                      to={"/Content-Management/Create-New"}
+                      state={{
+                        isNew: true,
+                        title: "Create New Content",
+                      }}
+                    >
+                      Create New Content
+                    </Link>
+                  </div>
+                  <div className="search_icon search_icon2">
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                   {/* <div className="d-flex filter_modal">
