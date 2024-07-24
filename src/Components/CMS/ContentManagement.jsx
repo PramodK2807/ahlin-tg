@@ -152,7 +152,11 @@ const ContentManagement = () => {
                     <h4 className="card-title">Content Management</h4>
                     <p className="ps-2 d-none">(14,555)</p>
                   </div>
-                  <div className="d-flex justify-content-end">
+
+                  <div className="search_icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                  <div className="d-flex filter_modal">
                     <Link
                       className="btn btn-primary rounded"
                       to={"/Content-Management/Create-New"}
@@ -164,22 +168,8 @@ const ContentManagement = () => {
                       Create New Content
                     </Link>
                   </div>
-                  <div className="search_icon search_icon2">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                  </div>
-                  {/* <div className="d-flex filter_modal">
-                    <button
-                      type="button"
-                      className="btn filter_manage px-3 py-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
-                      data-bs-whatever="@mdo"
-                    >
-                      <i className="fa-solid fa-filter" />
-                    </button>
-                  </div> */}
 
-                  <div className="table-responsive mdb_table mdb_table_new">
+                  <div className="table-responsive mdb_table">
                     <MDBDataTable
                       bordered
                       displayEntries={true}
