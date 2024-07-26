@@ -92,7 +92,7 @@ const TripManagement = () => {
           const returnData = {};
           returnData.sno = index + 1;
           returnData.id = list?.tripId || "NA";
-          returnData.name = list?.user?.fullName || "NA";
+          returnData.name = list?.guest?.fullName || "NA";
           returnData.localName = list?.local?.fullName || "NA";
           returnData.noOfGuests = list?.noGuest || "NA";
           returnData.status =

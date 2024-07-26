@@ -24,12 +24,12 @@ const ContentManagement = () => {
         selected: false,
       },
 
-      {
-        label: "Status",
-        field: "status",
-        width: 100,
-        selected: false,
-      },
+      // {
+      //   label: "Status",
+      //   field: "status",
+      //   width: 100,
+      //   selected: false,
+      // },
       {
         label: "Last updated",
         field: "date",
@@ -158,8 +158,8 @@ const ContentManagement = () => {
                   </div>
                   <div className="d-flex filter_modal">
                     <Link
-                      className="btn btn-primary rounded"
-                      to={"/Content-Management/Create-New"}
+                      className="btn btn-primary rounded opacity-0"
+                      // to={"/Content-Management/Create-New"}
                       state={{
                         isNew: true,
                         title: "Create New Content",
@@ -180,7 +180,6 @@ const ContentManagement = () => {
                       noBottomColumns
                       sortable={true}
                       paginationLabel={"«»"}
-                      // entriesOptions={[5,10,20,30,50,100,150,200]}
                     />
                   </div>
                   <div className="table-responsive mdb_table2"></div>

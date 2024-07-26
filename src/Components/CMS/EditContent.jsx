@@ -73,36 +73,77 @@ const EditContent = () => {
                 <form className="profile-form" onSubmit={handleSubmit}>
                   <div className="card-body">
                     <div className="row">
-                      <div className="col-12 m-b30">
-                        <label className="form-label">Title</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={title}
-                          disabled={!state?.isNew}
-                          onChange={(e) => setTitle(e.target.value)}
-                        />
+                      <div className="col-6">
+                        <div className="col-12 m-b30">
+                          <label className="form-label">
+                            Title (in English)
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={title}
+                            placeholder="English Title"
+                            disabled={!state?.isNew}
+                            onChange={(e) => setTitle(e.target.value)}
+                          />
+                        </div>
+                        <div className="col-12 m-b30">
+                          <label className="form-label">
+                            Description (in English)
+                          </label>
+                          <ReactQuill
+                            theme="snow"
+                            value={value}
+                            onChange={setValue}
+                            modules={modules}
+                            placeholder="English Description"
+                          />
+                        </div>
+                        {state?.isEdit && (
+                          <div className="">
+                            <button className="btn btn-primary" type="submit">
+                              Update
+                            </button>
+                          </div>
+                        )}
                       </div>
-                      <div className="col-12 m-b30">
-                        <label className="form-label">Description</label>
-                        <ReactQuill
-                          theme="snow"
-                          value={value}
-                          onChange={setValue}
-                          modules={modules}
-                        />
+                      <div className="col-6">
+                        <div className="col-12 m-b30">
+                          <label className="form-label">
+                            Title (in Arabic)
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={"عنوان"}
+                            placeholder="Arabic Title"
+                            disabled={!state?.isNew}
+                            onChange={(e) => setTitle(e.target.value)}
+                          />
+                        </div>
+                        <div className="col-12 m-b30">
+                          <label className="form-label">
+                            Description (in Arabic)
+                          </label>
+                          <ReactQuill
+                            theme="snow"
+                            value={"المؤتمر الدولي العاشر ليونيكود  الشبكة العالمية انترنيت ويونيكود، حيث ستتم، على الصعيدين الدولي والمحلي على حد سواء مناقشة سبل استخدام يونكود في النظم القائمة وفيما يخص التطبيقات الحاسوبية، الخطوط، تصميم النصوص والحوسبة"}
+                            // onChange={setValue}
+                            modules={modules}
+                            placeholder="Arabic Description"
+                          />
+                        </div>
+                        {state?.isEdit && (
+                          <div className="">
+                            <button className="btn btn-primary" type="submit">
+                              Update
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
-                  {state?.isEdit && (
-                    <div className="card-footer">
-                      <button className="btn btn-primary" type="submit">
-                        Update
-                      </button>
-                    </div>
-                  )}
-                  {state?.isNew && (
-                    <div className="card-footer">
+                    {state?.isNew && (
+                    <div className="">
                       <button
                         className="btn btn-primary"
                         type="button"
@@ -112,6 +153,9 @@ const EditContent = () => {
                       </button>
                     </div>
                   )}
+                  </div>
+
+                 
                 </form>
               </div>
             </div>

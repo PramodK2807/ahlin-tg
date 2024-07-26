@@ -223,19 +223,19 @@ const ActivityEdit = () => {
                       {state?.isEdit && (
                         <>
                           <div className="col-12 m-b30">
-                            <p className="form-label">Upload Images</p>
+                            <p className="form-label">Upload Image</p>
                             <label
                               htmlFor="images"
-                              className="p-2 upload_label text-center m-auto w-100"
+                              className="text-center m-auto w-100"
                             >
-                              <div className="mt-1">
+                              {/* <div className="mt-1">
                                 <i
                                   className="fa fa-cloud-upload-alt"
                                   aria-hidden="true"
                                 ></i>
-                                <span> Upload multiple images</span>
-                              </div>
-                              <div className="row">
+                                <span> Upload images</span>
+                              </div> */}
+                              {/* <div className="row">
                                 {activityimages &&
                                   activityimages.map((image, index) => (
                                     <div className="col-3" key={index}>
@@ -246,11 +246,11 @@ const ActivityEdit = () => {
                                       />
                                     </div>
                                   ))}
-                              </div>
+                              </div> */}
                               <input
                                 type="file"
                                 multiple
-                                className="d-none w-100"
+                                className="form-control w-100"
                                 name="images"
                                 id="images"
                                 accept=".jpeg, .png, .jpg"
