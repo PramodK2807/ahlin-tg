@@ -1,6 +1,9 @@
 import { MDBDataTable } from "mdbreact";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
+import { GetTickets } from "../../adminHttpServices/dashHttpService";
+import moment from "moment";
+import { Link } from "react-router-dom";
 
 const Help = () => {
   const [filterFields, setFilterFields] = useState({
@@ -70,6 +73,84 @@ const Help = () => {
     ],
     rows: [],
   });
+
+  useEffect(() => {
+    getTickets()
+  }, [])
+
+  const getTickets = async () => {
+    let { data } = await GetTickets(filterFields);
+    console.warn(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results;
+      // setCount(values?.length || 0);
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.id = list?.tripId || "NA";
+          returnData.name = list?.guest?.fullName || "NA";
+          returnData.localName = list?.local?.fullName || "NA";
+          returnData.noOfGuests = list?.noGuest || "NA";
+          returnData.status =
+            list?.bookingType && list?.bookingType === "completed" ? (
+              <span className="badge light badge-success">Completed</span>
+            ) : list?.bookingType === "UpComing" ? (
+              <span className="badge light badge-info">Upcoming</span>
+            ) : list?.bookingType === "Pending" ? (
+              <span className="badge light badge-warning">Pending</span>
+            ) : list?.bookingType === "Canceled" ? (
+              <span className="badge light badge-danger">Cancelled</span>
+            ) : (
+              list?.bookingType
+            );
+          returnData.date =
+            moment(list?.startDate).format("MMM Do YYYY") || "NA";
+
+            returnData.query = list?.concern
+            returnData.type = list?.type
+
+          // returnData.status = (
+          //   <div className="check_toggle text-center" key={list?._id}>
+          //     <input
+          //       type="checkbox"
+          //       defaultChecked={list?.bookingType}
+          //       name="check1"
+          //       id={list?._id}
+          //       className="d-none"
+          //       // onClick={() => {
+          //       //   changeStatus(list?._id, list?.bookingType);
+          //       // }}
+          //     />
+          //     <label for={list?._id}></label>
+          //   </div>
+          // );
+          returnData.actions = (
+            <div className="d-flex">
+              <Link
+                to={`/Trip-Management/Details`}
+                state={list}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+              {/* <button
+                  type="button"
+                  onClick={() => handleDeleteItem(list?._id)}
+                  className="btn btn-danger shadow btn-xs sharp"
+                >
+                  <i className="fa fa-trash"></i>
+                </button> */}
+            </div>
+          );
+
+          newRows.push(returnData);
+        });
+      setHelpM({ ...helpM, rows: newRows });
+    }
+  };
   return (
     <Layout activeSlide={"Help"}>
       <div className="content-body">
