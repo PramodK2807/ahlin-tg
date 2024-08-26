@@ -611,13 +611,15 @@ const EditViewLocalGuest = () => {
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button
-                      type="submit"
-                      onClick={handleApproveCertificate}
-                      className="btn btn-primary"
-                    >
-                      Approve
-                    </button>
+                    {!details?.isLicence && (
+                      <button
+                        type="submit"
+                        onClick={handleApproveCertificate}
+                        className="btn btn-primary"
+                      >
+                        Approve
+                      </button>
+                    )}
                     <button
                       type="button"
                       class="btn btn-secondary"
