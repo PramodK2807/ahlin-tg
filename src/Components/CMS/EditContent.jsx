@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { UpdateContent } from "../../adminHttpServices/dashHttpService";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 
 const EditContent = () => {
-  const [title, setTitle] = useState();
-  const [value, setValue] = useState("");
+  const [titleAr, setTitleAr] = useState();
+  const [titleEn, setTitleEn] = useState();
+  const [contentAr, setContentAr] = useState("");
+  const [contentEn, setContentEn] = useState("");
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { id } = useParams();
+  console.log(state);
 
   useEffect(() => {
-    if (state?.isNew) {
-      setTitle("");
-      setValue("");
-    } else {
-      setTitle(state?.data?.title);
-      setValue(state?.data?.content);
+    let values = state?.data;
+    if (values) {
+      setTitleAr(values?.titleAr);
+      setTitleEn(values?.titleEn);
+      setContentAr(values?.contentAr);
+      setContentEn(values?.contentEn);
     }
-  }, []);
+  }, [state?._id]);
 
   const modules = {
     toolbar: [
@@ -44,9 +48,11 @@ const EditContent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let { data } = await UpdateContent(state?._id, {
-        title: title,
-        content: value,
+      let { data } = await UpdateContent(id, {
+        titleEn,
+        titleAr,
+        contentEn,
+        contentAr,
       });
       if (data && !data?.error) {
         navigate(-1);
@@ -81,10 +87,10 @@ const EditContent = () => {
                           <input
                             type="text"
                             className="form-control"
-                            value={title}
+                            value={titleEn}
                             placeholder="English Title"
-                            disabled={!state?.isNew}
-                            onChange={(e) => setTitle(e.target.value)}
+                            // disabled={!state?.isNew}
+                            onChange={(e) => setTitleEn(e.target.value)}
                           />
                         </div>
                         <div className="col-12 m-b30">
@@ -93,8 +99,8 @@ const EditContent = () => {
                           </label>
                           <ReactQuill
                             theme="snow"
-                            value={value}
-                            onChange={setValue}
+                            value={contentEn}
+                            onChange={setContentEn}
                             modules={modules}
                             placeholder="English Description"
                           />
@@ -115,10 +121,10 @@ const EditContent = () => {
                           <input
                             type="text"
                             className="form-control"
-                            value={"عنوان"}
                             placeholder="Arabic Title"
-                            disabled={!state?.isNew}
-                            onChange={(e) => setTitle(e.target.value)}
+                            // disabled={!state?.isNew}
+                            value={titleAr}
+                            onChange={(e) => setTitleAr(e.target.value)}
                           />
                         </div>
                         <div className="col-12 m-b30">
@@ -127,7 +133,8 @@ const EditContent = () => {
                           </label>
                           <ReactQuill
                             theme="snow"
-                            value={"المؤتمر الدولي العاشر ليونيكود  الشبكة العالمية انترنيت ويونيكود، حيث ستتم، على الصعيدين الدولي والمحلي على حد سواء مناقشة سبل استخدام يونكود في النظم القائمة وفيما يخص التطبيقات الحاسوبية، الخطوط، تصميم النصوص والحوسبة"}
+                            value={contentAr}
+                            onChange={setContentAr}
                             // onChange={setValue}
                             modules={modules}
                             placeholder="Arabic Description"
@@ -143,19 +150,17 @@ const EditContent = () => {
                       </div>
                     </div>
                     {state?.isNew && (
-                    <div className="">
-                      <button
-                        className="btn btn-primary"
-                        type="button"
-                        onClick={handleCreateNew}
-                      >
-                        Create
-                      </button>
-                    </div>
-                  )}
+                      <div className="">
+                        <button
+                          className="btn btn-primary"
+                          type="button"
+                          onClick={handleCreateNew}
+                        >
+                          Create
+                        </button>
+                      </div>
+                    )}
                   </div>
-
-                 
                 </form>
               </div>
             </div>

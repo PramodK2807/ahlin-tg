@@ -4,6 +4,7 @@ import TripBooking from "../TripBooking/TripBooking";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
+  ApproveCertificate,
   Commission,
   DeleteGalleryImage,
   GuideDetails,
@@ -17,8 +18,9 @@ import Info from "./Info";
 const EditViewLocalGuest = () => {
   const [details, setDetails] = useState();
   const [bookings, setBookings] = useState([]);
-  const [galleryIndexUrl, setGalleryIndexUrl] = useState("");
+  const [galleryIndexUrl, setGalleryIndexUrl] = useState({});
   const [imageUrl, setImageUrl] = useState();
+  const [certificateUrl, setCertificateUrl] = useState();
   const [commission, setCommission] = useState(0);
   const [file, setFile] = useState([]);
   const { id } = useParams();
@@ -139,6 +141,41 @@ const EditViewLocalGuest = () => {
         });
       }
       getUserDetails();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFileType = (url) => {
+    const extension = url.split(".").pop().toLowerCase();
+    const imageExtensions = ["jpg", "jpeg", "png", "gif"];
+    const videoExtensions = ["mp4", "webm", "ogg"];
+
+    if (imageExtensions.includes(extension)) {
+      setGalleryIndexUrl({ link: url, type: "image" });
+    } else if (videoExtensions.includes(extension)) {
+      setGalleryIndexUrl({ link: url, type: "video" });
+    }
+    setGalleryIndexUrl({ link: url, type: "image" });
+  };
+
+  const handleApproveCertificate = async (e) => {
+    e.preventDefault();
+    try {
+      let { data } = await ApproveCertificate(id);
+      if (data && !data?.error) {
+        Swal.fire({
+          toast: true,
+          icon: "success",
+          position: "top-end",
+          title: "Certificate approved successfully",
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 3000,
+        });
+        document.getElementById("closeCertificateModal").click();
+        navigate(-1);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -306,7 +343,7 @@ const EditViewLocalGuest = () => {
                       {state?.type === "Guide" && (
                         <div className="col-md-3 m-b30">
                           <label className="form-label d-flex position-relative">
-                          Ahlain Fee<sup className="mandatesign">*</sup>{" "}
+                            Ahlain Fee<sup className="mandatesign">*</sup>{" "}
                             <Info
                               title={
                                 "Ahlain Fee percentage: Indicates the percentage of the trip cost that goes to Ahlain."
@@ -334,6 +371,31 @@ const EditViewLocalGuest = () => {
                           // onChange={(e) => setCommission(e.target.value)}
                         />
                       </div>
+
+                      {state?.type === "Guide" && (
+                        <>
+                          <div className="col-md-3 m-b30 position-relative">
+                            <label className="form-label">
+                              View Certificate & Approve
+                              <sup className="mandatesign">*</sup>
+                            </label>
+                            <button
+                              className="btn btn-primary d-flex justify-content-center w-100"
+                              type="button"
+                              onClick={() =>
+                                setCertificateUrl(details?.certificate)
+                              }
+                              data-bs-toggle="modal"
+                              data-bs-target="#exampleModal2"
+                            >
+                              <span className="me-3 text-center">
+                                View Certificate
+                              </span>
+                              {/* <Info title={"View certificate and approve"} /> */}
+                            </button>
+                          </div>
+                        </>
+                      )}
 
                       {state?.type !== "Guide" && (
                         <div className="col-md-5 m-b30">
@@ -377,7 +439,7 @@ const EditViewLocalGuest = () => {
                                     alt=""
                                     className="w-100 rounded border border-light object-fit p-1 bg-light"
                                     height={220}
-                                    onClick={() => setGalleryIndexUrl(item)}
+                                    onClick={() => getFileType(item)}
                                     data-bs-toggle="modal"
                                     data-bs-target="#exampleModal"
                                   />
@@ -457,12 +519,112 @@ const EditViewLocalGuest = () => {
                         aria-label="Close"
                       ></button>
                     </div>
-                    <img
-                      src={galleryIndexUrl}
-                      className="w-100 object-fit-fill"
-                      height={600}
-                      alt=""
-                    />
+
+                    {galleryIndexUrl?.type === "video" && (
+                      <video controls style={{ width: "100%" }}>
+                        <source
+                          src={
+                            "https://youtu.be/RDxnu8Xt5Rk?si=yFEKsoVbeF1hvx-u"
+                          }
+                          type={`video/${galleryIndexUrl?.link
+                            ?.split(".")
+                            .pop()}`}
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+                    <iframe
+                      width="420"
+                      height="315"
+                      src="https://www.youtube.com/embed/tgbNymZ7vqY"
+                    ></iframe>
+                    {galleryIndexUrl?.type === "image" && (
+                      <img
+                        src={galleryIndexUrl?.link}
+                        className="w-100 object-fit-fill"
+                        height={600}
+                        alt=""
+                      />
+                    )}
+                    {/* <video
+                          // src={galleryIndexUrl?.link}
+                          src={"https://youtu.be/RDxnu8Xt5Rk?si=yFEKsoVbeF1hvx-u"}
+                          className="w-100 object-fit-fill"
+                          height={600}
+                          alt=""
+                          controls
+                          autoPlay={true}
+                        ></video> */}
+                    {/* <div>
+                      {galleryIndexUrl?.type === "image" && (
+                        <img
+                          src={galleryIndexUrl?.link}
+                          className="w-100 object-fit-fill"
+                          height={600}
+                          alt=""
+                        />
+                      )}
+                      {galleryIndexUrl?.type === "video" && (
+                        <video
+                          src={galleryIndexUrl?.link}
+                          className="w-100 object-fit-fill"
+                          height={600}
+                          alt=""
+                          controls
+                          autoPlay={true}
+                        ></video>
+                      )}
+                    </div> */}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="modal fade"
+              id="exampleModal2"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      View Certificate
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      id="closeCertificateModal"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div style={{ width: "100%", height: "300px" }}>
+                      <img
+                        className="w-100 h-100 object-fit-cover"
+                        src={certificateUrl}
+                        alt="certificate"
+                      />
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="submit"
+                      onClick={handleApproveCertificate}
+                      className="btn btn-primary"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
               </div>

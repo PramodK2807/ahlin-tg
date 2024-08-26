@@ -61,7 +61,7 @@ const ContentManagement = () => {
         ?.map((list, index) => {
           const returnData = {};
           returnData.sno = index + 1;
-          returnData.title = list?.title || "NA";
+          returnData.title = list?.titleEn || "NA";
 
           returnData.status = list?.status || "NA";
           returnData.date = moment(list?.updatedAt).format("Do MMMM YYYY");
