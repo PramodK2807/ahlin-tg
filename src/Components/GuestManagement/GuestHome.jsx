@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../Layout/Layout";
 import Guest from "./Guest";
 import Local from "./Local";
 
 const GuestHome = () => {
+  const [active, setActive] = useState("Guest");
+
   return (
     <Layout activeSlide={"Guest"}>
       <div className="content-body">
@@ -23,8 +25,8 @@ const GuestHome = () => {
                     role="tablist"
                   >
                     <li className="nav-item" role="presentation">
-                      <button
-                        className="nav-link active"
+                      {/* <button
+                        className="nav-link "
                         id="pills-home-tab"
                         data-bs-toggle="pill"
                         data-bs-target="#pills-home"
@@ -34,10 +36,18 @@ const GuestHome = () => {
                         aria-selected="true"
                       >
                         Guest
+                      </button> */}
+                      <button
+                        className={`nav-link ${
+                          active === "Guest" ? "active" : ""
+                        }`}
+                        onClick={() => setActive("Guest")}
+                      >
+                        Guest
                       </button>
                     </li>
                     <li className="nav-item" role="presentation">
-                      <button
+                      {/* <button
                         className="nav-link"
                         id="pills-profile-tab"
                         data-bs-toggle="pill"
@@ -48,10 +58,18 @@ const GuestHome = () => {
                         aria-selected="false"
                       >
                         Local
+                      </button> */}
+                      <button
+                        className={`nav-link ${
+                          active === "Local" ? "active" : ""
+                        }`}
+                        onClick={() => setActive("Local")}
+                      >
+                        Local
                       </button>
                     </li>
                   </ul>
-                  <div className="tab-content" id="pills-tabContent">
+                  {/* <div className="tab-content" id="pills-tabContent">
                     <div
                       className="tab-pane fade show active"
                       id="pills-home"
@@ -70,8 +88,11 @@ const GuestHome = () => {
                     >
                       <Local />
                     </div>
+                  </div> */}
+                  <div>
+                    {active === "Guest" && <Guest />}
+                    {active === "Local" && <Local />}
                   </div>
-                  <div></div>
                 </div>
               </div>
             </div>

@@ -1,11 +1,16 @@
 import { MDBDataTable } from "mdbreact";
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
-import { GetTickets } from "../../adminHttpServices/dashHttpService";
+import {
+  ChangeTicketStatus,
+  GetTickets,
+} from "../../adminHttpServices/dashHttpService";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Help = () => {
+  const [ticketObject, setTicketObject] = useState();
   const [filterFields, setFilterFields] = useState({
     from: "",
     to: "",
@@ -31,12 +36,12 @@ const Help = () => {
         width: 50,
         selected: false,
       },
-      {
-        label: "Attachment",
-        field: "file",
-        width: 50,
-        selected: false,
-      },
+      // {
+      //   label: "Attachment",
+      //   field: "file",
+      //   width: 50,
+      //   selected: false,
+      // },
       {
         label: "Booking Id",
         field: "id",
@@ -75,8 +80,8 @@ const Help = () => {
   });
 
   useEffect(() => {
-    getTickets()
-  }, [])
+    getTickets();
+  }, []);
 
   const getTickets = async () => {
     let { data } = await GetTickets(filterFields);
@@ -91,26 +96,27 @@ const Help = () => {
           const returnData = {};
           returnData.sno = index + 1;
           returnData.id = list?.tripId || "NA";
-          returnData.name = list?.guest?.fullName || "NA";
-          returnData.localName = list?.local?.fullName || "NA";
+          returnData.name =
+            list?.guest?.fullName ||
+            list?.local?.fullName ||
+            list?.guest?.fullName;
+          // returnData.localName = list?.local?.fullName || list?.guest?.fullName;
           returnData.noOfGuests = list?.noGuest || "NA";
           returnData.status =
-            list?.bookingType && list?.bookingType === "completed" ? (
-              <span className="badge light badge-success">Completed</span>
-            ) : list?.bookingType === "UpComing" ? (
-              <span className="badge light badge-info">Upcoming</span>
-            ) : list?.bookingType === "Pending" ? (
+            list?.status && list?.status === "solve" ? (
+              <span className="badge light badge-success">Solved</span>
+            ) : list?.status === "pending" ? (
               <span className="badge light badge-warning">Pending</span>
-            ) : list?.bookingType === "Canceled" ? (
-              <span className="badge light badge-danger">Cancelled</span>
+            ) : list?.status === "Inprogress" ? (
+              <span className="badge light badge-info">In Progress</span>
             ) : (
-              list?.bookingType
+              list?.status
             );
           returnData.date =
-            moment(list?.startDate).format("MMM Do YYYY") || "NA";
+            moment(list?.createdAt).format("MMM Do YYYY") || "NA";
 
-            returnData.query = list?.concern
-            returnData.type = list?.type
+          returnData.query = list?.concern;
+          returnData.type = list?.type;
 
           // returnData.status = (
           //   <div className="check_toggle text-center" key={list?._id}>
@@ -130,9 +136,20 @@ const Help = () => {
           returnData.actions = (
             <div className="d-flex">
               <Link
-                to={`/Trip-Management/Details`}
-                state={list}
+                // to={`/Trip-Management/Details`}
+                // state={list}
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop1"
                 className="btn btn-primary shadow btn-xs sharp me-2"
+                onClick={() =>
+                  setTicketObject({
+                    concern: list?.concern,
+                    status: list?.status,
+                    id: list?._id,
+                    subject: list?.subject,
+                  })
+                }
               >
                 <i className="fa fa-eye"></i>
               </Link>
@@ -149,6 +166,31 @@ const Help = () => {
           newRows.push(returnData);
         });
       setHelpM({ ...helpM, rows: newRows });
+    }
+  };
+
+  const handleQueryChange = async (e) => {
+    e.preventDefault();
+    try {
+      let { data } = await ChangeTicketStatus(ticketObject?.id, {
+        status: ticketObject?.status,
+      });
+      if (data && !data?.error) {
+        Swal.fire({
+          toast: true,
+          icon: "success",
+          position: "top-end",
+          title: "Ticket status changed successfully",
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 3000,
+        });
+        getTickets();
+        setTicketObject();
+        document.getElementById("closeQueryModal").click();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -355,6 +397,96 @@ const Help = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade"
+        id="staticBackdrop1"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-center">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">
+                Query
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="closeQueryModal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xl-12 mb-4">
+                  <label class="form-label">Query</label>
+                  <textarea
+                    className="form-control"
+                    style={{ minHeight: "120px" }}
+                    value={ticketObject?.subject}
+                    disabled
+                  ></textarea>
+                </div>
+                <div class="col-xl-12">
+                  <label class="form-label">Update Status</label>
+                  <select
+                    class="form-select form-control"
+                    aria-label="Default select example"
+                    onChange={(e) =>
+                      setTicketObject({
+                        ...ticketObject,
+                        status: e.target.value,
+                      })
+                    }
+                  >
+                    <option
+                      selected={ticketObject?.status === "Inprogress"}
+                      value={"Inprogress"}
+                    >
+                      In Progress
+                    </option>
+                    <option
+                      selected={ticketObject?.status === "solve"}
+                      value={"solve"}
+                    >
+                      Solve
+                    </option>
+                    <option
+                      selected={ticketObject?.status === "pending"}
+                      value={"pending"}
+                    >
+                      Pending
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              {ticketObject?.status !== "solve" && (
+                <button
+                  type="button"
+                  onClick={handleQueryChange}
+                  class="btn btn-primary"
+                >
+                  Save
+                </button>
+              )}
+              <button
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-secondary"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

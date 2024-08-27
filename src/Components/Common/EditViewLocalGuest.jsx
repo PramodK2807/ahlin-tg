@@ -26,6 +26,7 @@ const EditViewLocalGuest = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [modalData, setModalData] = useState();
 
   const {
     register,
@@ -134,7 +135,7 @@ const EditViewLocalGuest = () => {
           toast: true,
           icon: "success",
           position: "top-end",
-          title: "Image deleted successfully",
+          title: "Resource deleted successfully",
           showConfirmButton: false,
           timerProgressBar: true,
           timer: 3000,
@@ -144,19 +145,6 @@ const EditViewLocalGuest = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const getFileType = (url) => {
-    const extension = url.split(".").pop().toLowerCase();
-    const imageExtensions = ["jpg", "jpeg", "png", "gif"];
-    const videoExtensions = ["mp4", "webm", "ogg"];
-
-    if (imageExtensions.includes(extension)) {
-      setGalleryIndexUrl({ link: url, type: "image" });
-    } else if (videoExtensions.includes(extension)) {
-      setGalleryIndexUrl({ link: url, type: "video" });
-    }
-    setGalleryIndexUrl({ link: url, type: "image" });
   };
 
   const handleApproveCertificate = async (e) => {
@@ -429,26 +417,60 @@ const EditViewLocalGuest = () => {
                             </label>
                             {details?.tripMemories &&
                               details?.tripMemories?.length > 0 &&
-                              details?.tripMemories?.map((item, index) => (
-                                <div
-                                  key={index}
-                                  className="col-6 col-sm-4 col-md-3 col-lg-2 p-1 position-relative"
-                                >
-                                  <img
-                                    src={item}
-                                    alt=""
-                                    className="w-100 rounded border border-light object-fit p-1 bg-light"
-                                    height={220}
-                                    onClick={() => getFileType(item)}
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
-                                  />
-                                  <i
-                                    class="fa-solid fa-trash-can delete_image"
-                                    onClick={() => handleDelete(item)}
-                                  ></i>
-                                </div>
-                              ))}
+                              details?.tripMemories?.map(
+                                (item, index) =>
+                                  item !== undefined && (
+                                    <div
+                                      key={index}
+                                      className="col-6 col-sm-4 col-md-3 col-lg-2 p-1 position-relative"
+                                    >
+                                      {item !== undefined && (
+                                        <>
+                                          {/\.(mp4|webm|ogg)$/i.test(item) ? (
+                                            <video
+                                              className="w-100 rounded border border-light object-fit p-1 bg-light"
+                                              height={220}
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#exampleModal"
+                                              onClick={() =>
+                                                setModalData({
+                                                  type: "video",
+                                                  link: item,
+                                                })
+                                              }
+                                            >
+                                              <source
+                                                src={item}
+                                                type="video/mp4"
+                                              />
+                                              Your browser does not support the
+                                              video tag.
+                                            </video>
+                                          ) : (
+                                            <img
+                                              src={item}
+                                              alt=""
+                                              className="w-100 rounded border border-light object-fit p-1 bg-light"
+                                              height={220}
+                                              onClick={() =>
+                                                setModalData({
+                                                  type: "image",
+                                                  link: item,
+                                                })
+                                              }
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#exampleModal"
+                                            />
+                                          )}
+                                          <i
+                                            className="fa-solid fa-trash-can delete_image"
+                                            onClick={() => handleDelete(item)}
+                                          ></i>
+                                        </>
+                                      )}
+                                    </div>
+                                  )
+                              )}
                           </div>
                         )}
                     </div>
@@ -520,61 +542,27 @@ const EditViewLocalGuest = () => {
                       ></button>
                     </div>
 
-                    {galleryIndexUrl?.type === "video" && (
-                      <video controls style={{ width: "100%" }}>
-                        <source
-                          src={
-                            "https://youtu.be/RDxnu8Xt5Rk?si=yFEKsoVbeF1hvx-u"
-                          }
-                          type={`video/${galleryIndexUrl?.link
-                            ?.split(".")
-                            .pop()}`}
-                        />
+                    {modalData?.type === "video" && (
+                      <video
+                        className="w-100 rounded border border-light object-fit p-1 bg-light"
+                        height={300}
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        controls
+                        autoPlay
+                      >
+                        <source src={modalData?.link} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                     )}
-                    <iframe
-                      width="420"
-                      height="315"
-                      src="https://www.youtube.com/embed/tgbNymZ7vqY"
-                    ></iframe>
-                    {galleryIndexUrl?.type === "image" && (
+                    {modalData?.type === "image" && (
                       <img
-                        src={galleryIndexUrl?.link}
+                        src={modalData?.link}
                         className="w-100 object-fit-fill"
-                        height={600}
+                        height={300}
                         alt=""
                       />
                     )}
-                    {/* <video
-                          // src={galleryIndexUrl?.link}
-                          src={"https://youtu.be/RDxnu8Xt5Rk?si=yFEKsoVbeF1hvx-u"}
-                          className="w-100 object-fit-fill"
-                          height={600}
-                          alt=""
-                          controls
-                          autoPlay={true}
-                        ></video> */}
-                    {/* <div>
-                      {galleryIndexUrl?.type === "image" && (
-                        <img
-                          src={galleryIndexUrl?.link}
-                          className="w-100 object-fit-fill"
-                          height={600}
-                          alt=""
-                        />
-                      )}
-                      {galleryIndexUrl?.type === "video" && (
-                        <video
-                          src={galleryIndexUrl?.link}
-                          className="w-100 object-fit-fill"
-                          height={600}
-                          alt=""
-                          controls
-                          autoPlay={true}
-                        ></video>
-                      )}
-                    </div> */}
                   </div>
                 </div>
               </div>
