@@ -62572,3 +62572,9 @@ select.custom-select-sm.form-control.form-control-sm {
 select.custom-select-sm.form-control.form-control-sm option {
   color: black !important;
 }
+.search_icon2{
+top:110px !important;
+}
+.mdb2 .mdb-datatable-filter{
+  top:100px;
+}

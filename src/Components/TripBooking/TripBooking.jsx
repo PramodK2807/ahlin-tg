@@ -84,10 +84,10 @@ const TripBooking = ({ bookings }) => {
           <div className="card_title_container">
             <h4 className="card-title">Trip Booking History</h4>
           </div>
-          <div className="search_icon">
+          <div className="search_icon search_icon2">
             <i class="fa-solid fa-magnifying-glass"></i>
           </div>
-          <div className="table-responsive mdb_table mdb_table_new">
+          <div className="table-responsive mdb_table mdb_table_new mdb2">
             <MDBDataTable
               bordered
               displayEntries={true}
