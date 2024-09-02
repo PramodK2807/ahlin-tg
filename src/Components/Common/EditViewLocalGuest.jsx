@@ -27,6 +27,7 @@ const EditViewLocalGuest = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [modalData, setModalData] = useState();
+  const [rejectReason, setRejectReason] = useState("");
 
   const {
     register,
@@ -147,21 +148,42 @@ const EditViewLocalGuest = () => {
     }
   };
 
-  const handleApproveCertificate = async (e) => {
+  const handleApproveCertificate = async (e, key) => {
     e.preventDefault();
+
+    if (key === false && rejectReason === "") {
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "Please enter the reason",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+      return;
+    }
+    let payload = {
+      approve: key,
+      ...(key === false && { rejectionReason: rejectReason }),
+    };
+    console.log(payload);
     try {
-      let { data } = await ApproveCertificate(id);
+      let { data } = await ApproveCertificate(id, payload);
       if (data && !data?.error) {
         Swal.fire({
           toast: true,
           icon: "success",
           position: "top-end",
-          title: "Certificate approved successfully",
+          title: `Certificate ${
+            key === true ? "approved" : "rejected"
+          } successfully`,
           showConfirmButton: false,
           timerProgressBar: true,
           timer: 3000,
         });
         document.getElementById("closeCertificateModal").click();
+        document.getElementById("closeRejectModal").click();
         navigate(-1);
       }
     } catch (error) {
@@ -374,7 +396,7 @@ const EditViewLocalGuest = () => {
                                 setCertificateUrl(details?.certificate)
                               }
                               data-bs-toggle="modal"
-                              data-bs-target="#exampleModal2"
+                              data-bs-target="#exampleModalToggle"
                             >
                               <span className="me-3 text-center">
                                 View Certificate
@@ -570,15 +592,15 @@ const EditViewLocalGuest = () => {
 
             <div
               class="modal fade"
-              id="exampleModal2"
-              tabindex="-1"
-              aria-labelledby="exampleModalLabel"
+              id="exampleModalToggle"
               aria-hidden="true"
+              aria-labelledby="exampleModalToggleLabel"
+              tabindex="-1"
             >
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
+                    <h5 class="modal-title" id="exampleModalToggleLabel">
                       View Certificate
                     </h5>
                     <button
@@ -602,12 +624,77 @@ const EditViewLocalGuest = () => {
                     {!details?.isLicence && (
                       <button
                         type="submit"
-                        onClick={handleApproveCertificate}
+                        onClick={(e) => handleApproveCertificate(e, true)}
                         className="btn btn-primary"
                       >
                         Approve
                       </button>
                     )}
+                    {!details?.isLicence && (
+                      <button
+                        type="button"
+                        // onClick={handleApproveCertificate}
+                        className="btn bg-danger text-white"
+                        data-bs-target="#exampleModalToggle2"
+                        data-bs-toggle="modal"
+                        data-bs-dismiss="modal"
+                      >
+                        Reject
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal fade"
+              id="exampleModalToggle2"
+              aria-hidden="true"
+              aria-labelledby="exampleModalToggleLabel2"
+              tabindex="-1"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">
+                      Reject Certificate
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      id="closeRejectModal"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div className="col-12">
+                      <label htmlFor="">Please enter the reason</label>
+                      <input
+                        type="text"
+                        className="w-100 form-control"
+                        placeholder="Reject Reason..."
+                        value={rejectReason}
+                        onChange={(e) => setRejectReason(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      class="btn btn-primary"
+                      data-bs-target="#exampleModalToggle"
+                      data-bs-toggle="modal"
+                      data-bs-dismiss="modal"
+                    >
+                      Back to Approve
+                    </button>
+                    <button
+                      className="btn bg-danger text-white"
+                      type="button"
+                      onClick={(e) => handleApproveCertificate(e, false)}
+                    >
+                      Reject
+                    </button>
                     <button
                       type="button"
                       class="btn btn-secondary"
@@ -619,6 +706,7 @@ const EditViewLocalGuest = () => {
                 </div>
               </div>
             </div>
+
             <div>
               <TripBooking bookings={bookings} />
             </div>

@@ -1600,10 +1600,10 @@ export async function ChangeTicketStatus(id, formData) {
   }
 }
 
-export async function ApproveCertificate(id) {
+export async function ApproveCertificate(id, formData) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/approveUser/${id}`
+      `${process.env.REACT_APP_API}/api/admin/approveUser/${id}`, formData
     );
 
     if (!data?.error) {
