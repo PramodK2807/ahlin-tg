@@ -5,54 +5,56 @@ import Loader from "./Components/Loader";
 import IsLoggedIn from "../src/utils/IsLoggedIn";
 import TripManagement from "./Components/Trip/TripManagement";
 import ViewTrip from "./Components/Trip/ViewTrip";
+import Checkout from "./Payment/Checkout";
+import Payment from "./Payment/Payment";
 
 // Lazy imports
 const Login = lazy(() => import("./Components/Login"));
 const ForgotPassword = lazy(() => import("./Components/ForgotPassword"));
 const ResetPassword = lazy(() => import("./Components/ResetPassword"));
 const GuestHome = lazy(() => import("./Components/GuestManagement/GuestHome"));
-const BookingManagement = lazy(() =>
-  import("./Components/Booking/BookingManagement")
+const BookingManagement = lazy(
+  () => import("./Components/Booking/BookingManagement"),
 );
-const ActivityManagement = lazy(() =>
-  import("./Components/Activity/ActivityManagement")
+const ActivityManagement = lazy(
+  () => import("./Components/Activity/ActivityManagement"),
 );
-const PackageManagement = lazy(() =>
-  import("./Components/Package/PackageManagement")
+const PackageManagement = lazy(
+  () => import("./Components/Package/PackageManagement"),
 );
-const BookingDetails = lazy(() =>
-  import("./Components/Booking/BookingDetails")
+const BookingDetails = lazy(
+  () => import("./Components/Booking/BookingDetails"),
 );
 const ActivityEdit = lazy(() => import("./Components/Activity/ActivityEdit"));
-const PackageDetails = lazy(() =>
-  import("./Components/Package/PackageDetails")
+const PackageDetails = lazy(
+  () => import("./Components/Package/PackageDetails"),
 );
-const SubscriptionDetails = lazy(() =>
-  import("./Components/Subscription/SubscriptionDetails")
+const SubscriptionDetails = lazy(
+  () => import("./Components/Subscription/SubscriptionDetails"),
 );
-const SubscriptionManag = lazy(() =>
-  import("./Components/Subscription/SubscriptionManag")
+const SubscriptionManag = lazy(
+  () => import("./Components/Subscription/SubscriptionManag"),
 );
 const PayoutManag = lazy(() => import("./Components/Payout/PayoutManag"));
 const PayoutDetails = lazy(() => import("./Components/Payout/PayoutDetails"));
 const TransManag = lazy(() => import("./Components/Transaction/TransManag"));
-const TransDetails = lazy(() =>
-  import("./Components/Transaction/TransDetails")
+const TransDetails = lazy(
+  () => import("./Components/Transaction/TransDetails"),
 );
 const Help = lazy(() => import("./Components/HelpSupport/Help"));
-const ContentManagement = lazy(() =>
-  import("./Components/CMS/ContentManagement")
+const ContentManagement = lazy(
+  () => import("./Components/CMS/ContentManagement"),
 );
 const EditContent = lazy(() => import("./Components/CMS/EditContent"));
-const EditViewLocalGuest = lazy(() =>
-  import("./Components/Common/EditViewLocalGuest")
+const EditViewLocalGuest = lazy(
+  () => import("./Components/Common/EditViewLocalGuest"),
 );
 const Admin = lazy(() => import("./Components/Admin/Admin"));
 const Profile = lazy(() => import("./Components/Dashboard/Profile"));
 const ChangePassword = lazy(() => import("./Components/Admin/ChangePassword"));
 const Dashboard = lazy(() => import("./Components/Dashboard/Dashboard"));
-const GuestsDetails = lazy(() =>
-  import("./Components/Dashboard/GuestsDetails")
+const GuestsDetails = lazy(
+  () => import("./Components/Dashboard/GuestsDetails"),
 );
 
 function App() {
@@ -340,6 +342,8 @@ function App() {
             </IsLoggedIn>
           }
         />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/payment/:checkoutId" element={<Payment />} />
       </Routes>
     </Suspense>
   );
