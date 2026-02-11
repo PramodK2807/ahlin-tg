@@ -30,27 +30,6 @@ const Payment = () => {
       }
     };
   }, [checkoutId]);
-  // useEffect(() => {
-  //     const checkStatus = async () => {
-  //         if (id) {
-  //             setLoading(true);
-  //             try {
-  //                 const response = await axios.get(`https://artera.com.sa/api/payment-status`);
-  //                 if (response.data.error === true) {
-  //                     // navigate("/payment-failed");
-  //                 } else {
-  //                     // navigate("/payment-success");
-  //                 }
-  //             } catch (err) {
-  //                 console.error("Error checking payment status:", err);
-  //                 // navigate("/payment-failed");
-  //             } finally {
-  //                 setLoading(false);
-  //             }
-  //         }
-  //     };
-  //     checkStatus();
-  // }, [id, checkoutId]);
 
   if (loading) {
     return (

@@ -6,6 +6,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import Loader from "../Components/Loader";
 
 const Checkout = () => {
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,11 @@ const Checkout = () => {
   useEffect(() => {
     checkout();
   }, []);
-  return <div className="text-center">Processing.....</div>;
+  return (
+    <div className="text-center">
+      <Loader /> Processing.....
+    </div>
+  );
 };
 
 export default Checkout;

@@ -7,6 +7,9 @@ import TripManagement from "./Components/Trip/TripManagement";
 import ViewTrip from "./Components/Trip/ViewTrip";
 import Checkout from "./Payment/Checkout";
 import Payment from "./Payment/Payment";
+import PaymentStatus from "./Payment/PaymentStatus";
+import PaymentSuccess from "./Payment/PaymentSuccess";
+import PaymentFailed from "./Payment/PaymentFailed";
 
 // Lazy imports
 const Login = lazy(() => import("./Components/Login"));
@@ -344,6 +347,9 @@ function App() {
         />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment/:checkoutId" element={<Payment />} />
+        <Route path="/payment-status" element={<PaymentStatus />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-failed" element={<PaymentFailed />} />
       </Routes>
     </Suspense>
   );
