@@ -22,7 +22,7 @@ const Checkout = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${process.env.REACT_APP_API}/payment/createCheckout`,
+        `${process.env.REACT_APP_API}/api/user/checkOutPayment`,
         {
           amount: amount,
           userId: userId,
