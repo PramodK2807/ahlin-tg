@@ -51,7 +51,7 @@ const PaymentSuccess = () => {
               </p>
 
               <button
-                className="btn fw-semibold py-2"
+                className="btn fw-semibold py-2 continue"
                 style={{
                   background: "#22c55e",
                   color: "#fff",
