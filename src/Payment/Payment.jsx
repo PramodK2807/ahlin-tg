@@ -34,26 +34,20 @@ const Payment = () => {
   if (loading) {
     return (
       <div className="vh-100 d-flex justify-content-center align-items-center">
-                        
         <div className="spinner-border text-primary" role="status">
-                              
           <span className="visually-hidden">Loading...</span>
-                          
         </div>
-                    
       </div>
     );
   }
 
   return (
     <div className="vh-100 d-flex justify-content-center align-items-center">
-                  
       <form
         action={`/payment-status`}
         className="paymentWidgets"
         data-brands="VISA MASTER AMEX MADA"
       ></form>
-              
     </div>
   );
 };

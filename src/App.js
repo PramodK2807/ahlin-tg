@@ -10,6 +10,8 @@ import Payment from "./Payment/Payment";
 import PaymentStatus from "./Payment/PaymentStatus";
 import PaymentSuccess from "./Payment/PaymentSuccess";
 import PaymentFailed from "./Payment/PaymentFailed";
+import BannerList from "./Components/Banner/BannerList";
+import AddBanner from "./Components/Banner/AddBanner";
 
 // Lazy imports
 const Login = lazy(() => import("./Components/Login"));
@@ -211,6 +213,26 @@ function App() {
             <IsLoggedIn>
               <Suspense fallback={<Loader />}>
                 <ActivityEdit />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="Banner-Management"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <BannerList />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="Banner-Management/:key"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <AddBanner />
               </Suspense>
             </IsLoggedIn>
           }

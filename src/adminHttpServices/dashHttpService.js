@@ -7,7 +7,7 @@ export async function DeleteGalleryImage(id, formData) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/deleteTripMemoryImage/${id}`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -41,7 +41,7 @@ export async function TripList(formData, signal) {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/tripListForLocal`,
       formData,
-      signal
+      signal,
     );
 
     if (!data?.error) {
@@ -77,7 +77,7 @@ export async function Commission(formData) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/setCommissionGuide`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -109,7 +109,7 @@ export async function Commission(formData) {
 export async function GetState() {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/getState`
+      `${process.env.REACT_APP_API}/api/admin/getState`,
     );
 
     if (!data?.error) {
@@ -142,7 +142,7 @@ export async function EditProfile(formData) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/editProfile`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -174,7 +174,7 @@ export async function EditProfile(formData) {
 export async function TotalUsers() {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/getTotalUsers`
+      `${process.env.REACT_APP_API}/api/admin/getTotalUsers`,
     );
 
     if (!data?.error) {
@@ -209,7 +209,7 @@ export async function TotalUsers() {
 export async function AllGuidesList() {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/guideList`
+      `${process.env.REACT_APP_API}/api/admin/guideList`,
     );
 
     if (!data?.error) {
@@ -241,7 +241,7 @@ export async function AllGuidesList() {
 export async function GuideDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/guideDetails/${id}`
+      `${process.env.REACT_APP_API}/api/admin/guideDetails/${id}`,
     );
 
     if (!data?.error) {
@@ -273,7 +273,7 @@ export async function GuideDetails(id) {
 export async function ChangeGuideStatus(id) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/updateStatus/${id}`
+      `${process.env.REACT_APP_API}/api/admin/updateStatus/${id}`,
     );
 
     if (!data?.error) {
@@ -314,7 +314,7 @@ export async function ChangeGuideStatus(id) {
 export async function DeleteGuide(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/deteleGuide/${id}`
+      `${process.env.REACT_APP_API}/api/admin/deteleGuide/${id}`,
     );
 
     if (!data?.error) {
@@ -359,7 +359,7 @@ export async function AllUsersList(formData, signal) {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/userList`,
       formData,
-      signal
+      signal,
     );
 
     if (!data?.error) {
@@ -391,7 +391,7 @@ export async function AllUsersList(formData, signal) {
 export async function UserDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/userDetails/${id}`
+      `${process.env.REACT_APP_API}/api/admin/userDetails/${id}`,
     );
 
     if (!data?.error) {
@@ -423,7 +423,7 @@ export async function UserDetails(id) {
 export async function ChangeUserStatus(id) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/checkStatus/${id}`
+      `${process.env.REACT_APP_API}/api/admin/checkStatus/${id}`,
     );
 
     if (!data?.error) {
@@ -464,7 +464,7 @@ export async function ChangeUserStatus(id) {
 export async function DeleteUser(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/deleteUser/${id}`
+      `${process.env.REACT_APP_API}/api/admin/deleteUser/${id}`,
     );
 
     if (!data?.error) {
@@ -508,7 +508,7 @@ export async function UpdateDetails(api, id, formData) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/${api}/${id}`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -554,7 +554,7 @@ export async function GetAllActivity(formData, signal) {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/activityList`,
       formData,
-      signal
+      signal,
     );
 
     if (!data?.error) {
@@ -586,7 +586,7 @@ export async function GetAllActivity(formData, signal) {
 export async function ActivityDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/activityDetails/${id}`
+      `${process.env.REACT_APP_API}/api/admin/activityDetails/${id}`,
     );
 
     if (!data?.error) {
@@ -618,7 +618,7 @@ export async function ActivityDetails(id) {
 export async function ChangeActivityStatus(id) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/updateActivity/${id}`
+      `${process.env.REACT_APP_API}/api/admin/updateActivity/${id}`,
     );
 
     if (!data?.error) {
@@ -659,7 +659,7 @@ export async function ChangeActivityStatus(id) {
 export async function DeleteActivity(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/deleteActivity/${id}`
+      `${process.env.REACT_APP_API}/api/admin/deleteActivity/${id}`,
     );
 
     if (!data?.error) {
@@ -701,7 +701,7 @@ export async function UpdateActivity(api, id, formData) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/${api}/${id}`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -743,7 +743,7 @@ export async function CreateActivity(formData) {
   try {
     const { data } = await adminHttpService.post(
       `${process.env.REACT_APP_API}/api/admin/createActivity`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -786,7 +786,7 @@ export async function CreateSubActivity(formData) {
   try {
     const { data } = await adminHttpService.post(
       `${process.env.REACT_APP_API}/api/admin/createSubActivity`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -829,7 +829,7 @@ export async function GetAllSubActivity(formData, signal) {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/subActivityList`,
       formData,
-      signal
+      signal,
     );
 
     if (!data?.error) {
@@ -861,7 +861,7 @@ export async function GetAllSubActivity(formData, signal) {
 export async function SubActivityDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/subActivityDetails/${id}`
+      `${process.env.REACT_APP_API}/api/admin/subActivityDetails/${id}`,
     );
 
     if (!data?.error) {
@@ -893,7 +893,7 @@ export async function SubActivityDetails(id) {
 export async function ChangeSubActivityStatus(id) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/updateSubactivityStatus/${id}`
+      `${process.env.REACT_APP_API}/api/admin/updateSubactivityStatus/${id}`,
     );
 
     if (!data?.error) {
@@ -934,7 +934,7 @@ export async function ChangeSubActivityStatus(id) {
 export async function DeleteSubActivity(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/deleteSubActivity/${id}`
+      `${process.env.REACT_APP_API}/api/admin/deleteSubActivity/${id}`,
     );
 
     if (!data?.error) {
@@ -979,7 +979,7 @@ export async function GetAllPackage(formData, signal) {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/packageList`,
       formData,
-      signal
+      signal,
     );
 
     if (!data?.error) {
@@ -1011,7 +1011,7 @@ export async function GetAllPackage(formData, signal) {
 export async function GetPackageDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/packageDetails/${id}`
+      `${process.env.REACT_APP_API}/api/admin/packageDetails/${id}`,
     );
 
     if (!data?.error) {
@@ -1043,7 +1043,7 @@ export async function GetPackageDetails(id) {
 export async function ChangePackageStatus(id) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/checkPackageStatus/${id}`
+      `${process.env.REACT_APP_API}/api/admin/checkPackageStatus/${id}`,
     );
 
     if (!data?.error) {
@@ -1084,7 +1084,7 @@ export async function ChangePackageStatus(id) {
 export async function DeletePackage(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/packageDelete/${id}`
+      `${process.env.REACT_APP_API}/api/admin/packageDelete/${id}`,
     );
 
     if (!data?.error) {
@@ -1129,7 +1129,7 @@ export async function GetAllSubscription(formData, signal) {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/subscriptionList`,
       formData,
-      signal
+      signal,
     );
 
     if (!data?.error) {
@@ -1161,7 +1161,7 @@ export async function GetAllSubscription(formData, signal) {
 export async function SubscriptionDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/planDetails/${id}`
+      `${process.env.REACT_APP_API}/api/admin/planDetails/${id}`,
     );
 
     if (!data?.error) {
@@ -1193,7 +1193,7 @@ export async function SubscriptionDetails(id) {
 export async function ChangeSubscriptionStatus(id) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/checkSubScriptionStatus/${id}`
+      `${process.env.REACT_APP_API}/api/admin/checkSubScriptionStatus/${id}`,
     );
 
     if (!data?.error) {
@@ -1234,7 +1234,7 @@ export async function ChangeSubscriptionStatus(id) {
 export async function DeleteSubscription(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/deleteSubScription/${id}`
+      `${process.env.REACT_APP_API}/api/admin/deleteSubScription/${id}`,
     );
 
     if (!data?.error) {
@@ -1277,7 +1277,7 @@ export async function DeleteSubscription(id) {
 export async function GetContent() {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/getContent`
+      `${process.env.REACT_APP_API}/api/admin/getContent`,
     );
 
     if (!data?.error) {
@@ -1309,7 +1309,7 @@ export async function GetContent() {
 export async function ContentDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/getContentById/${id}`
+      `${process.env.REACT_APP_API}/api/admin/getContentById/${id}`,
     );
 
     if (!data?.error) {
@@ -1342,7 +1342,7 @@ export async function UpdateContent(id, formData) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/editContent/${id}`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -1383,7 +1383,7 @@ export async function UpdateContent(id, formData) {
 export async function DeleteContent(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/deleteContent/${id}`
+      `${process.env.REACT_APP_API}/api/admin/deleteContent/${id}`,
     );
 
     if (!data?.error) {
@@ -1428,7 +1428,7 @@ export async function GetBookings(formData, signal) {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/bookList`,
       formData,
-      signal
+      signal,
     );
 
     if (!data?.error) {
@@ -1460,7 +1460,7 @@ export async function GetBookings(formData, signal) {
 export async function GetBookingDetails(id) {
   try {
     const { data } = await adminHttpService.get(
-      `${process.env.REACT_APP_API}/api/admin/bookDetails/${id}`
+      `${process.env.REACT_APP_API}/api/admin/bookDetails/${id}`,
     );
 
     if (!data?.error) {
@@ -1492,7 +1492,7 @@ export async function GetBookingDetails(id) {
 export async function DeleteBooking(id) {
   try {
     const { data } = await adminHttpService.delete(
-      `${process.env.REACT_APP_API}/api/admin/deleteBooking/${id}`
+      `${process.env.REACT_APP_API}/api/admin/deleteBooking/${id}`,
     );
 
     if (!data?.error) {
@@ -1537,7 +1537,7 @@ export async function GetTickets(formData) {
   try {
     const { data } = await adminHttpService.get(
       `${process.env.REACT_APP_API}/api/admin/getSupportTickets`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -1570,7 +1570,7 @@ export async function ChangeTicketStatus(id, formData) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/updateSupportTicketStatus/${id}`,
-      formData
+      formData,
     );
 
     if (!data?.error) {
@@ -1603,7 +1603,8 @@ export async function ChangeTicketStatus(id, formData) {
 export async function ApproveCertificate(id, formData) {
   try {
     const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/approveUser/${id}`, formData
+      `${process.env.REACT_APP_API}/api/admin/approveUser/${id}`,
+      formData,
     );
 
     if (!data?.error) {
@@ -1616,6 +1617,189 @@ export async function ApproveCertificate(id, formData) {
         timerProgressBar: true,
         timer: 3000,
       });
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function GetBannerList(formData) {
+  try {
+    const { data } = await adminHttpService.patch(
+      `${process.env.REACT_APP_API}/api/admin/getBanner`,
+      formData,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function AddBannerApi(formData) {
+  try {
+    const { data } = await adminHttpService.post(
+      `${process.env.REACT_APP_API}/api/admin/addBanner`,
+      formData,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function DeleteBanner(id) {
+  try {
+    const { data } = await adminHttpService.delete(
+      `${process.env.REACT_APP_API}/api/admin/deleteBanner/${id}`,
+    );
+
+    if (!data?.error) {
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-end",
+        title: "Banner deleted successfully",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+
+export async function ChangeBannerStatus(id, status) {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/changeBannerStatus/${id}`,
+      { status },
+    );
+
+    if (!data?.error) {
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-end",
+        title: "Banner status changed",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function UpdateBannerApi(formData, id) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/editBanner/${id}`,
+      formData,
+    );
+
+    if (!data?.error) {
       return { data };
     } else
       Swal.fire({

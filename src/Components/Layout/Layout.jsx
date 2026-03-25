@@ -163,6 +163,17 @@ const Layout = ({ children, activeSlide }) => {
               </Link>
             </li>
             <li
+              onClick={() => setSlide("Banner")}
+              className={slide === "Banner" ? "mm-active" : ""}
+            >
+              <Link to="/Banner-Management" aria-expanded="false">
+                <div className="menu-icon">
+                  <i className="fa-solid fa-image" />
+                </div>
+                <span className="nav-text">Banner Management</span>
+              </Link>
+            </li>
+            <li
               onClick={() => setSlide("Package")}
               className={slide === "Package" ? "mm-active" : ""}
             >

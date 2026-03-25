@@ -491,7 +491,7 @@ const EditViewLocalGuest = () => {
                                         </>
                                       )}
                                     </div>
-                                  )
+                                  ),
                               )}
                           </div>
                         )}
