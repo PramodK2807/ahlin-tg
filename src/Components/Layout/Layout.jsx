@@ -127,6 +127,17 @@ const Layout = ({ children, activeSlide }) => {
                 </div>
                 <span className="nav-text">Guest/Local Management</span>
               </Link>
+            </li>{" "}
+            <li
+              onClick={() => setSlide("Cities")}
+              className={slide === "Cities" ? "mm-active" : ""}
+            >
+              <Link to="/Cities" aria-expanded="false">
+                <div className="menu-icon">
+                  <i className="fa-solid fa-tent-arrow-left-right" />
+                </div>
+                <span className="nav-text">City Management</span>
+              </Link>
             </li>
             <li
               onClick={() => setSlide("Booking")}
