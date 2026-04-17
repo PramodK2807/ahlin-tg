@@ -3,9 +3,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "./Components/Layout/Layout";
 import {
   AddCity,
+  CityStatusCity,
+  DeleteCity,
   GetCities,
   UpdateCity,
 } from "./adminHttpServices/dashHttpService";
+import Swal from "sweetalert2";
 
 // Default Country List
 const COUNTRY_LIST = [
@@ -50,6 +53,7 @@ const CityManager = () => {
           image: city.image,
           createdAt: city.createdAt,
           updatedAt: city.updatedAt,
+          status: city.status,
         }));
         setCities(formattedCities || []);
       }
@@ -119,7 +123,7 @@ const CityManager = () => {
       id: newId,
       name: "",
       country: "",
-      image: "https://via.placeholder.com/300x200?text=Upload+Image",
+      image: "/images/placeholder.png",
       isNew: true,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -200,6 +204,37 @@ const CityManager = () => {
     return city;
   };
 
+  const handleDelete = async (id) => {
+    console.log(id);
+    try {
+      let confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+      if (confirm?.isConfirmed) {
+        let { data } = await DeleteCity(id);
+        if (data && !data?.error) {
+          Swal.fire("Deleted!", "City has been deleted.", "success");
+          handleGetCities();
+        }
+      }
+    } catch (error) {}
+  };
+  const handleToggleStatus = async (id) => {
+    try {
+      let { data } = await CityStatusCity(id);
+      if (data && !data?.error) {
+        Swal.fire("Updated!", "City status has been updated.", "success");
+        handleGetCities();
+      }
+    } catch (error) {}
+  };
+
   const isEditing = (cityId) => editingCityId === cityId;
 
   return (
@@ -223,12 +258,38 @@ const CityManager = () => {
                     {/* Card */}
                     <div className="card shadow-sm">
                       {/* Image Section */}
-                      <div className="position-relative">
+                      <div
+                        onClick={() => handleEditToggle(city)}
+                        className="position-relative"
+                      >
+                        <div className="city-controls">
+                          <div className="form-check form-switch m-0">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              role="switch"
+                              id={`status-${city.id}`}
+                              checked={city?.status}
+                              onClick={(e) => e.stopPropagation()}
+                              onChange={(e) =>
+                                handleToggleStatus(city.id, e.target.checked)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="delete_city">
+                          <i
+                            className="fa-solid fa-trash-can delete_image"
+                            onClick={(e) => {
+                              handleDelete(city?.id);
+                              e.preventDefault();
+                              e.stopPropagation();
+                            }}
+                          ></i>
+                        </div>
+
                         <img
-                          src={
-                            displayData.image ||
-                            "https://via.placeholder.com/300x200?text=No+Image"
-                          }
+                          src={displayData.image || "/images/placeholder.png"}
                           alt={displayData.name || "City"}
                           className="card-img-top"
                           style={{
@@ -288,7 +349,6 @@ const CityManager = () => {
                             <h5
                               className="card-title"
                               style={{ cursor: "pointer", color: "#007bff" }}
-                              onClick={() => handleEditToggle(city)}
                             >
                               {displayData.name || "Unnamed City"}
                             </h5>

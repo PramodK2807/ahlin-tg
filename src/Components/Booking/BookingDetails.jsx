@@ -77,8 +77,8 @@ const BookingDetails = () => {
                             details?.status === "Complete || Completed"
                               ? "Completed"
                               : details?.status === "upComing"
-                              ? "Upcoming"
-                              : "Cancelled"
+                                ? "Upcoming"
+                                : "Cancelled"
                           }
                         />
                       </div>
@@ -123,7 +123,7 @@ const BookingDetails = () => {
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={moment(details?.trip?.createdAt).format(
-                            "MMM Do, YYYY"
+                            "MMM Do, YYYY",
                           )}
                         />
                       </div>
@@ -193,7 +193,7 @@ const BookingDetails = () => {
                       <label className="form-label">
                         Guest Activities<sup className="mandatesign">*</sup>
                       </label>
-                      <div className="d-flex justify-content-between flex-wrap">
+                      <div className="d-flex justify-content-between flex-wrap guest_activities">
                         <div className="border p-2">
                           <h5 className="text-center bg-body-secondary p-1">
                             Wildlife Viewing

@@ -1925,3 +1925,67 @@ export async function UpdateCity(formData, id) {
     return { error };
   }
 }
+export async function DeleteCity(id) {
+  try {
+    const { data } = await adminHttpService.delete(
+      `${process.env.REACT_APP_API}/api/guide/deleteCity/${id}`,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function CityStatusCity(id) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/guide/changeCityStatus/${id}`,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}

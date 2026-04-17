@@ -6,7 +6,7 @@
   position: sticky;
   left: 0 !important;
 }
-.mdb_table_new{
+.mdb_table_new {
   padding-top: 80px !important;
 }
 .delete_image {
@@ -23,3 +23,61 @@
 /* .ql-editor p{
   min-height: 200px !important;
 } */
+
+.delete_city {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
+  /* padding: 6px; */
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.position-relative:hover .delete_city {
+  display: block;
+  transition:
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+}
+
+.delete_image {
+  font-size: 14px;
+}
+.city-controls {
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  /* display: flex;
+  align-items: center;
+  gap: 10px; */
+  z-index: 1;
+  /* background: rgba(0, 0, 0, 0.55); */
+  /* padding: 2px 8px; */
+  border-radius: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+}
+
+/* Show controls on hover */
+.position-relative:hover .city-controls {
+  opacity: 1;
+  visibility: visible;
+}
+
+.form-check-input {
+  cursor: pointer;
+}
+.guest_activities img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 10px !important;
+}

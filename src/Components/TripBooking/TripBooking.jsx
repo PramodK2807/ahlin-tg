@@ -58,7 +58,7 @@ const TripBooking = ({ bookings }) => {
   });
 
   useEffect(() => {
-    showBookings();
+    bookings?.length > 0 && showBookings();
   }, [bookings]);
 
   const showBookings = () => {

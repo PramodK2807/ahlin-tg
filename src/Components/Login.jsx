@@ -30,7 +30,7 @@ const Login = () => {
     if (passRemember) {
       localStorage.setItem(
         "ahl-remember",
-        JSON.stringify({ email: info?.email, password: info?.password })
+        JSON.stringify({ email: info?.email, password: info?.password }),
       );
     }
     try {
@@ -148,7 +148,7 @@ const Login = () => {
                     Sign In
                   </button>
                 </div>
-                <h6 className="login-title">
+                {/* <h6 className="login-title">
                   <span>Or continue with</span>
                 </h6>
                 <div className="mb-3">
@@ -182,7 +182,7 @@ const Login = () => {
                       />
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </form>
             </div>
           </div>
