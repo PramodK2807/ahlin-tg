@@ -63,18 +63,20 @@ const TripBooking = ({ bookings }) => {
 
   const showBookings = () => {
     const newRows = [];
-    bookings?.map((list, index) => {
-      const returnData = {};
-      returnData.sno = index + 1;
-      returnData.name = list?.packageName || "NA";
-      returnData.id = list?.bookingId || "NA";
-      returnData.name = list?.local?.fullName || "NA";
-      returnData.mobile = list?.local?.mobileNumber || "NA";
-      returnData.amount = list?.package?.price || "NA";
-      returnData.date = moment(list?.createdAt).format("L") || "NA";
+    bookings
+      ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      ?.map((list, index) => {
+        const returnData = {};
+        returnData.sno = index + 1;
+        returnData.name = list?.packageName || "NA";
+        returnData.id = list?.bookingId || "NA";
+        returnData.name = list?.local?.fullName || "NA";
+        returnData.mobile = list?.local?.mobileNumber || "NA";
+        returnData.amount = list?.package?.price || "NA";
+        returnData.date = moment(list?.createdAt).format("L") || "NA";
 
-      newRows.push(returnData);
-    });
+        newRows.push(returnData);
+      });
     setTrip({ ...trip, rows: newRows });
   };
   return (

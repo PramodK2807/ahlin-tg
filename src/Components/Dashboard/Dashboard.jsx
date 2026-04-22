@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
-import { GetState, TotalUsers } from "../../adminHttpServices/dashHttpService";
+import {
+  GetState,
+  GuestAndLocalChart,
+  RevenueChart,
+  TotalUsers,
+} from "../../adminHttpServices/dashHttpService";
 import Guest from "../GuestManagement/Guest";
 import LocalAndGuestGraph from "../Graph/LocalAndGuestGraph";
 import RechartLocalAndGuest from "../Graph/RechartLocalAndGuest";
@@ -8,9 +13,13 @@ import TotalRevenue from "../Graph/TotalRevenue";
 
 const Dashboard = () => {
   const [dashCount, setDashCount] = useState(0);
+  const [guestAndLocalChart, setGuestAndLocalChart] = useState();
+  const [revenueChart, setRevenueChart] = useState();
 
   useEffect(() => {
     getStateList();
+    getRevenueChart();
+    getGuestAndLocalChart();
   }, []);
 
   const getStateList = async () => {
@@ -19,6 +28,19 @@ const Dashboard = () => {
     if (data && !data?.error) {
       setDashCount(data?.results);
       // setGuideCount(data?.results?.totalGuide);
+    }
+  };
+
+  const getGuestAndLocalChart = async () => {
+    let { data } = await GuestAndLocalChart();
+    if (data && !data?.error) {
+      setGuestAndLocalChart(data?.results?.monthlyReport);
+    }
+  };
+  const getRevenueChart = async () => {
+    let { data } = await RevenueChart();
+    if (data && !data?.error) {
+      setRevenueChart(data?.results?.monthlyReport);
     }
   };
 
@@ -170,7 +192,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="card-body p-0">
-                  <LocalAndGuestGraph />
+                  <LocalAndGuestGraph guestAndLocalChart={guestAndLocalChart} />
                 </div>
               </div>
             </div>
@@ -182,7 +204,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="card-body p-0">
-                  <TotalRevenue />
+                  <TotalRevenue revenueChart={revenueChart} />
                 </div>
               </div>
             </div>

@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const TotalRevenue = () => {
+const TotalRevenue = ({ revenueChart = [] }) => {
   const [chartState, setChartState] = useState({
     series: [
-      {
-        name: "Revenue",
-        data: [100, 102, 90, 60, 80],
-      },
-      {
-        name: "Trips",
-        data: [80, 85, 70, 50, 75],
-      },
+      { name: "Revenue", data: [] },
+      { name: "Trips", data: [] },
     ],
     options: {
       chart: {
@@ -19,12 +13,10 @@ const TotalRevenue = () => {
         type: "bar",
         toolbar: {
           show: true,
-          tools: {
-            download: true,
-          },
+          tools: { download: true },
         },
         events: {
-          mounted: function (chartContext, config) {
+          mounted: function (chartContext) {
             chartContext.windowResizeHandler();
           },
         },
@@ -37,35 +29,21 @@ const TotalRevenue = () => {
         },
       },
       colors: ["#734f96", "#b478ef"],
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: { enabled: false },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May"],
+        categories: [],
         position: "bottom",
         tickPlacement: "between",
       },
-      fill: {
-        opacity: 1,
-      },
+      fill: { opacity: 1 },
       tooltip: {
         y: {
-          formatter: function (val) {
-            return val;
-          },
+          formatter: (val) => val,
         },
       },
       grid: {
-        xaxis: {
-          lines: {
-            show: false,
-          },
-        },
-        yaxis: {
-          lines: {
-            show: true,
-          },
-        },
+        xaxis: { lines: { show: false } },
+        yaxis: { lines: { show: true } },
       },
       legend: {
         position: "top",
@@ -74,14 +52,57 @@ const TotalRevenue = () => {
     },
   });
 
+  useEffect(() => {
+    if (!revenueChart?.length) return;
+
+    const monthOrder = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const sortedData = [...revenueChart].sort(
+      (a, b) =>
+        monthOrder.indexOf(a.monthName) - monthOrder.indexOf(b.monthName),
+    );
+
+    const categories = sortedData.map((item) => item.monthName);
+    const revenueData = sortedData.map((item) => item.totalRevenue || 0);
+    const tripsData = sortedData.map((item) => item.totalTrip || 0);
+
+    setChartState((prev) => ({
+      ...prev,
+      series: [
+        { name: "Revenue", data: revenueData },
+        { name: "Trips", data: tripsData },
+      ],
+      options: {
+        ...prev.options,
+        xaxis: {
+          ...prev.options.xaxis,
+          categories,
+        },
+      },
+    }));
+  }, [revenueChart]);
+
   const chartWidth =
-    chartState.series[0].data.length < 9
+    chartState.series?.[0]?.data?.length < 9
       ? "100%"
       : chartState.series[0].data.length * 100;
 
   return (
-    <div className="overflow-scroll apex_chart_box">
-      <div className="" id="chart" style={{ width: chartWidth }}>
+    <div className="overflow-x-auto apex_chart_box">
+      <div id="chart" style={{ width: chartWidth }}>
         <ReactApexChart
           options={chartState.options}
           series={chartState.series}

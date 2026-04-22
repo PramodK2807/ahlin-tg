@@ -7,6 +7,8 @@ import {
 } from "../../adminHttpServices/dashHttpService";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import FilterModal from "../Common/Filter/FilterModal";
+import StatusFilter from "../Common/Filter/StatusFilter";
 
 const Local = () => {
   const [filterFields, setFilterFields] = useState({
@@ -14,6 +16,7 @@ const Local = () => {
     to: "",
     status: "",
   });
+  const [modalShow, setModalShow] = useState(false);
   const [local, setLocal] = useState({
     columns: [
       {
@@ -181,6 +184,13 @@ const Local = () => {
     }
   };
 
+  const handleApplyFilters = (newFilters) => {
+    setFilterFields({
+      from: newFilters.from || "",
+      to: newFilters.to || "",
+      status: newFilters.status === false ? false : newFilters.status || "",
+    });
+  };
   return (
     <>
       <div className="col-xl-12 pt-4">
@@ -196,9 +206,7 @@ const Local = () => {
               <button
                 type="button"
                 className="btn filter_manage px-3 py-2"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                data-bs-whatever="@mdo"
+                onClick={() => setModalShow(true)}
               >
                 <i className="fa-solid fa-filter" />
               </button>
@@ -220,165 +228,17 @@ const Local = () => {
           </div>
         </div>
       </div>
-      <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex={-1}
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+
+      <FilterModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        onApply={handleApplyFilters}
+        initialFilters={filterFields}
       >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1
-                className="modal-title fs-3 fw-semibold"
-                id="exampleModalLabel"
-              >
-                Filter
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              />
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="recipient-name"
-                        className="col-form-label"
-                      >
-                        From:
-                      </label>
-                      <div className="searchh_box">
-                        <div>
-                          <input
-                            className="form-control ps-3"
-                            type="date"
-                            value={filterFields?.to}
-                            onChange={(e) =>
-                              setFilterFields({
-                                ...filterFields,
-                                to: e.target.value,
-                              })
-                            }
-                          />
-                          {/* <button type="button" className>
-                              <i className="fa-regular fa-calendar" />
-                            </button> */}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="recipient-name"
-                        className="col-form-label"
-                      >
-                        To:
-                      </label>
-                      <div className="searchh_box">
-                        <div>
-                          <input
-                            className="form-control ps-3"
-                            type="date"
-                            value={filterFields?.from}
-                            onChange={(e) =>
-                              setFilterFields({
-                                ...filterFields,
-                                from: e.target.value,
-                              })
-                            }
-                          />
-                          {/* <button className>
-                            <i className="fa-regular fa-calendar" />
-                          </button> */}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-12">
-                    <label htmlFor="message-text" className="col-form-label">
-                      Status
-                    </label>
-                    <div className="d-flex justify-content-around">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault1"
-                          onClick={() =>
-                            setFilterFields({
-                              ...filterFields,
-                              status: "active",
-                            })
-                          }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="flexRadioDefault1"
-                        >
-                          Active
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault2"
-                          onClick={() =>
-                            setFilterFields({
-                              ...filterFields,
-                              status: "inActive",
-                            })
-                          }
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="flexRadioDefault2"
-                        >
-                          InActive
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="modal-footer p-0 pt-2">
-                  <button
-                    type="reset"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                    onClick={() =>
-                      setFilterFields({
-                        from: "",
-                        to: "",
-                        status: "",
-                        canceledBy: "",
-                      })
-                    }
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-bs-dismiss="modal"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+        {({ filters, setFilter, resetFilters }) => (
+          <StatusFilter filters={filters} setFilter={setFilter} />
+        )}
+      </FilterModal>
     </>
   );
 };

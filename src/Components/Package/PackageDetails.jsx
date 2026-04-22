@@ -3,6 +3,7 @@ import Layout from "../Layout/Layout";
 import { GetPackageDetails } from "../../adminHttpServices/dashHttpService";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import ActivityCard from "../Common/ActivityCard";
 
 const PackageDetails = () => {
   const [details, setDetails] = useState();
@@ -130,26 +131,12 @@ const PackageDetails = () => {
                           value={details?.excludes}
                         />
                       </div>
-                      <div className="col-md-9 m-b30">
+                      <div className=" m-b30">
                         <label className="form-label">
                           Package Activities<sup className="mandatesign">*</sup>
                         </label>
-                        <div className="d-flex justify-content-start">
-                          {(details?.Activities &&
-                            details?.Activities?.map((act) => (
-                              <div className=" p-2">
-                                <h5 className="text-center bg-info-subtle p-1">
-                                  {act}
-                                </h5>
-                                {/* <img
-                              src="images/wild-life.jpeg"
-                              alt
-                              className="activity_image"
-                            /> */}
-                              </div>
-                            ))) ||
-                            "NA"}
-                        </div>
+
+                        <ActivityCard activity={details?.Activities} />
                       </div>
                     </div>
                   </div>

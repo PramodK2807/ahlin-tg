@@ -118,7 +118,7 @@ const EditViewLocalGuest = () => {
           timer: 3000,
         });
       }
-      navigate(-1);
+      // navigate(-1);
     } catch (error) {
       console.log(error);
     }
@@ -420,13 +420,13 @@ const EditViewLocalGuest = () => {
                                 className="passport_photo_manage"
                                 alt="i"
                               />
-                              <input
+                              {/* <input
                                 type="file"
                                 onChange={onFileChange}
                                 className="d-none"
                                 name="img"
                                 id="img"
-                              />
+                              /> */}
                             </div>
                           </label>
                         </div>

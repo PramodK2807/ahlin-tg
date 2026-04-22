@@ -10,23 +10,22 @@ import {
 } from "./adminHttpServices/dashHttpService";
 import Swal from "sweetalert2";
 
-// Default Country List
-const COUNTRY_LIST = [
-  "India",
-  "Saudi Arabia",
-  "United Arab Emirates",
-  "United States",
-  "United Kingdom",
-  "Canada",
-  "Australia",
-  "Germany",
-  "France",
-  "Singapore",
-  "Qatar",
-  "Oman",
-  "Kuwait",
-  "Bahrain",
-];
+// const COUNTRY_LIST = [
+//   "India",
+//   "Saudi Arabia",
+//   "United Arab Emirates",
+//   "United States",
+//   "United Kingdom",
+//   "Canada",
+//   "Australia",
+//   "Germany",
+//   "France",
+//   "Singapore",
+//   "Qatar",
+//   "Oman",
+//   "Kuwait",
+//   "Bahrain",
+// ];
 
 const CityManager = () => {
   const [cities, setCities] = useState([]);
@@ -54,6 +53,7 @@ const CityManager = () => {
           createdAt: city.createdAt,
           updatedAt: city.updatedAt,
           status: city.status,
+          _id: city._id || null,
         }));
         setCities(formattedCities || []);
       }
@@ -118,7 +118,6 @@ const CityManager = () => {
     });
     setImagePreview(null);
 
-    // Add temporary city to list
     const newCity = {
       id: newId,
       name: "",
@@ -262,31 +261,39 @@ const CityManager = () => {
                         onClick={() => handleEditToggle(city)}
                         className="position-relative"
                       >
-                        <div className="city-controls">
-                          <div className="form-check form-switch m-0">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              role="switch"
-                              id={`status-${city.id}`}
-                              checked={city?.status}
-                              onClick={(e) => e.stopPropagation()}
-                              onChange={(e) =>
-                                handleToggleStatus(city.id, e.target.checked)
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div className="delete_city">
-                          <i
-                            className="fa-solid fa-trash-can delete_image"
-                            onClick={(e) => {
-                              handleDelete(city?.id);
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                          ></i>
-                        </div>
+                        {city?._id && (
+                          <>
+                            <div className="city-controls">
+                              <div className="form-check form-switch m-0">
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  role="switch"
+                                  id={`status-${city.id}`}
+                                  checked={city?.status}
+                                  onClick={(e) => e.stopPropagation()}
+                                  onChange={(e) =>
+                                    handleToggleStatus(
+                                      city.id,
+                                      e.target.checked,
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+
+                            <div className="delete_city">
+                              <i
+                                className="fa-solid fa-trash-can delete_image"
+                                onClick={(e) => {
+                                  handleDelete(city?.id);
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                }}
+                              ></i>
+                            </div>
+                          </>
+                        )}
 
                         <img
                           src={displayData.image || "/images/placeholder.png"}
@@ -329,7 +336,7 @@ const CityManager = () => {
                               autoFocus
                             />
 
-                            <select
+                            {/* <select
                               className="form-select mb-2"
                               value={displayData.country || ""}
                               onChange={(e) =>
@@ -342,7 +349,7 @@ const CityManager = () => {
                                   {country}
                                 </option>
                               ))}
-                            </select>
+                            </select> */}
                           </>
                         ) : (
                           <>
@@ -352,9 +359,9 @@ const CityManager = () => {
                             >
                               {displayData.name || "Unnamed City"}
                             </h5>
-                            <p className="text-muted small mb-1">
+                            {/* <p className="text-muted small mb-1">
                               {displayData.country || "No country selected"}
-                            </p>
+                            </p> */}
                           </>
                         )}
 

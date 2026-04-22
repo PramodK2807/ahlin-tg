@@ -3,6 +3,7 @@ import Layout from "../Layout/Layout";
 import { useLocation } from "react-router-dom";
 import { GetBookingDetails } from "../../adminHttpServices/dashHttpService";
 import moment from "moment";
+import ActivityCard from "../Common/ActivityCard";
 
 const BookingDetails = () => {
   const [details, setDetails] = useState();
@@ -193,48 +194,7 @@ const BookingDetails = () => {
                       <label className="form-label">
                         Guest Activities<sup className="mandatesign">*</sup>
                       </label>
-                      <div className="d-flex justify-content-between flex-wrap guest_activities">
-                        <div className="border p-2">
-                          <h5 className="text-center bg-body-secondary p-1">
-                            Wildlife Viewing
-                          </h5>
-                          <img
-                            src="/images/wild-life.jpeg"
-                            alt="act"
-                            className="activity_image"
-                          />
-                        </div>
-                        <div className="border p-2">
-                          <h5 className="text-center bg-body-secondary p-1">
-                            Hiking
-                          </h5>
-                          <img
-                            src="/images/family-small-children-hiking-outdoors-600nw-1927128746.webp"
-                            alt="act"
-                            className="activity_image"
-                          />
-                        </div>
-                        <div className="border p-2">
-                          <h5 className="text-center bg-body-secondary p-1">
-                            Bornfire
-                          </h5>
-                          <img
-                            src="/images/vertical-shot-of-small-bonfire-with-beautiful-flames-on-the-rocks-2C4T18J.jpg"
-                            alt="act"
-                            className="activity_image"
-                          />
-                        </div>
-                        <div className="border p-2">
-                          <h5 className="text-center bg-body-secondary p-1">
-                            Boat Touring
-                          </h5>
-                          <img
-                            src="/images/boat.jpg"
-                            alt="act"
-                            className="activity_image"
-                          />
-                        </div>
-                      </div>
+                      {(details?.Activity && <ActivityCard />) || "NA"}
                     </div>
                   </div>
                 </form>

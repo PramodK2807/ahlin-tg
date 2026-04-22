@@ -1,141 +1,84 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const LocalAndGuestGraph = () => {
+const LocalAndGuestGraph = ({ guestAndLocalChart = [] }) => {
   const [chartState, setChartState] = useState({
     series: [
-      {
-        name: "Guests",
-        data: [31, 40, 28],
-      },
-      {
-        name: "Locals",
-        data: [11, 32, 45],
-      },
+      { name: "Guests", data: [] },
+      { name: "Locals", data: [] },
     ],
-    // series: [
-    //   {
-    //     name: "Guests",
-    //     data: [],
-    //   },
-    //   {
-    //     name: "Locals",
-    //     data: [],
-    //   },
-    // ],
     options: {
       chart: {
         height: 400,
         type: "area",
-        toolbar: {
-          show: true,
-        },
+        toolbar: { show: true },
       },
       colors: ["#734f96", "#b478ef"],
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "smooth",
-      },
+      dataLabels: { enabled: false },
+      stroke: { curve: "smooth" },
       xaxis: {
         type: "category",
-        categories: ["Jan", "Feb", "Mar"],
+        categories: [],
         tickPlacement: "between",
       },
       tooltip: {
-        x: {
-          show: true,
-        },
+        x: { show: true },
       },
-      grid: {
-        show: true,
-      },
+      grid: { show: true },
     },
   });
 
-  // useEffect(() => {
-  //   getOrderNProduct();
-  // }, []);
+  useEffect(() => {
+    if (!guestAndLocalChart?.length) return;
 
-  // const getOrderNProduct = async () => {
-  //   try {
-  //     let { data } = await OrderAndProductCount();
-  //     console.log(data);
-  //     if (data && !data?.error) {
-  //       const itemData = data?.results?.totalItem || [];
-  //       const orderData = data?.results?.totalOrder || [];
+    // Ensure proper month order (important)
+    const monthOrder = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
-  //       // Find the common months
-  //       const itemMonths = itemData.map((item) => item.monthName);
-  //       const orderMonths = orderData.map((item) => item.monthName);
-  //       const commonMonths = itemMonths.filter((month) =>
-  //         orderMonths.includes(month)
-  //       );
+    const sortedData = [...guestAndLocalChart].sort(
+      (a, b) =>
+        monthOrder.indexOf(a.monthName) - monthOrder.indexOf(b.monthName),
+    );
 
-  //       // Filter the data arrays to include only the common months
-  //       const filteredItemData = itemData.filter((item) =>
-  //         commonMonths.includes(item.monthName)
-  //       );
-  //       const filteredOrderData = orderData.filter((item) =>
-  //         commonMonths.includes(item.monthName)
-  //       );
+    const categories = sortedData.map((item) => item.monthName);
+    const guestData = sortedData.map((item) => item.totalGuest || 0);
+    const localData = sortedData.map((item) => item.totalLocal || 0);
 
-  //       // Create arrays for counts
-  //       const itemArr = filteredItemData.map((item) => item.count);
-  //       const orderArr = filteredOrderData.map((item) => item.count);
-
-  //       // Find the previous month to the first month in commonMonths
-  //       if (commonMonths.length > 0) {
-  //         const firstMonth = new Date(`1 ${commonMonths[0]} 2000`);
-  //         const prevMonth = new Date(
-  //           firstMonth.setMonth(firstMonth.getMonth() - 1)
-  //         );
-  //         const prevMonthName = prevMonth.toLocaleString("default", {
-  //           month: "long",
-  //         });
-
-  //         // Add the previous month with a count of 0 if it doesn't already exist
-  //         if (!commonMonths.includes(prevMonthName)) {
-  //           commonMonths.unshift(prevMonthName);
-  //           itemArr.unshift(0);
-  //           orderArr.unshift(0);
-  //         }
-  //       }
-
-  //       setChartState((prevState) => ({
-  //         ...prevState,
-  //         series: [
-  //           {
-  //             name: "Total Orders",
-  //             data: orderArr,
-  //           },
-  //           {
-  //             name: "Total Items",
-  //             data: itemArr,
-  //           },
-  //         ],
-  //         options: {
-  //           ...prevState.options,
-  //           xaxis: {
-  //             ...prevState.options.xaxis,
-  //             categories: commonMonths,
-  //           },
-  //         },
-  //       }));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+    setChartState((prev) => ({
+      ...prev,
+      series: [
+        { name: "Guests", data: guestData },
+        { name: "Locals", data: localData },
+      ],
+      options: {
+        ...prev.options,
+        xaxis: {
+          ...prev.options.xaxis,
+          categories,
+        },
+      },
+    }));
+  }, [guestAndLocalChart]);
 
   const chartWidth =
-    chartState.series[0].data.length < 9
+    chartState.series?.[0]?.data?.length < 9
       ? "100%"
       : chartState.series[0].data.length * 80;
 
   return (
-    <div className="apex_chart_box overflow-scroll">
+    <div className="apex_chart_box overflow-x-auto">
       <div id="chart" style={{ width: chartWidth }}>
         <ReactApexChart
           options={chartState.options}

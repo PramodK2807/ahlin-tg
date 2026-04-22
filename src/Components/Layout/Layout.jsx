@@ -173,7 +173,7 @@ const Layout = ({ children, activeSlide }) => {
                 <span className="nav-text">Activities Management</span>
               </Link>
             </li>
-            <li
+            {/* <li
               onClick={() => setSlide("Banner")}
               className={slide === "Banner" ? "mm-active" : ""}
             >
@@ -183,7 +183,7 @@ const Layout = ({ children, activeSlide }) => {
                 </div>
                 <span className="nav-text">Banner Management</span>
               </Link>
-            </li>
+            </li> */}
             <li
               onClick={() => setSlide("Package")}
               className={slide === "Package" ? "mm-active" : ""}
@@ -195,7 +195,7 @@ const Layout = ({ children, activeSlide }) => {
                 <span className="nav-text">Package Management</span>
               </Link>
             </li>
-            <li
+            {/* <li
               onClick={() => setSlide("Subscription")}
               className={slide === "Subscription" ? "mm-active" : ""}
             >
@@ -205,7 +205,7 @@ const Layout = ({ children, activeSlide }) => {
                 </div>
                 <span className="nav-text">Subscription Plan Management</span>
               </Link>
-            </li>
+            </li> */}
             <li
               onClick={() => setSlide("Payout")}
               className={slide === "Payout" ? "mm-active" : ""}

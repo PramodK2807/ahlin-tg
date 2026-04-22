@@ -218,7 +218,7 @@ function App() {
             </IsLoggedIn>
           }
         />
-        <Route
+        {/* <Route
           path="Banner-Management"
           element={
             <IsLoggedIn>
@@ -237,7 +237,7 @@ function App() {
               </Suspense>
             </IsLoggedIn>
           }
-        />
+        /> */}
         <Route
           path="Package-Management"
           element={
@@ -258,7 +258,7 @@ function App() {
             </IsLoggedIn>
           }
         />
-        <Route
+        {/* <Route
           path="Subscription-Management"
           element={
             <IsLoggedIn>
@@ -287,7 +287,7 @@ function App() {
               </Suspense>
             </IsLoggedIn>
           }
-        />
+        /> */}
         <Route
           path="Payout-Management"
           element={

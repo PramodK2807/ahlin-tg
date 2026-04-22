@@ -204,14 +204,81 @@ export async function TotalUsers() {
   }
 }
 
+export async function GuestAndLocalChart() {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/getTotalGuestLocalMonthWise`,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function RevenueChart() {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/getTotalRevenueTrip`,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+
 // GUIDES
 
-export async function AllGuidesList() {
+export async function AllGuidesList(payload, signal) {
   try {
     const { data } = await adminHttpService.put(
       `${process.env.REACT_APP_API}/api/admin/guideList`,
+      payload,
+      signal,
     );
-
+    console.log(data);
     if (!data?.error) {
       return { data };
     } else
@@ -281,7 +348,7 @@ export async function ChangeGuideStatus(id) {
         toast: true,
         icon: "success",
         position: "top-end",
-        title: "Guide status changed",
+        title: data?.message,
         showConfirmButton: false,
         timerProgressBar: true,
         timer: 3000,
@@ -431,7 +498,7 @@ export async function ChangeUserStatus(id) {
         toast: true,
         icon: "success",
         position: "top-end",
-        title: "User status changed",
+        title: data?.message,
         showConfirmButton: false,
         timerProgressBar: true,
         timer: 3000,
@@ -1826,11 +1893,11 @@ export async function UpdateBannerApi(formData, id) {
   }
 }
 
-export async function GetCities(formData) {
+export async function GetCities() {
   try {
     const { data } = await adminHttpService.patch(
       `${process.env.REACT_APP_API}/api/guide/citiesList`,
-      formData,
+      { role: "Admin" },
     );
 
     if (!data?.error) {
