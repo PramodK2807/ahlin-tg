@@ -28,6 +28,7 @@
     "react-select": "^5.8.0",
     "recharts": "^2.12.7",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "sweetalert2": "^11.0.17",
     "web-vitals": "^2.1.4"
   },

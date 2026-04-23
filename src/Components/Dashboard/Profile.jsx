@@ -5,13 +5,13 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { EditProfile } from "../../adminHttpServices/dashHttpService";
 import Swal from "sweetalert2";
+import { userDataAtom } from "../../atoms";
+import { useRecoilState } from "recoil";
 
 const Profile = () => {
+  const [profileData, setProfileData] = useRecoilState(userDataAtom);
   const [imageUrl, setImageUrl] = useState();
   const [file, setFile] = useState([]);
-  const navigate = useNavigate();
-  const userData = secureLocalStorage.getItem("userAccessData");
-  console.log(userData);
 
   const {
     register,
@@ -23,11 +23,11 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    setValue("fullName", userData?.userData?.fullName || "");
-    // setValue("lname", userData?.userData?.lastName || "");
-    setValue("email", userData?.userData?.email || "");
-    setValue("mobileNumber", userData?.userData?.mobileNumber || "");
-    setImageUrl(userData?.userData?.image);
+    setValue("fullName", profileData?.fullName || "");
+    setValue("commission", profileData?.commission || 0);
+    setValue("email", profileData?.email || "");
+    setValue("mobileNumber", profileData?.mobileNumber || "");
+    setImageUrl(profileData?.image);
   }, []);
 
   const onFileSelection = (e) => {
@@ -40,10 +40,10 @@ const Profile = () => {
     try {
       const formData = new FormData();
       formData.append("fullName", info.fullName);
-      // formData.append("lastName", info.lname);
       formData.append("email", info.email);
       formData.append("mobileNumber", info.mobileNumber);
       formData.append("image", file);
+      formData.append("commission", info.commission || 0);
 
       let { data } = await EditProfile(formData);
       if (data && !data?.error) {
@@ -56,10 +56,8 @@ const Profile = () => {
           timerProgressBar: true,
           timer: 3000,
         });
-        document.getElementById("reset").click();
-        setFile([]);
-        setImageUrl("");
-        navigate("/Dashboard");
+        setProfileData(data?.results?.admin);
+        // navigate("/Dashboard");
       }
     } catch (error) {
       console.log(error);
@@ -96,9 +94,9 @@ const Profile = () => {
                   <div className="user-details">
                     <div className="title">
                       <Link>
-                        <h4>{userData?.userData?.fullName}</h4>
+                        <h4>{profileData?.fullName}</h4>
                       </Link>
-                      <h6>{userData?.userData?.email}</h6>
+                      <h6>{profileData?.email}</h6>
                     </div>
                     <ul className="user-social-links">
                       <li>
@@ -228,6 +226,33 @@ const Profile = () => {
                         {errors?.mobileNumber && (
                           <p className="errorText mt-1">
                             {errors.mobileNumber.message}
+                          </p>
+                        )}
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">Vat Tax</label>
+                        <input
+                          type="number"
+                          className={`form-control ${
+                            errors.commission ? "is-invalid" : ""
+                          }`}
+                          {...register("commission", {
+                            required: "Vat Tax is required",
+                            min: {
+                              value: 0,
+                              message:
+                                "Value must be greater than or equal to 0",
+                            },
+                            max: {
+                              value: 100,
+                              message:
+                                "Value must be less than or equal to 100",
+                            },
+                          })}
+                        />
+                        {errors?.commission && (
+                          <p className="errorText mt-1">
+                            {errors.commission.message}
                           </p>
                         )}
                       </div>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { MDBDataTable } from "mdbreact";
+import { TransactionList } from "../../adminHttpServices/dashHttpService";
+import { Link } from "react-router-dom";
 
 const PayoutManag = () => {
   const [filterFields, setFilterFields] = useState({
@@ -8,7 +10,7 @@ const PayoutManag = () => {
     to: "",
     status: "",
   });
-  const [payoutM, setPayoutM] = useState({
+  const [dataList, setDataList] = useState({
     columns: [
       {
         label: "S.No.",
@@ -52,12 +54,12 @@ const PayoutManag = () => {
         width: 50,
         selected: false,
       },
-      {
-        label: "Vat Amount",
-        field: "vat",
-        width: 50,
-        selected: false,
-      },
+      // {
+      //   label: "Vat Amount",
+      //   field: "vat",
+      //   width: 50,
+      //   selected: false,
+      // },
       {
         label: "Ahlain Fees",
         field: "ahlainFee",
@@ -71,32 +73,112 @@ const PayoutManag = () => {
         selected: false,
       },
 
-      {
-        label: "Status",
-        field: "status",
-        width: 50,
-        selected: false,
-      },
+      // {
+      //   label: "Status",
+      //   field: "status",
+      //   width: 50,
+      //   selected: false,
+      // },
 
-      {
-        label: "Actions",
-        field: "actions",
-        width: 100,
-        selected: false,
-      },
+      // {
+      //   label: "Actions",
+      //   field: "actions",
+      //   width: 100,
+      //   selected: false,
+      // },
     ],
     rows: [],
   });
 
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   let signal = controller.signal;
-  //   getPayout(signal);
+  useEffect(() => {
+    const controller = new AbortController();
+    let signal = controller.signal;
+    getPayout(signal);
 
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, [filterFields]);
+    return () => {
+      controller.abort();
+    };
+  }, [filterFields]);
+
+  const getPayout = async (signal) => {
+    let { data } = await TransactionList(filterFields, { signal });
+    console.warn(data);
+    if (data && !data?.error) {
+      const newRows = [];
+      let values = data?.results?.transactions;
+      values
+        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.map((list, index) => {
+          const returnData = {};
+          returnData.sno = index + 1;
+          returnData.id = list?.bookingId || "NA";
+          returnData.invoiceId = list?.paymentId || "NA";
+          returnData.gName = list?.user?.fullName || "NA";
+          returnData.lName = list?.local?.fullName || "NA";
+          returnData.date = list?.createdAt
+            ? new Date(list?.createdAt).toLocaleDateString()
+            : "NA";
+          returnData.amount = list?.amount || "0";
+          returnData.vat = list?.vatAmount || "0";
+          returnData.ahlainFee = list?.adminFees || "0";
+          returnData.total =
+            Number(list?.amount || 0) - Number(list?.adminFees || 0);
+
+          // returnData.status = (
+          //   <div className="check_toggle text-center" key={list?._id}>
+          //     <input
+          //       type="checkbox"
+          //       defaultChecked={list?.status}
+          //       name="check1"
+          //       id={list?._id}
+          //       className="d-none"
+          //       // onClick={() => {
+          //       //   changeStatus(list?._id, list?.status);
+          //       // }}
+          //     />
+          //     <label for={list?._id}></label>
+          //   </div>
+          // );
+          returnData.actions = (
+            <div className="d-flex">
+              {/* <Link
+                to={`/Guest-Management/Details/${list?._id}`}
+                state={{
+                  title: "Edit Guest Details",
+                  isEdit: false,
+                  type: "User",
+                  api: "editUser",
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-edit"></i> 
+              </Link>*/}
+              <Link
+                to={`/Guest-Management/Details/${list?._id}`}
+                state={{
+                  title: "View Guest Details",
+                  isEdit: false,
+                  type: "User",
+                }}
+                className="btn btn-primary shadow btn-xs sharp me-2"
+              >
+                <i className="fa fa-eye"></i>
+              </Link>
+              <button
+                type="button"
+                // onClick={() => handleDeleteItem(list?._id)}
+                className="btn btn-danger shadow btn-xs sharp"
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </div>
+          );
+
+          newRows.push(returnData);
+        });
+      setDataList({ ...dataList, rows: newRows });
+    }
+  };
   return (
     <Layout activeSlide={"Payout"}>
       <div className="content-body">
@@ -130,7 +212,7 @@ const PayoutManag = () => {
                       entries={10}
                       className="text-nowrap"
                       hover
-                      data={payoutM}
+                      data={dataList}
                       noBottomColumns
                       sortable={true}
                       paginationLabel={"«»"}

@@ -3,11 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AdminLogin } from "../adminHttpServices/adminLoginHttpServie";
 import secureLocalStorage from "react-secure-storage";
+import { useRecoilState } from "recoil";
+import { userDataAtom } from "../atoms";
 
 const Login = () => {
   const [passRemember, setPassRemember] = useState(false);
   const [passVisible, setPassVisible] = useState(false);
   const navigate = useNavigate();
+  const [profileData, setProfileData] = useRecoilState(userDataAtom);
 
   const {
     register,
@@ -39,10 +42,8 @@ const Login = () => {
         password: info.password,
       });
       if (data && !data?.error) {
-        secureLocalStorage.setItem("userAccessData", {
-          userData: data?.results?.verify,
-          isNavOpen: true,
-        });
+        setProfileData(data?.results?.verify);
+        
         navigate("/Dashboard");
       }
       console.log(data);

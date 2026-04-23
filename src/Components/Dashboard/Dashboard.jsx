@@ -163,7 +163,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-6 col-sm-6">
+                {/* <div className="col-xl-6 col-sm-6">
                   <div className="card chart-grd same-card">
                     <div className="card-body depostit-card p-0">
                       <div className="depostit-card-media d-flex justify-content-between align-items-center">
@@ -178,7 +178,7 @@ const Dashboard = () => {
                       <div id="NewExperience" />
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
 

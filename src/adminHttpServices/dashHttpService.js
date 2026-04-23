@@ -2056,3 +2056,98 @@ export async function CityStatusCity(id) {
     return { error };
   }
 }
+export async function TransactionList(id) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/transactionList`,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+
+export async function createSubscription(payload) {
+  try {
+    const { data } = await adminHttpService.post(
+      `${process.env.REACT_APP_API}/api/admin/createSubscription`,
+      payload,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else {
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (error) {
+    Swal.fire({
+      toast: true,
+      icon: "error",
+      position: "top-end",
+      title: "Error creating subscription",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    return { error };
+  }
+}
+export async function editSubscription(id, payload) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/editSubscription/${id}`,
+      payload,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else {
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (error) {
+    Swal.fire({
+      toast: true,
+      icon: "error",
+      position: "top-end",
+      title: "Error updating subscription",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    return { error };
+  }
+}

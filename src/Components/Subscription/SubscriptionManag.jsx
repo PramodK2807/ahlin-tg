@@ -36,8 +36,14 @@ const SubscriptionManag = () => {
         selected: false,
       },
       {
-        label: " Number of Subscribers",
-        field: "number",
+        label: "Maximum Offer can be sent",
+        field: "offerSent",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Maximum Offer can be Accepted",
+        field: "offerAccepted",
         width: 50,
         selected: false,
       },
@@ -81,8 +87,10 @@ const SubscriptionManag = () => {
           returnData.sno = index + 1;
           returnData.name = list?.subscriptionName || "NA";
           returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
-          returnData.cost = list?.planCost || "NA";
-          returnData.number = list?.number || "0";
+          returnData.cost = list?.amount || "NA";
+          returnData.offerSent = list?.sendingOffer || "0";
+          returnData.offerAccepted = list?.acceptOffer || "0";
+          returnData.validity = list?.validity || "0";
 
           returnData.status = (
             <div className="check_toggle text-center" key={list?._id}>
@@ -101,7 +109,7 @@ const SubscriptionManag = () => {
           );
           returnData.actions = (
             <div className="d-flex">
-              {/* <Link
+              <Link
                 to={`/Subscription-Management/Details/${list?._id}`}
                 state={{
                   title: "Edit Subscription Details",
@@ -111,12 +119,12 @@ const SubscriptionManag = () => {
                 className="btn btn-primary shadow btn-xs sharp me-2"
               >
                 <i className="fa fa-edit"></i>
-              </Link> */}
+              </Link>
               <Link
                 to={`/Subscription-Management/Details/${list?._id}`}
                 state={{
                   title: "View Subscription Details",
-                  isEdit: false,
+                  isView: true,
                   data: list,
                 }}
                 // state={list}
@@ -187,16 +195,29 @@ const SubscriptionManag = () => {
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                   <div className="d-flex filter_modal">
-                    <button
-                      type="button"
-                      className="btn filter_manage px-3 py-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
-                      data-bs-whatever="@mdo"
+                    <Link
+                      className="btn btn-primary rounded "
+                      to={"/Subscription-Management/Add-Subscription"}
+                      state={{
+                        isAdd: true,
+                        title: "Create New Subscription",
+                      }}
                     >
-                      <i className="fa-solid fa-filter" />
-                    </button>
+                      Add Subscription
+                    </Link>{" "}
+                    <div className="d-flex filter_modal">
+                      <button
+                        type="button"
+                        className="btn filter_manage px-3 py-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        data-bs-whatever="@mdo"
+                      >
+                        <i className="fa-solid fa-filter" />
+                      </button>
+                    </div>
                   </div>
+
                   <div className="table-responsive mdb_table">
                     <MDBDataTable
                       bordered

@@ -1,13 +1,14 @@
 import React, { memo, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import secureLocalStorage from "react-secure-storage";
+import { useRecoilState } from "recoil";
+import { navShowAtom, userDataAtom } from "../../atoms";
 
 const Layout = ({ children, activeSlide }) => {
   const [slide, setSlide] = useState("");
-  const [navShow, setNavShow] = useState(false);
 
   const navigate = useNavigate();
-  const userData = secureLocalStorage.getItem("userAccessData");
+  const [userData, setUserData] = useRecoilState(userDataAtom);
+  const [navShow, setNavShow] = useRecoilState(navShowAtom);
 
   useEffect(() => {
     setSlide(activeSlide);
@@ -15,7 +16,6 @@ const Layout = ({ children, activeSlide }) => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    secureLocalStorage.removeItem("userAccessData");
     localStorage.removeItem("ahl-admin-token");
     document.getElementById("closeLogout").click();
     navigate("/login");
@@ -50,13 +50,13 @@ const Layout = ({ children, activeSlide }) => {
                       <div className="header-info2 d-flex align-items-center">
                         <div className="header-media">
                           <img
-                            src={userData?.userData?.image || "images/1.jpg"}
+                            src={userData?.image || "images/1.jpg"}
                             alt="i"
                           />
                         </div>
                         <div className="header-info">
-                          <h6>{userData?.userData?.fullName}</h6>
-                          <p>{userData?.userData?.email}</p>
+                          <h6>{userData?.fullName}</h6>
+                          <p>{userData?.email}</p>
                         </div>
                       </div>
                     </Link>
@@ -65,12 +65,12 @@ const Layout = ({ children, activeSlide }) => {
                         <div className="card-header py-2">
                           <div className="products">
                             <img
-                              src={userData?.userData?.image || "images/1.jpg"}
+                              src={userData?.image || "images/1.jpg"}
                               className="avatar avatar-md"
                               alt="i"
                             />
                             <div>
-                              <h6>{userData?.userData?.fullName}</h6>
+                              <h6>{userData?.fullName}</h6>
                             </div>
                           </div>
                         </div>
@@ -89,10 +89,14 @@ const Layout = ({ children, activeSlide }) => {
                             <i className="fas fa-refresh" />
                             <span className="ms-2">Change Password </span>
                           </Link>
-                          <Link className="dropdown-item ai-icon ">
+                          <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop"
+                            className="dropdown-item ai-icon "
+                          >
                             <i className="fas fa-sign-out-alt" />
                             <span className="ms-2">Logout </span>
-                          </Link>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -173,7 +177,7 @@ const Layout = ({ children, activeSlide }) => {
                 <span className="nav-text">Activities Management</span>
               </Link>
             </li>
-            {/* <li
+            <li
               onClick={() => setSlide("Banner")}
               className={slide === "Banner" ? "mm-active" : ""}
             >
@@ -183,7 +187,7 @@ const Layout = ({ children, activeSlide }) => {
                 </div>
                 <span className="nav-text">Banner Management</span>
               </Link>
-            </li> */}
+            </li>
             <li
               onClick={() => setSlide("Package")}
               className={slide === "Package" ? "mm-active" : ""}
@@ -195,7 +199,7 @@ const Layout = ({ children, activeSlide }) => {
                 <span className="nav-text">Package Management</span>
               </Link>
             </li>
-            {/* <li
+            <li
               onClick={() => setSlide("Subscription")}
               className={slide === "Subscription" ? "mm-active" : ""}
             >
@@ -205,7 +209,7 @@ const Layout = ({ children, activeSlide }) => {
                 </div>
                 <span className="nav-text">Subscription Plan Management</span>
               </Link>
-            </li> */}
+            </li>
             <li
               onClick={() => setSlide("Payout")}
               className={slide === "Payout" ? "mm-active" : ""}
@@ -304,7 +308,13 @@ const Layout = ({ children, activeSlide }) => {
               >
                 Yes
               </button>
-              <button type="button" className="btn btn-secondary">
+              <button
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="closeLogout"
+                type="button"
+                className="btn btn-secondary"
+              >
                 No
               </button>
             </div>

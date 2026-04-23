@@ -74,13 +74,7 @@ const BookingDetails = () => {
                         <input
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          value={
-                            details?.status === "Complete || Completed"
-                              ? "Completed"
-                              : details?.status === "upComing"
-                                ? "Upcoming"
-                                : "Cancelled"
-                          }
+                          value={details?.status}
                         />
                       </div>
                       <div className="col-md-4 m-b30">
@@ -190,15 +184,15 @@ const BookingDetails = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-9 m-b30">
-                      <label className="form-label">
-                        Guest Activities<sup className="mandatesign">*</sup>
-                      </label>
-                      {(details?.Activity && <ActivityCard />) || "NA"}
-                    </div>
                   </div>
                 </form>
               </div>
+            </div>{" "}
+            <div className="col-md-9 m-b30">
+              <label className="form-label">
+                Guest Activities<sup className="mandatesign">*</sup>
+              </label>
+              {(details?.Activity && <ActivityCard />) || "NA"}
             </div>
           </div>
         </div>
