@@ -42,6 +42,7 @@ const BookingDetails = () => {
                           Guest Name<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.user?.fullName}
@@ -52,6 +53,7 @@ const BookingDetails = () => {
                           Email<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="email"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.user?.email}
@@ -62,6 +64,7 @@ const BookingDetails = () => {
                           Mobile No.<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.user?.mobileNumber}
@@ -72,6 +75,7 @@ const BookingDetails = () => {
                           Booking Status<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.status}
@@ -82,6 +86,7 @@ const BookingDetails = () => {
                           Booking Amount<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.package?.price}
@@ -105,6 +110,7 @@ const BookingDetails = () => {
                           Local Name<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.local?.fullName}
@@ -115,6 +121,7 @@ const BookingDetails = () => {
                           Booking Date<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={moment(details?.trip?.createdAt).format(
@@ -127,6 +134,7 @@ const BookingDetails = () => {
                           Number of Guests<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.trip?.noGuest}
@@ -137,6 +145,7 @@ const BookingDetails = () => {
                           Package<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={details?.package?.packageName}
@@ -168,6 +177,7 @@ const BookingDetails = () => {
                           <div className="bg-body-secondary p-2 pt-2 rounded">
                             <label className="form-label">From : </label>
                             <input
+                              disabled={true}
                               type="text"
                               className=" border-0 ms-2 fs-5 bg-body-secondary"
                               defaultValue="Delhi"
@@ -176,6 +186,7 @@ const BookingDetails = () => {
                           <div className="bg-body-secondary p-2 pt-2 rounded ms-3">
                             <label className="form-label">To : </label>
                             <input
+                              disabled={true}
                               type="text"
                               className=" border-0 ms-2 fs-5 bg-body-secondary"
                               defaultValue="Banglore"
@@ -188,12 +199,12 @@ const BookingDetails = () => {
                 </form>
               </div>
             </div>{" "}
-            <div className="col-md-9 m-b30">
+            {/* <div className="col-md-9 m-b30">
               <label className="form-label">
                 Guest Activities<sup className="mandatesign">*</sup>
               </label>
               {(details?.Activity && <ActivityCard />) || "NA"}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

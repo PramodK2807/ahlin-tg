@@ -95,7 +95,7 @@ const Help = () => {
         ?.map((list, index) => {
           const returnData = {};
           returnData.sno = index + 1;
-          returnData.id = list?.tripId || "NA";
+          returnData.id = list?.bookingId || list?.booking?.bookingId || "NA";
           returnData.name =
             list?.guest?.fullName ||
             list?.local?.fullName ||
