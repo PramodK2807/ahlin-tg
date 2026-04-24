@@ -389,20 +389,22 @@ const EditViewLocalGuest = () => {
                               View Certificate & Approve
                               <sup className="mandatesign">*</sup>
                             </label>
-                            <button
-                              className="btn btn-primary d-flex justify-content-center w-100"
-                              type="button"
-                              onClick={() =>
-                                setCertificateUrl(details?.certificate)
-                              }
-                              data-bs-toggle="modal"
-                              data-bs-target="#exampleModalToggle"
-                            >
-                              <span className="me-3 text-center">
-                                View Certificate
-                              </span>
-                              {/* <Info title={"View certificate and approve"} /> */}
-                            </button>
+
+                            {details?.certificate ? (
+                              <button
+                                className="btn btn-primary d-flex justify-content-center w-100"
+                                type="button"
+                                onClick={() =>
+                                  setCertificateUrl(details?.certificate)
+                                }
+                              >
+                                <span className="me-3 text-center">
+                                  View Certificate
+                                </span>
+                              </button>
+                            ) : (
+                              <p>Certificate not available</p>
+                            )}
                           </div>
                         </>
                       )}

@@ -96,12 +96,12 @@ const SubscriptionManag = () => {
             <div className="check_toggle text-center" key={list?._id}>
               <input
                 type="checkbox"
-                defaultChecked={list?.isActive}
+                defaultChecked={list?.status}
                 name="check1"
                 id={list?._id}
                 className="d-none"
                 onClick={() => {
-                  changeStatus(list?._id, list?.isActive);
+                  changeStatus(list?._id, list?.status);
                 }}
               />
               <label for={list?._id}></label>
