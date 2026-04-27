@@ -118,7 +118,7 @@ const TransManag = () => {
           returnData.sno = index + 1;
           returnData.bookingId = list?.bookingId || "NA";
           returnData.gname = list?.user?.fullName || "NA";
-          returnData.invoiceId = list?.paymentId || "NA";
+          returnData.id = list?.paymentId || "NA";
           returnData.lname = list?.local?.fullName || "NA";
           returnData.date = list?.createdAt
             ? new Date(list?.createdAt).toLocaleDateString()

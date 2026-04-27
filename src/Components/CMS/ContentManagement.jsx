@@ -150,7 +150,6 @@ const ContentManagement = () => {
                 <div className="col-12 card-body position-relative card-body-2">
                   <div className="d-flex card_title_container">
                     <h4 className="card-title">Content Management</h4>
-                    <p className="ps-2 d-none">(14,555)</p>
                   </div>
 
                   <div className="search_icon">
