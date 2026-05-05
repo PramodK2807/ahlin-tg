@@ -25,6 +25,7 @@ const ViewTrip = () => {
                           Guest Name<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={state?.guest?.fullName}
@@ -35,6 +36,7 @@ const ViewTrip = () => {
                           Local Name<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={state?.local?.fullName}
@@ -45,6 +47,7 @@ const ViewTrip = () => {
                           No. of Guests<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={state?.noGuest}
@@ -58,6 +61,7 @@ const ViewTrip = () => {
                           <div className="bg-body-secondary p-2 pt-2 rounded ">
                             <label className="form-label">From : </label>
                             <input
+                              disabled={true}
                               type="text"
                               className=" border-0 ms-2 fs-5 bg-body-secondary"
                               value={state?.destinations[0]?.destination}
@@ -66,6 +70,7 @@ const ViewTrip = () => {
                           {/* <div className="bg-body-secondary p-2 pt-2 rounded ">
                             <label className="form-label">From : </label>
                             <input
+                            disabled={true}
                               type="text"
                               className=" border-0 ms-2 fs-5 bg-body-secondary text-wrap"
                               value={state?.destinations[0]?.destination}
@@ -92,6 +97,7 @@ const ViewTrip = () => {
                           <div className="bg-body-secondary p-2 pt-2 rounded ms-3 ">
                             <label className="form-label">To : </label>
                             <input
+                              disabled={true}
                               type="text"
                               className=" border-0 ms-2 fs-5 bg-body-secondary"
                               value={state?.destinations.at(-1).destination}
@@ -104,6 +110,7 @@ const ViewTrip = () => {
                           Request<sup className="mandatesign">*</sup>
                         </label>
                         <input
+                          disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
                           value={state?.request}

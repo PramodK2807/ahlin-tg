@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "./Components/Layout/Layout";
 import {
@@ -10,52 +10,40 @@ import {
 } from "./adminHttpServices/dashHttpService";
 import Swal from "sweetalert2";
 
-// const COUNTRY_LIST = [
-//   "India",
-//   "Saudi Arabia",
-//   "United Arab Emirates",
-//   "United States",
-//   "United Kingdom",
-//   "Canada",
-//   "Australia",
-//   "Germany",
-//   "France",
-//   "Singapore",
-//   "Qatar",
-//   "Oman",
-//   "Kuwait",
-//   "Bahrain",
-// ];
-
 const CityManager = () => {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
   const [editingCityId, setEditingCityId] = useState(null);
-  const [editFormData, setEditFormData] = useState({
+  const [editDraft, setEditDraft] = useState({
     name: "",
     country: "",
-    image: null,
+    imageFile: null,
   });
-  const [imagePreview, setImagePreview] = useState(null);
-  const [saveLoading, setSaveLoading] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+  const objectUrlRef = useRef(null);
 
-  // Fetch Cities
+  // Fetch cities
   const handleGetCities = useCallback(async () => {
     setLoading(true);
     try {
       const { data } = await GetCities();
       if (data && !data.error) {
-        const formattedCities = data.results?.popularCities?.map((city) => ({
-          id: city._id,
-          name: city.cityName || city.name,
-          country: city.countryName || city.country,
-          image: city.image,
-          createdAt: city.createdAt,
-          updatedAt: city.updatedAt,
-          status: city.status,
-          _id: city._id || null,
-        }));
-        setCities(formattedCities || []);
+        const formattedCities = (data.results?.popularCities || []).map(
+          (city) => ({
+            id: city._id,
+            _id: city._id,
+            name: city.cityName || city.name,
+            country: city.countryName || city.country,
+            image: city.image,
+            status: city.status,
+            createdAt: city.createdAt,
+            updatedAt: city.updatedAt,
+          }),
+        );
+        setCities(formattedCities);
+      } else {
+        setCities([]);
       }
     } catch (error) {
       console.error("Error fetching cities:", error);
@@ -68,86 +56,111 @@ const CityManager = () => {
     handleGetCities();
   }, [handleGetCities]);
 
-  // Toggle Edit Mode
+  // Cleanup object URL on unmount
+  useEffect(() => {
+    return () => {
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
+    };
+  }, []);
+
+  const clearEditingState = () => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+    setEditingCityId(null);
+    setEditDraft({ name: "", country: "", imageFile: null });
+    setImagePreviewUrl(null);
+  };
+
+  const removeTempCities = () => {
+    setCities((prev) =>
+      prev.filter((city) => !city.id.toString().startsWith("temp-")),
+    );
+  };
+
   const handleEditToggle = (city) => {
+    if (editingCityId === city.id) return;
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
     setEditingCityId(city.id);
-    setEditFormData({
-      name: city.name,
-      country: city.country,
-      image: null,
+    setEditDraft({
+      name: city.name || "",
+      country: city.country || "",
+      imageFile: null,
     });
-    setImagePreview(null);
+    setImagePreviewUrl(null);
   };
 
-  // Handle Input Changes
-  const handleNameChange = (value) => {
-    setEditFormData((prev) => ({
-      ...prev,
-      name: value,
-    }));
-  };
-
-  const handleCountryChange = (value) => {
-    setEditFormData((prev) => ({
-      ...prev,
-      country: value,
-    }));
-  };
-
-  // Handle Image Change
-  const handleImageChange = (file) => {
-    if (!file) return;
-
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
-
-    setEditFormData((prev) => ({
-      ...prev,
-      image: file,
-    }));
-  };
-
-  // Add New City Card
   const handleAddCityCard = () => {
-    const newId = `temp-${Date.now()}`;
-    setEditingCityId(newId);
-    setEditFormData({
-      name: "",
-      country: "",
-      image: null,
-    });
-    setImagePreview(null);
-
+    if (editingCityId) {
+      handleCancel();
+    }
+    const tempId = `temp-${Date.now()}`;
     const newCity = {
-      id: newId,
+      id: tempId,
       name: "",
       country: "",
       image: "/images/placeholder.png",
       isNew: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      status: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     setCities((prev) => [newCity, ...prev]);
+    setEditingCityId(tempId);
+    setEditDraft({
+      name: "",
+      country: "",
+      imageFile: null,
+    });
+    setImagePreviewUrl(null);
   };
 
-  // Save City (Add or Update)
+  const handleNameChange = (value) => {
+    setEditDraft((prev) => ({ ...prev, name: value }));
+  };
+
+  const handleCountryChange = (value) => {
+    setEditDraft((prev) => ({ ...prev, country: value }));
+  };
+
+  const handleImageChange = (file) => {
+    if (!file) return;
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+    }
+    const previewUrl = URL.createObjectURL(file);
+    objectUrlRef.current = previewUrl;
+    setImagePreviewUrl(previewUrl);
+    setEditDraft((prev) => ({ ...prev, imageFile: file }));
+  };
+
   const handleSaveCity = async (city) => {
-    if (!editFormData.name?.trim()) {
-      alert("City name is required.");
+    const trimmedName = editDraft.name.trim();
+    if (!trimmedName) {
+      Swal.fire("Error", "City name is required.", "error");
       return;
     }
 
-    if (!editFormData.country) {
-      alert("Country is required.");
+    let finalCountry = editDraft.country;
+    if (city.isNew && !finalCountry) {
+      finalCountry = "India";
+    }
+    if (!finalCountry) {
+      Swal.fire("Error", "Country is required.", "error");
       return;
     }
 
     const formDataObj = new FormData();
-    formDataObj.append("cityName", editFormData.name.trim());
-    formDataObj.append("countryName", editFormData.country);
-
-    if (editFormData.image && editFormData.image instanceof File) {
-      formDataObj.append("image", editFormData.image);
+    formDataObj.append("cityName", trimmedName);
+    formDataObj.append("countryName", finalCountry);
+    if (editDraft.imageFile) {
+      formDataObj.append("image", editDraft.imageFile);
     }
 
     setSaveLoading(true);
@@ -157,56 +170,36 @@ const CityManager = () => {
       } else {
         await UpdateCity(formDataObj, city.id);
       }
-
-      // Clear editing state
-      setEditingCityId(null);
-      setEditFormData({ name: "", country: "", image: null });
-      setImagePreview(null);
-
-      // Refresh the list
+      clearEditingState();
+      removeTempCities();
       await handleGetCities();
+      Swal.fire(
+        "Success",
+        `City ${city.isNew ? "added" : "updated"} successfully.`,
+        "success",
+      );
     } catch (error) {
       console.error("Error saving city:", error);
-      alert("Failed to save city. Please try again.");
+      Swal.fire(
+        "Error",
+        error?.response?.data?.message ||
+          "Failed to save city. Please try again.",
+        "error",
+      );
     } finally {
       setSaveLoading(false);
     }
   };
 
-  // Cancel Edit
   const handleCancel = () => {
-    setEditingCityId(null);
-    setEditFormData({ name: "", country: "", image: null });
-    setImagePreview(null);
-    // Remove temp city if it exists
-    setCities((prev) =>
-      prev.filter((city) => !city.id.toString().startsWith("temp-")),
-    );
+    clearEditingState();
+    removeTempCities();
     handleGetCities();
   };
 
-  // Format Date
-  const formatDate = (date) => {
-    if (!date) return "N/A";
-    return new Date(date).toLocaleString();
-  };
-
-  // Get current city display data for editing
-  const getCurrentDisplayData = (city) => {
-    if (editingCityId === city.id) {
-      return {
-        name: editFormData.name,
-        country: editFormData.country,
-        image: imagePreview || editFormData.image || city.image,
-      };
-    }
-    return city;
-  };
-
   const handleDelete = async (id) => {
-    console.log(id);
     try {
-      let confirm = await Swal.fire({
+      const confirm = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -215,23 +208,66 @@ const CityManager = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
       });
-      if (confirm?.isConfirmed) {
-        let { data } = await DeleteCity(id);
+      if (confirm.isConfirmed) {
+        const { data } = await DeleteCity(id);
         if (data && !data?.error) {
           Swal.fire("Deleted!", "City has been deleted.", "success");
           handleGetCities();
+        } else {
+          Swal.fire(
+            "Error",
+            data?.message || "Failed to delete city.",
+            "error",
+          );
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Delete error:", error);
+      Swal.fire(
+        "Error",
+        error?.response?.data?.message || "Failed to delete city.",
+        "error",
+      );
+    }
   };
-  const handleToggleStatus = async (id) => {
+
+  const handleToggleStatus = async (id, event) => {
+    event.stopPropagation();
     try {
-      let { data } = await CityStatusCity(id);
+      const { data } = await CityStatusCity(id);
       if (data && !data?.error) {
         Swal.fire("Updated!", "City status has been updated.", "success");
         handleGetCities();
+      } else {
+        Swal.fire(
+          "Error",
+          data?.message || "Failed to update status.",
+          "error",
+        );
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Status toggle error:", error);
+      Swal.fire(
+        "Error",
+        error?.response?.data?.message || "Failed to update status.",
+        "error",
+      );
+    }
+  };
+
+  const getDisplayData = (city) => {
+    if (editingCityId === city.id) {
+      return {
+        name: editDraft.name,
+        country: editDraft.country,
+        image: imagePreviewUrl || city.image,
+      };
+    }
+    return {
+      name: city.name,
+      country: city.country,
+      image: city.image,
+    };
   };
 
   const isEditing = (cityId) => editingCityId === cityId;
@@ -248,20 +284,22 @@ const CityManager = () => {
 
           <div className="row">
             {cities.map((city) => {
-              const displayData = getCurrentDisplayData(city);
+              const displayData = getDisplayData(city);
               const cityIsEditing = isEditing(city.id);
+              const isExistingCity = !!city._id;
 
               return (
                 <div className="col-md-3 mb-4" key={city.id}>
                   <div className="d-flex flex-column h-100">
-                    {/* Card */}
                     <div className="card shadow-sm">
-                      {/* Image Section */}
                       <div
-                        onClick={() => handleEditToggle(city)}
+                        onClick={() => !cityIsEditing && handleEditToggle(city)}
                         className="position-relative"
+                        style={{
+                          cursor: !cityIsEditing ? "pointer" : "default",
+                        }}
                       >
-                        {city?._id && (
+                        {isExistingCity && !cityIsEditing && (
                           <>
                             <div className="city-controls">
                               <div className="form-check form-switch m-0">
@@ -270,39 +308,31 @@ const CityManager = () => {
                                   type="checkbox"
                                   role="switch"
                                   id={`status-${city.id}`}
-                                  checked={city?.status}
-                                  onClick={(e) => e.stopPropagation()}
+                                  checked={city.status === true}
                                   onChange={(e) =>
-                                    handleToggleStatus(
-                                      city.id,
-                                      e.target.checked,
-                                    )
+                                    handleToggleStatus(city.id, e)
                                   }
+                                  onClick={(e) => e.stopPropagation()}
                                 />
                               </div>
                             </div>
-
                             <div className="delete_city">
                               <i
                                 className="fa-solid fa-trash-can delete_image"
                                 onClick={(e) => {
-                                  handleDelete(city?.id);
                                   e.preventDefault();
                                   e.stopPropagation();
+                                  handleDelete(city.id);
                                 }}
                               ></i>
                             </div>
                           </>
                         )}
-
                         <img
                           src={displayData.image || "/images/placeholder.png"}
                           alt={displayData.name || "City"}
                           className="card-img-top"
-                          style={{
-                            height: "180px",
-                            objectFit: "cover",
-                          }}
+                          style={{ height: "180px", objectFit: "cover" }}
                         />
                         {cityIsEditing && (
                           <label className="position-absolute bottom-0 end-0 m-2">
@@ -311,7 +341,7 @@ const CityManager = () => {
                               accept="image/*"
                               className="d-none"
                               onChange={(e) =>
-                                handleImageChange(e.target.files[0])
+                                handleImageChange(e.target.files?.[0] || null)
                               }
                             />
                             <span
@@ -329,51 +359,28 @@ const CityManager = () => {
                           <>
                             <input
                               type="text"
-                              value={displayData.name || ""}
+                              value={displayData.name}
                               className="form-control mb-2 text-center"
                               placeholder="Enter City Name"
                               onChange={(e) => handleNameChange(e.target.value)}
                               autoFocus
                             />
-
-                            {/* <select
-                              className="form-select mb-2"
-                              value={displayData.country || ""}
-                              onChange={(e) =>
-                                handleCountryChange(e.target.value)
-                              }
-                            >
-                              <option value="">Select Country</option>
-                              {COUNTRY_LIST.map((country, index) => (
-                                <option key={index} value={country}>
-                                  {country}
-                                </option>
-                              ))}
-                            </select> */}
+                            {/* Country select intentionally omitted (as in original UI) */}
                           </>
                         ) : (
                           <>
                             <h5
                               className="card-title"
                               style={{ cursor: "pointer", color: "#007bff" }}
+                              onClick={() => handleEditToggle(city)}
                             >
                               {displayData.name || "Unnamed City"}
                             </h5>
-                            {/* <p className="text-muted small mb-1">
-                              {displayData.country || "No country selected"}
-                            </p> */}
                           </>
                         )}
-
-                        {/* Last Updated */}
-                        {/* <p className="text-muted small mb-0">
-                          Last Updated:{" "}
-                          {formatDate(city.updatedAt || city.createdAt)}
-                        </p> */}
                       </div>
                     </div>
 
-                    {/* Save/Cancel Buttons - Below the Card */}
                     {cityIsEditing && (
                       <div className="mt-3" style={{ minHeight: "42px" }}>
                         <div className="d-flex justify-content-center gap-2">
@@ -406,48 +413,49 @@ const CityManager = () => {
               );
             })}
 
-            {/* Add City Card */}
-            <div className="col-md-3 mb-4">
-              <div
-                className="card h-100 d-flex justify-content-center align-items-center"
-                style={{
-                  cursor: "pointer",
-                  border: "2px dashed #dee2e6",
-                  minHeight: "250px",
-                  transition: "all 0.3s ease",
-                  backgroundColor: "#f8f9fa",
-                }}
-                onClick={handleAddCityCard}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#007bff";
-                  e.currentTarget.style.backgroundColor = "#e7f1ff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "#dee2e6";
-                  e.currentTarget.style.backgroundColor = "#f8f9fa";
-                }}
-              >
-                <div className="text-center">
-                  <div
-                    className="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3 mb-2"
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <h1
-                      className="text-primary mb-0"
-                      style={{ fontSize: "2rem" }}
+            {!editingCityId && (
+              <div className="col-md-3 mb-4">
+                <div
+                  className="card h-100 d-flex justify-content-center align-items-center"
+                  style={{
+                    cursor: "pointer",
+                    border: "2px dashed #dee2e6",
+                    minHeight: "250px",
+                    transition: "all 0.3s ease",
+                    backgroundColor: "#f8f9fa",
+                  }}
+                  onClick={handleAddCityCard}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "#007bff";
+                    e.currentTarget.style.backgroundColor = "#e7f1ff";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "#dee2e6";
+                    e.currentTarget.style.backgroundColor = "#f8f9fa";
+                  }}
+                >
+                  <div className="text-center">
+                    <div
+                      className="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3 mb-2"
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                     >
-                      +
-                    </h1>
+                      <h1
+                        className="text-primary mb-0"
+                        style={{ fontSize: "2rem" }}
+                      >
+                        +
+                      </h1>
+                    </div>
+                    <p className="mb-0 text-muted">Add New City</p>
                   </div>
-                  <p className="mb-0 text-muted">Add New City</p>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

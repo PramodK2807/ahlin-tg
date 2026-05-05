@@ -2151,3 +2151,34 @@ export async function editSubscription(id, payload) {
     return { error };
   }
 }
+export async function GetAllUserRatings(id, payload) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/editSubscription/${id}`,
+      payload,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else {
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (error) {
+    Swal.fire({
+      toast: true,
+      icon: "error",
+      position: "top-end",
+      title: "Error updating subscription",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    return { error };
+  }
+}

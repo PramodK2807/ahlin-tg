@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import FilterModal from "../Common/Filter/FilterModal";
 import StatusFilter from "../Common/Filter/StatusFilter";
+import Swal from "sweetalert2";
 
 const Guest = ({ latest }) => {
   const [modalShow, setModalShow] = useState(false);
@@ -157,9 +158,20 @@ const Guest = ({ latest }) => {
 
   const handleDeleteItem = async (id) => {
     try {
-      let { data } = await DeleteUser(id);
-      if (data && !data.error) {
-        getUsers();
+      let confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+      if (confirm?.isConfirmed) {
+        let { data } = await DeleteUser(id);
+        if (data && !data.error) {
+          getUsers();
+        }
       }
     } catch (error) {
       console.log(error);
