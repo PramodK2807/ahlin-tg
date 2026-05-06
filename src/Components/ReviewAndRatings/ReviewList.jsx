@@ -4,14 +4,22 @@ import { MDBDataTable } from "mdbreact";
 import Swal from "sweetalert2";
 import Layout from "../Layout/Layout";
 import moment from "moment";
-import { GetAllUserRatings } from "../../adminHttpServices/dashHttpService";
+import {
+  DeleteRating,
+  GetAllUserRatings,
+} from "../../adminHttpServices/dashHttpService";
 import { Link } from "react-router-dom";
+import FilterModal from "../Common/Filter/FilterModal";
 
 const ReviewList = () => {
-  const [open, setOpen] = useState(false);
-  const [ratingsDetails, setRatingsDetails] = useState();
+  const [filterFields, setFilterFields] = useState({
+    from: "",
+    to: "",
+    status: "",
+  });
+  const [modalShow, setModalShow] = useState(false);
 
-  const [dataTable, setDataTable] = useState({
+  const [dataList, setDataList] = useState({
     columns: [
       {
         label: "S.No.",
@@ -21,27 +29,21 @@ const ReviewList = () => {
       },
 
       {
-        label: "Product Name",
-        field: "title",
+        label: "Local Name",
+        field: "local",
         width: 50,
         selected: false,
       },
 
       {
-        label: "User Name",
-        field: "user",
+        label: "Guest Name",
+        field: "guest",
         width: 50,
         selected: false,
       },
       {
-        label: "User Email",
-        field: "email",
-        width: 50,
-        selected: false,
-      },
-      {
-        label: "Mobile Number",
-        field: "mobileNumber",
+        label: "Comment",
+        field: "comment",
         width: 50,
         selected: false,
       },
@@ -67,14 +69,6 @@ const ReviewList = () => {
     ],
     rows: [],
   });
-  const [filterData, setFilterData] = useState({
-    search: "",
-    from: "",
-    to: "",
-    pageSize: 10,
-    page: 1,
-  });
-  const [pageInformation, setPageInformation] = useState({});
 
   useEffect(() => {
     const controller = new AbortController();
@@ -84,31 +78,28 @@ const ReviewList = () => {
     return () => {
       controller.abort();
     };
-  }, [filterData]);
+  }, [filterFields]);
 
-  const handleCloseDrawer = () => {
-    setOpen(false);
-  };
   const getReviews = async (signal) => {
-    let { data } = await GetAllUserRatings(filterData, { signal });
+    let { data } = await GetAllUserRatings(filterFields, { signal });
     const newRows = [];
     if (!data?.error) {
-      setPageInformation({
-        page: data?.results?.page,
-        totalData: data?.results?.total,
-        totalPages: data?.results?.totalPage,
-        total: data?.results?.total,
-      });
-      let page = +data?.results?.page;
-      let values = data?.results?.rating;
+      let values = data?.results?.list;
       values?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt));
       values?.map((data, i) => {
         let returnData = {};
-        returnData.sn = (page - 1) * 10 + (i + 1);
-        returnData.title = data?.product?.title_en;
-        returnData.user = data?.user?.firstName;
-        returnData.email = data?.user?.email;
-        returnData.mobileNumber = data?.user?.mobileNumber;
+        returnData.sn = i + 1;
+        returnData.local = data?.guide?.fullName;
+        returnData.guest = data?.user?.fullName;
+        returnData.comment = (
+          <span
+            title={data?.comment}
+            style={{ width: "100px", display: "inline-block" }}
+            className="text-truncate"
+          >
+            {data?.comment}
+          </span>
+        );
         returnData.ratings =
           (data?.rating && (
             <span>
@@ -119,41 +110,27 @@ const ReviewList = () => {
         returnData.date = moment(data?.createdAt).format(
           "MMM Do YYYY : HH:mm A",
         );
-        returnData.description = (
-          <span className="description_text text-truncate">
-            {data?.description_en}
-          </span>
-        );
+
         returnData.actions = (
-          <ul className="d-flex justify-content-center">
-            <li onClick={() => setRatingsDetails(data)}>
-              <Link className="mx-2" onClick={() => setOpen(true)}>
-                <i className="ri-eye-line" />
-              </Link>
-            </li>
-            <li>
-              <a
-                onClick={() => {
-                  setRatingsDetails(data);
-                  handleItemDelete(data?._id);
-                }}
-                className="cursor_pointer"
-                alt="i"
-                type="button"
-              >
-                <i className="ri-delete-bin-line" />
-              </a>
-            </li>
-          </ul>
+          <div className="d-flex">
+            <button
+              type="button"
+              onClick={() => {
+                handleItemDelete(data?._id);
+              }}
+              className="btn btn-danger shadow btn-xs sharp"
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+          </div>
         );
         newRows.push(returnData);
       });
-      setDataTable({ ...dataTable, rows: newRows });
+      setDataList({ ...dataList, rows: newRows });
     }
   };
 
   const handleItemDelete = async (id) => {
-    console.log(id);
     const confirmResult = await Swal.fire({
       title: "Are you sure?",
       text: "You want to delete ratings",
@@ -163,28 +140,34 @@ const ReviewList = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-    // if (confirmResult.isConfirmed) {
-    //   try {
-    //     let { data } = await DeleteRating(id || ratingsDetails?._id);
-    //     if (data && !data?.error) {
-    //       Swal.fire({
-    //         toast: true,
-    //         icon: "success",
-    //         position: "top-end",
-    //         title: "Rating Deleted",
-    //         showConfirmButton: false,
-    //         timerProgressBar: true,
-    //         timer: 3000,
-    //       });
-    //       getReviews();
-    //       handleCloseDrawer();
-    //     }
-    //   } catch (error) {
-    //     //    console.log(error);
-    //   }
-    // }
+    if (confirmResult.isConfirmed) {
+      try {
+        let { data } = await DeleteRating(id);
+        if (data && !data?.error) {
+          Swal.fire({
+            toast: true,
+            icon: "success",
+            position: "top-end",
+            title: "Rating Deleted",
+            showConfirmButton: false,
+            timerProgressBar: true,
+            timer: 3000,
+          });
+          getReviews();
+        }
+      } catch (error) {
+        //    console.log(error);
+      }
+    }
   };
 
+  const handleApplyFilters = (newFilters) => {
+    setFilterFields({
+      from: newFilters.from || "",
+      to: newFilters.to || "",
+      // status: newFilters.status === false ? false : newFilters.status || "",
+    });
+  };
   return (
     <>
       <Layout activeSlide={"Rating"}>
@@ -192,47 +175,54 @@ const ReviewList = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-xl-12 pt-4">
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col">
-                      <div className="title-header option-title d-sm-flex d-block">
-                        <h5>Review & Ratings Management</h5>
-                      </div>
+                <div className="card dz-card" id="bootstrap-table1">
+                  <div className="col-12 card-body position-relative card-body-2">
+                    <div className="d-flex card_title_container">
+                      <h4 className="card-title">Ratings & Reviews</h4>
                     </div>
-                    <div className="col-auto d-flex align-items-center">
-                      {/* <a
-                              className="filter_btn"
-                              data-bs-toggle="modal"
-                              data-bs-target="#filter"
-                              href="javascript:;"
-                            >
-                              <i className="fas fa-filter" />
-                            </a> */}
+                    <div className="search_icon">
+                      <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-12 mdb_table mdb2 mt-3 ">
-                      <div className="table-responsive">
-                        <MDBDataTable
-                          bordered
-                          // hover
-                          striped
-                          displayEntries={false}
-                          entries={10}
-                          className="text-nowrap border-none"
-                          data={dataTable}
-                          noBottomColumns
-                          paginationLabel={"«»"}
-                          sortable={false}
-                        />
-                      </div>
+                    <div className="d-flex filter_modal">
+                      <button
+                        type="button"
+                        className="btn filter_manage px-3 py-2"
+                        onClick={() => setModalShow(true)}
+                      >
+                        <i className="fa-solid fa-filter" />
+                      </button>
                     </div>
+                    <div className="table-responsive mdb_table">
+                      <MDBDataTable
+                        bordered
+                        displayEntries={true}
+                        entries={10}
+                        className="text-nowrap"
+                        hover
+                        data={dataList}
+                        noBottomColumns
+                        sortable={true}
+                        paginationLabel={"«»"}
+                      />
+                    </div>
+                    <div className="table-responsive mdb_table2"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <FilterModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          onApply={handleApplyFilters}
+          initialFilters={filterFields}
+        >
+          {/* {({ filters, setFilter, resetFilters }) => (
+            <StatusFilter filters={filters} setFilter={setFilter} />
+          )} */}
+        </FilterModal>
       </Layout>
     </>
   );

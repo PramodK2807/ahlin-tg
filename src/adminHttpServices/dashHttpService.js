@@ -2151,10 +2151,10 @@ export async function editSubscription(id, payload) {
     return { error };
   }
 }
-export async function GetAllUserRatings(id, payload) {
+export async function GetAllUserRatings(payload) {
   try {
-    const { data } = await adminHttpService.put(
-      `${process.env.REACT_APP_API}/api/admin/editSubscription/${id}`,
+    const { data } = await adminHttpService.patch(
+      `${process.env.REACT_APP_API}/api/admin/ratingList`,
       payload,
     );
 
@@ -2176,6 +2176,36 @@ export async function GetAllUserRatings(id, payload) {
       icon: "error",
       position: "top-end",
       title: "Error updating subscription",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    return { error };
+  }
+}
+export async function DeleteRating(id) {
+  try {
+    const { data } = await adminHttpService.patch(
+      `${process.env.REACT_APP_API}/api/admin/deleteRating/${id}`,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else {
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (error) {
+    Swal.fire({
+      toast: true,
+      icon: "error",
+      position: "top-end",
+      title: "Error",
       showConfirmButton: false,
       timer: 3000,
     });
