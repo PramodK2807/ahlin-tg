@@ -350,7 +350,7 @@ const EditViewLocalGuest = () => {
                         )}
                       </div>
 
-                      {state?.type === "Guide" && (
+                      {/* {state?.type === "Guide" && (
                         <div className="col-md-3 m-b30">
                           <label className="form-label d-flex position-relative">
                             Ahlain Fee<sup className="mandatesign">*</sup>{" "}
@@ -367,7 +367,7 @@ const EditViewLocalGuest = () => {
                             onChange={(e) => setCommission(e.target.value)}
                           />
                         </div>
-                      )}
+                      )} */}
 
                       <div className="col-md-3 m-b30">
                         <label className="form-label">
@@ -387,7 +387,7 @@ const EditViewLocalGuest = () => {
                           <div className="col-md-3 m-b30 position-relative">
                             <label className="form-label">
                               View Certificate & Approve
-                              <sup className="mandatesign">*</sup>
+                              {/* <sup className="mandatesign">*</sup> */}
                             </label>
 
                             {details?.certificate ? (
@@ -524,7 +524,7 @@ const EditViewLocalGuest = () => {
                       </div>
                     </div> */}
                   </div>
-                  {state?.type === "Guide" && (
+                  {/* {state?.type === "Guide" && (
                     <div className="card-footer justify-content-start">
                       <button
                         className="btn btn-primary d-flex align-items-center"
@@ -535,7 +535,7 @@ const EditViewLocalGuest = () => {
                         <Info title={"Only Ahlain Fee will be updated"} />
                       </button>
                     </div>
-                  )}
+                  )} */}
                   {state?.isEdit && (
                     <div className="card-footer justify-content-start ">
                       <button className="btn btn-primary">Save</button>

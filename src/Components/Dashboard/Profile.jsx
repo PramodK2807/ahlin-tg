@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
-import secureLocalStorage from "react-secure-storage";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { EditProfile } from "../../adminHttpServices/dashHttpService";
 import Swal from "sweetalert2";
 import { userDataAtom } from "../../atoms";
@@ -25,6 +24,7 @@ const Profile = () => {
   useEffect(() => {
     setValue("fullName", profileData?.fullName || "");
     setValue("commission", profileData?.commission || 0);
+    setValue("ahlinFees", profileData?.ahlinFees || 0);
     setValue("email", profileData?.email || "");
     setValue("mobileNumber", profileData?.mobileNumber || "");
     setImageUrl(profileData?.image);
@@ -44,6 +44,7 @@ const Profile = () => {
       formData.append("mobileNumber", info.mobileNumber);
       formData.append("image", file);
       formData.append("commission", info.commission || 0);
+      formData.append("ahlinFees", info.ahlinFees || 0);
 
       let { data } = await EditProfile(formData);
       if (data && !data?.error) {
@@ -253,6 +254,28 @@ const Profile = () => {
                         {errors?.commission && (
                           <p className="errorText mt-1">
                             {errors.commission.message}
+                          </p>
+                        )}
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">Ahlin Fees</label>
+                        <input
+                          type="number"
+                          className={`form-control ${
+                            errors.ahlinFees ? "is-invalid" : ""
+                          }`}
+                          {...register("ahlinFees", {
+                            required: "Ahlin Fees is required",
+                            min: {
+                              value: 0,
+                              message:
+                                "Value must be greater than or equal to 0",
+                            },
+                          })}
+                        />
+                        {errors?.ahlinFees && (
+                          <p className="errorText mt-1">
+                            {errors.ahlinFees.message}
                           </p>
                         )}
                       </div>
