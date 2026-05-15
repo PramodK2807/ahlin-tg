@@ -36,7 +36,7 @@ const SubscriptionDetails = () => {
 
       setValue("plan", values?.subscriptionName);
       setValue("price", values?.amount);
-      setValue("validity", values?.validation);
+      setValue("validity", values?.validity);
       setValue("acceptOffer", values?.acceptOffer || 0);
       setValue("sendingOffer", values?.sendingOffer || 0);
 

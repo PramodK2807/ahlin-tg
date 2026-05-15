@@ -31,6 +31,18 @@ const Help = () => {
         selected: false,
       },
       {
+        label: "User Email",
+        field: "email",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "User Number",
+        field: "number",
+        width: 50,
+        selected: false,
+      },
+      {
         label: "User Type",
         field: "type",
         width: 50,
@@ -101,6 +113,16 @@ const Help = () => {
             list?.local?.fullName ||
             list?.guest?.fullName;
           // returnData.localName = list?.local?.fullName || list?.guest?.fullName;
+          returnData.email =
+            list?.guest?.email ||
+            list?.local?.email ||
+            list?.guest?.email ||
+            "NA";
+          returnData.number =
+            list?.guest?.mobileNumber ||
+            list?.local?.mobileNumber ||
+            list?.guest?.mobileNumber ||
+            "NA";
           returnData.noOfGuests = list?.noGuest || "NA";
           returnData.status =
             list?.status && list?.status === "solve" ? (

@@ -99,7 +99,7 @@ const Profile = () => {
                       </Link>
                       <h6>{profileData?.email}</h6>
                     </div>
-                    <ul className="user-social-links">
+                    {/* <ul className="user-social-links">
                       <li>
                         <a href="javascript:void(0);">
                           <i className="fa-brands fa-facebook-f" />
@@ -125,7 +125,7 @@ const Profile = () => {
                           <i className="fa fa-rss" />
                         </a>
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
               </div>

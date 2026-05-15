@@ -12,6 +12,7 @@ import moment from "moment";
 
 const SubActivity = () => {
   const [name, setName] = useState("");
+  const [nameAr, setNameAr] = useState();
   const [file, setFile] = useState();
   const [errors, setErrors] = useState({});
   const [activity, setActivity] = useState([]);
@@ -34,6 +35,12 @@ const SubActivity = () => {
       {
         label: "Sub Activity",
         field: "subActivity",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Sub Activity AR",
+        field: "subActivityAr",
         width: 50,
         selected: false,
       },
@@ -110,6 +117,7 @@ const SubActivity = () => {
           const returnData = {};
           returnData.sno = index + 1;
           returnData.subActivity = list?.subactivityName || "NA";
+          returnData.subActivityAr = list?.subactivityName_ar || "NA";
           returnData.activity = list?.activity?.activityName || "NA";
           returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
           returnData.logo = (
@@ -179,24 +187,31 @@ const SubActivity = () => {
     }
   };
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e, key) => {
     let value = e.target.value;
-    setName(value);
+    if (key === "name") {
+      setName(value);
+    } else if (key === "name_ar") {
+      setNameAr(value);
+    }
+    const errorKey = key === "name" ? "nameError" : "nameErrorAr";
+
     if (value.trim().length <= 3) {
-      setErrors({
-        ...errors,
-        nameError: {
+      setErrors((prev) => ({
+        ...prev,
+        [errorKey]: {
           isError: true,
           message: "Please enter more than 3 characters",
         },
-      });
+      }));
     } else {
-      setErrors({
-        ...errors,
-        nameError: {
+      setErrors((prev) => ({
+        ...prev,
+        [errorKey]: {
           isError: false,
+          message: "",
         },
-      });
+      }));
     }
   };
 
@@ -262,6 +277,7 @@ const SubActivity = () => {
   };
   const isFormValid =
     !errors.nameError?.isError &&
+    !errors.nameErrorAr?.isError &&
     !errors.fileError?.isError &&
     name.trim().length > 0 &&
     !errors.selectError?.isError;
@@ -272,6 +288,7 @@ const SubActivity = () => {
       let formData = new FormData();
       console.log(file);
       formData.append("subactivityName", name);
+      formData.append("subactivityName_ar", nameAr);
       formData.append("activityId", activityId);
       formData.append("uploadImage", file);
       let { data } = await CreateSubActivity(formData);
@@ -313,10 +330,12 @@ const SubActivity = () => {
       <form onSubmit={handleAddSubActivity}>
         <div className="p-4 mt-4 border rounded">
           <h4>ADD NEW SUB ACTIVITY</h4>
-          <div className="row py-3">
+
+          <div className="row">
             <div className="col-md-3 m-b30">
+              <label>Select Activity</label>
               <select
-                className="form-select py-3"
+                className="form-select py-2"
                 aria-label="Default select example"
                 onChange={handleSelectChange}
               >
@@ -334,23 +353,36 @@ const SubActivity = () => {
                 <p className="text-danger">{errors?.selectError?.message}</p>
               )}
             </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6 m-b30">
+            <div className="col-md-3 m-b30">
               <label className="form-label">
-                Enter Sub Activity Name
+                Sub Activity Name (EN)
                 <sup className="mandatesign">*</sup>
               </label>
               <input
                 type="text"
                 className="form-control"
-                onChange={(e) => handleNameChange(e)}
+                onChange={(e) => handleNameChange(e, "name")}
               />
               {errors?.nameError?.isError && (
                 <p className="text-danger">{errors?.nameError?.message}</p>
               )}
             </div>
-            <div className="col-md-6 m-b30">
+            <div className="col-md-3 m-b30">
+              <label className="form-label">
+                Sub Activity Name (AR)
+                <sup className="mandatesign">*</sup>
+              </label>
+              <input
+                dir="rtl"
+                type="text"
+                className="form-control"
+                onChange={(e) => handleNameChange(e, "name_ar")}
+              />
+              {errors?.nameErrorAr?.isError && (
+                <p className="text-danger">{errors?.nameErrorAr?.message}</p>
+              )}
+            </div>
+            <div className="col-md-2 m-b30">
               <label htmlFor="formFile" className="form-label">
                 Upload Image (Please upload a 20px * 20px image.)
               </label>
@@ -364,7 +396,7 @@ const SubActivity = () => {
                 <p className="text-danger">{errors?.fileError?.message}</p>
               )}
             </div>
-            <div className="col-md-2 m-b30 pt-3">
+            <div className="col-md-1 m-b30 pt-3">
               <button
                 disabled={!isFormValid}
                 type="submit"

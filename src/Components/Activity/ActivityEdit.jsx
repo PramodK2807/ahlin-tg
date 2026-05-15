@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 
 const ActivityEdit = () => {
   const [activityName, setActivityName] = useState("");
+  const [activityNameAr, setActivityNameAr] = useState("");
   const [date, setDate] = useState("");
   const [activityimages, setActivityimages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -49,6 +50,7 @@ const ActivityEdit = () => {
         console.log(data);
         let values = data?.results?.details;
         setActivityName(values?.activityName);
+        setActivityNameAr(values?.activityName_ar);
         setActivityimages(values?.uploadImage || []);
         setDate(values?.createdAt?.split("T")[0]);
       }
@@ -64,6 +66,7 @@ const ActivityEdit = () => {
         let values = data?.results?.subactivity;
         setSubActDetails(values);
         setActivityName(values?.subactivityName);
+        setActivityNameAr(values?.subactivityName_ar);
         setActivityimages(values?.uploadImage || []);
         setActivityId(values?.activity?._id || []);
         setDate(values?.createdAt?.split("T")[0]);
@@ -112,9 +115,11 @@ const ActivityEdit = () => {
       const formData = new FormData();
       if (state?.type === "activity") {
         formData.append("activityName", activityName.trim());
+        formData.append("activityName_ar", activityNameAr.trim());
       }
       if (state?.type === "subActivity") {
         formData.append("subactivityName", activityName.trim());
+        formData.append("subactivityName_ar", activityNameAr.trim());
         formData.append("activity", activityId);
       }
 
@@ -146,7 +151,7 @@ const ActivityEdit = () => {
                   <div className="card-body">
                     <div className="row">
                       {state?.type === "subActivity" && (
-                        <div className="col-md-6 m-b30">
+                        <div className="col-md-4 m-b30">
                           <label className="form-label">
                             Activity <sup className="mandatesign">*</sup>
                           </label>
@@ -173,9 +178,9 @@ const ActivityEdit = () => {
                           </select>
                         </div>
                       )}
-                      <div className="col-md-6 m-b30">
+                      <div className="col-md-4 m-b30">
                         <label className="form-label">
-                          Name<sup className="mandatesign">*</sup>
+                          Name (En)<sup className="mandatesign">*</sup>
                         </label>
                         <input
                           type="text"
@@ -184,7 +189,19 @@ const ActivityEdit = () => {
                           onChange={(e) => setActivityName(e.target.value)}
                         />
                       </div>
-                      <div className="col-md-6 m-b30">
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Name (Ar)<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          dir="rtl"
+                          type="text"
+                          className="form-control"
+                          value={activityNameAr}
+                          onChange={(e) => setActivityNameAr(e.target.value)}
+                        />
+                      </div>
+                      <div className="col-md-4 m-b30">
                         <label className="form-label">
                           Added On<sup className="mandatesign">*</sup>
                         </label>

@@ -539,7 +539,7 @@ export async function DeleteUser(id) {
         toast: true,
         icon: "success",
         position: "top-end",
-        title: "User deleted successfully",
+        title: "Guide deleted successfully",
         showConfirmButton: false,
         timerProgressBar: true,
         timer: 3000,

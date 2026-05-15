@@ -12,6 +12,7 @@ import moment from "moment";
 
 const Activity = () => {
   const [name, setName] = useState("");
+  const [nameAr, setNameAr] = useState("");
   const [file, setFile] = useState();
   const [errors, setErrors] = useState({});
 
@@ -32,6 +33,12 @@ const Activity = () => {
       {
         label: "Activity",
         field: "activity",
+        width: 50,
+        selected: false,
+      },
+      {
+        label: "Activity (AR)",
+        field: "activity_ar",
         width: 50,
         selected: false,
       },
@@ -76,27 +83,33 @@ const Activity = () => {
     };
   }, [filterFields]);
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e, key) => {
     let value = e.target.value;
-    setName(value);
+    if (key === "name") {
+      setName(value);
+    } else if (key === "name_ar") {
+      setNameAr(value);
+    }
+    const errorKey = key === "name" ? "nameError" : "nameErrorAr";
+
     if (value.trim().length <= 3) {
-      setErrors({
-        ...errors,
-        nameError: {
+      setErrors((prev) => ({
+        ...prev,
+        [errorKey]: {
           isError: true,
           message: "Please enter more than 3 characters",
         },
-      });
+      }));
     } else {
-      setErrors({
-        ...errors,
-        nameError: {
+      setErrors((prev) => ({
+        ...prev,
+        [errorKey]: {
           isError: false,
+          message: "",
         },
-      });
+      }));
     }
   };
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFile(file);
@@ -149,6 +162,7 @@ const Activity = () => {
       let formData = new FormData();
       console.log(file);
       formData.append("activityName", name);
+      formData.append("activityName_ar", nameAr);
       formData.append("uploadImage", file);
       let { data } = await CreateActivity(formData);
       if (data && !data?.error) {
@@ -173,6 +187,7 @@ const Activity = () => {
           const returnData = {};
           returnData.sno = index + 1;
           returnData.activity = list?.activityName || "NA";
+          returnData.activity_ar = list?.activityName_ar || "NA";
           returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
           returnData.logo = (
             <span>
@@ -270,21 +285,36 @@ const Activity = () => {
         <div className="p-4 mt-4 border rounded">
           <h4>ADD NEW ACTIVITY</h4>
           <div className="row pt-4">
-            <div className="col-md-6 m-b30">
+            <div className="col-md-4 m-b30">
               <label className="form-label">
-                Enter Activity Name
+                Enter Activity Name (EN)
                 <sup className="mandatesign">*</sup>
               </label>
               <input
                 type="text"
                 className="form-control"
-                onChange={(e) => handleNameChange(e)}
+                onChange={(e) => handleNameChange(e, "name")}
               />
               {errors?.nameError?.isError && (
                 <p className="text-danger">{errors?.nameError?.message}</p>
               )}
             </div>
-            <div className="col-md-6 m-b30">
+            <div className="col-md-4 m-b30">
+              <label className="form-label">
+                Enter Activity Name (AR)
+                <sup className="mandatesign">*</sup>
+              </label>
+              <input
+                dir="rtl"
+                type="text"
+                className="form-control"
+                onChange={(e) => handleNameChange(e, "name_ar")}
+              />
+              {errors?.nameErrorAr?.isError && (
+                <p className="text-danger">{errors?.nameErrorAr?.message}</p>
+              )}
+            </div>
+            <div className="col-md-4 m-b30">
               <label htmlFor="formFile" className="form-label">
                 Upload Image (Please upload a 20px * 20px image.)
               </label>

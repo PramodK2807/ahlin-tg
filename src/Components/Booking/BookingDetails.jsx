@@ -169,7 +169,7 @@ const BookingDetails = () => {
 												</div>
 											</div>
 										</div> */}
-                      <div className="col-md-6 m-b30">
+                      {/* <div className="col-md-6 m-b30">
                         <label className="form-label">
                           Destination<sup className="mandatesign">*</sup>
                         </label>
@@ -191,6 +191,32 @@ const BookingDetails = () => {
                               className=" border-0 ms-2 fs-5 bg-body-secondary"
                               defaultValue="Banglore"
                             />
+                          </div>
+                        </div>
+                      </div> */}
+
+                      <div className="col-auto m-b30">
+                        <label className="form-label">
+                          Destination<sup className="mandatesign">*</sup>
+                        </label>
+                        <div className="d-flex w-100">
+                          <div className="d-flex align-items-center flex-wrap">
+                            {details?.trip?.destinations?.map((item, index) => (
+                              <div
+                                className="form-control bg-body-secondary text-dark "
+                                key={item._id}
+                              >
+                                <span className="pb-1">
+                                  {item?.destination}
+                                  <p>{moment(item?.startDate).format("ll")}</p>
+                                </span>
+
+                                {index !==
+                                  details?.trip?.destinations?.length - 1 && (
+                                  <span className="mx-2 fs-5">→</span>
+                                )}
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>

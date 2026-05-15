@@ -33,8 +33,8 @@ const ForgotPassword = () => {
     return <span>Didn't received the OTP? Wait {remainingTime} seconds</span>;
   };
 
-  const handleSubmitEmail = async () => {
-    console.log(email);
+  const handleSubmitEmail = async (e) => {
+    e.preventDefault();
     try {
       let { data } = await AdminForgotPassword({ email });
       if (data && !data?.error) {
@@ -73,7 +73,7 @@ const ForgotPassword = () => {
                     OTP
                   </p>
                 </div>
-                <form>
+                <form onSubmit={handleSubmitEmail}>
                   <div className="mb-4">
                     <label className="mb-1 text-dark">Email</label>
                     <input
@@ -85,11 +85,7 @@ const ForgotPassword = () => {
                     />
                   </div>
                   <div className="text-center mb-4">
-                    <button
-                      onClick={handleSubmitEmail}
-                      className="btn btn-primary btn-block"
-                      type="button"
-                    >
+                    <button className="btn btn-primary btn-block" type="submit">
                       Submit
                     </button>
                   </div>

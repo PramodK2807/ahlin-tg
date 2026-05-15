@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../Layout/Layout";
 import { useLocation } from "react-router-dom";
+import moment from "moment";
 
 const ViewTrip = () => {
   const { state } = useLocation();
@@ -58,7 +59,7 @@ const ViewTrip = () => {
                           Destination<sup className="mandatesign">*</sup>
                         </label>
                         <div className="d-flex w-100">
-                          <div className="bg-body-secondary p-2 pt-2 rounded ">
+                          {/* <div className="bg-body-secondary p-2 pt-2 rounded ">
                             <label className="form-label">From : </label>
                             <input
                               disabled={true}
@@ -66,7 +67,7 @@ const ViewTrip = () => {
                               className=" border-0 ms-2 fs-5 bg-body-secondary"
                               value={state?.destinations[0]?.destination}
                             />
-                          </div>
+                          </div> */}
                           {/* <div className="bg-body-secondary p-2 pt-2 rounded ">
                             <label className="form-label">From : </label>
                             <input
@@ -77,7 +78,7 @@ const ViewTrip = () => {
                               value={"Tokyo, Japan"}
                             />
                           </div> */}
-                          {state?.destinations?.length > 2 &&
+                          {/* {state?.destinations?.length > 2 &&
                             state?.destinations?.filter((data, i) => {
                               if (
                                 i !== 0 &&
@@ -92,16 +93,24 @@ const ViewTrip = () => {
                                   <p className="">{data?.destination}</p>
                                 </div>;
                               }
-                            })}
+                            })} */}
 
-                          <div className="bg-body-secondary p-2 pt-2 rounded ms-3 ">
-                            <label className="form-label">To : </label>
-                            <input
-                              disabled={true}
-                              type="text"
-                              className=" border-0 ms-2 fs-5 bg-body-secondary"
-                              value={state?.destinations.at(-1).destination}
-                            />
+                          <div className="d-flex align-items-center flex-wrap">
+                            {state?.destinations?.map((item, index) => (
+                              <div
+                                className="form-control bg-body-secondary text-dark"
+                                key={item._id}
+                              >
+                                <span className="">
+                                  {item?.destination}
+                                  <p>{moment(item?.startDate).format("ll")}</p>
+                                </span>
+
+                                {index !== state?.destinations?.length - 1 && (
+                                  <span className="mx-2 fs-5">→</span>
+                                )}
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>

@@ -96,7 +96,7 @@ const TripManagement = () => {
           returnData.localName = list?.local?.fullName || "NA";
           returnData.noOfGuests = list?.noGuest || "NA";
           returnData.status =
-            list?.bookingType && list?.bookingType === "completed" ? (
+            list?.bookingType && list?.bookingType === "Completed" ? (
               <span className="badge light badge-success">Completed</span>
             ) : list?.bookingType === "UpComing" ? (
               <span className="badge light badge-info">Upcoming</span>
@@ -105,7 +105,9 @@ const TripManagement = () => {
             ) : list?.bookingType === "Canceled" ? (
               <span className="badge light badge-danger">Cancelled</span>
             ) : (
-              list?.bookingType
+              <span className="badge light badge-warning">
+                {list?.bookingType}
+              </span>
             );
           returnData.date =
             moment(list?.startDate).format("MMM Do YYYY") || "NA";

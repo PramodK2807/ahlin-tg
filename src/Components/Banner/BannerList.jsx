@@ -32,6 +32,12 @@ const BannerList = () => {
         width: 50,
         selected: false,
       },
+      {
+        label: "Banner Name (AR)",
+        field: "name_ar",
+        width: 50,
+        selected: false,
+      },
 
       {
         label: "Banner File",
@@ -106,6 +112,7 @@ const BannerList = () => {
           returnData.sno = index + 1;
           returnData.id = list?.tripId || "NA";
           returnData.name = list?.name || "NA";
+          returnData.name_ar = list?.name_ar || "NA";
           returnData.date =
             moment(list?.createdAt).format("DD/MM/YYYY") || "NA";
 

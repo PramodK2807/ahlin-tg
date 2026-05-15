@@ -28,6 +28,7 @@ const AddBanner = () => {
   useEffect(() => {
     if (state) {
       setValue("name", state?.name);
+      setValue("name_ar", state?.name_ar);
       if (state?.image) {
         setImagePreview(state.image);
       }
@@ -53,6 +54,7 @@ const AddBanner = () => {
     try {
       const formData = new FormData();
       formData.append("name", info.name);
+      formData.append("name_ar", info.name_ar);
       formData.append("image", info.image[0]);
       setLoading(true);
       let action =
@@ -97,7 +99,7 @@ const AddBanner = () => {
                       {/* Banner Name */}
                       <div className="col-md-4 m-b30">
                         <label className="form-label">
-                          Banner Name<sup className="mandatesign">*</sup>
+                          Banner Name (En)<sup className="mandatesign">*</sup>
                         </label>
                         <input
                           type="text"
@@ -117,6 +119,32 @@ const AddBanner = () => {
                         {errors.name && (
                           <div className="invalid-feedback">
                             {errors.name.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
+                          Banner Name (Ar)<sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          dir="rtl"
+                          type="text"
+                          className={`form-control ${errors.name_ar ? "is-invalid" : ""}`}
+                          {...register("name_ar", {
+                            required: "*Arabic Name is required",
+                            minLength: {
+                              value: 2,
+                              message: "Minimum 2 characters",
+                            },
+                            maxLength: {
+                              value: 15,
+                              message: "Maximum 15 characters",
+                            },
+                          })}
+                        />
+                        {errors.name_ar && (
+                          <div className="invalid-feedback">
+                            {errors.name_ar.message}
                           </div>
                         )}
                       </div>
