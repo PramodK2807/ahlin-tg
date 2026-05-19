@@ -299,6 +299,7 @@ const Activity = () => {
                 <p className="text-danger">{errors?.nameError?.message}</p>
               )}
             </div>
+            
             <div className="col-md-4 m-b30">
               <label className="form-label">
                 Enter Activity Name (AR)
