@@ -12,8 +12,9 @@ import PaymentSuccess from "./Payment/PaymentSuccess";
 import PaymentFailed from "./Payment/PaymentFailed";
 import BannerList from "./Components/Banner/BannerList";
 import AddBanner from "./Components/Banner/AddBanner";
-import CityManager from "./CityManager";
 import ReviewList from "./Components/ReviewAndRatings/ReviewList";
+import CityManager from "./Components/City/CityManager";
+import AddEditCity from "./Components/City/AddEditCity";
 
 // Lazy imports
 const Login = lazy(() => import("./Components/Login"));
@@ -375,6 +376,16 @@ function App() {
             <IsLoggedIn>
               <Suspense fallback={<Loader />}>
                 <CityManager />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="Cities/:key"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <AddEditCity />
               </Suspense>
             </IsLoggedIn>
           }
