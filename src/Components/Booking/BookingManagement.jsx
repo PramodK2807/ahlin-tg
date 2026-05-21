@@ -7,6 +7,7 @@ import {
 } from "../../adminHttpServices/dashHttpService";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 const BookingManagement = () => {
   const [count, setCount] = useState(0);
@@ -155,9 +156,20 @@ const BookingManagement = () => {
 
   const handleDeleteItem = async (id) => {
     try {
-      let { data } = await DeleteBooking(id);
-      if (data && !data.error) {
-        getBookings();
+      let confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+      if (confirm?.isConfirmed) {
+        let { data } = await DeleteBooking(id);
+        if (data && !data.error) {
+          getBookings();
+        }
       }
     } catch (error) {
       console.log(error);

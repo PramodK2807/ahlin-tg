@@ -35,6 +35,7 @@ const SubscriptionDetails = () => {
       let values = state?.data;
 
       setValue("plan", values?.subscriptionName);
+      setValue("plan_ar", values?.subscriptionName_ar);
       setValue("price", values?.amount);
       setValue("validity", values?.validity);
       setValue("acceptOffer", values?.acceptOffer || 0);
@@ -47,6 +48,7 @@ const SubscriptionDetails = () => {
         );
       }
     }
+    setValue("validity", 1);
   }, [state?.data, setValue]);
 
   const onSubmit = async (info) => {
@@ -54,6 +56,7 @@ const SubscriptionDetails = () => {
       setLoading(true);
       const payload = {
         subscriptionName: info.plan?.trim(),
+        subscriptionName_ar: info.plan_ar?.trim(),
         amount: Number(info.price),
         validity: info.validity,
         sendingOffer: +info.sendingOffer || 0,
@@ -135,6 +138,35 @@ const SubscriptionDetails = () => {
                       </div>
                       <div className="col-md-4 m-b30">
                         <label className="form-label">
+                          Subscription Name (Ar)
+                          <sup className="mandatesign">*</sup>
+                        </label>
+                        <input
+                          disabled={state?.isView}
+                          type="text"
+                          className={`form-control ${
+                            errors.plan_ar ? "is-invalid" : ""
+                          }`}
+                          {...register("plan_ar", {
+                            required: "* Plan name (AR) is required",
+                            minLength: {
+                              value: 2,
+                              message: "Minimum 2 characters",
+                            },
+                            maxLength: {
+                              value: 15,
+                              message: "Maximum 15 characters",
+                            },
+                          })}
+                        />
+                        {errors.plan_ar && (
+                          <div className="invalid-feedback">
+                            {errors.plan_ar.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="col-md-4 m-b30">
+                        <label className="form-label">
                           Plan Cost<sup className="mandatesign">*</sup>
                         </label>
                         <input
@@ -166,7 +198,8 @@ const SubscriptionDetails = () => {
                           Validity (Monthly)<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                          disabled={state?.isView}
+                          disabled={true}
+                          // disabled={state?.isView}
                           type="number"
                           className={`form-control ${
                             errors.validity ? "is-invalid" : ""
@@ -184,7 +217,7 @@ const SubscriptionDetails = () => {
                           })}
                         />
                       </div>
-                      <div className="col-md-6 m-b30">
+                      <div className="col-md-4 m-b30">
                         <label className="form-label">
                           Number of Offers Send
                           <sup className="mandatesign">*</sup>
@@ -215,7 +248,7 @@ const SubscriptionDetails = () => {
                           </div>
                         )}
                       </div>
-                      <div className="col-md-6 m-b30">
+                      <div className="col-md-4 m-b30">
                         <label className="form-label">
                           Number of Offers Accepted
                           <sup className="mandatesign">*</sup>

@@ -9,6 +9,7 @@ import {
 } from "../../adminHttpServices/dashHttpService";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 const Activity = () => {
   const [name, setName] = useState("");
@@ -259,9 +260,20 @@ const Activity = () => {
 
   const handleDeleteItem = async (id) => {
     try {
-      let { data } = await DeleteActivity(id);
-      if (data && !data.error) {
-        getActivity();
+      let confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+      if (confirm?.isConfirmed) {
+        let { data } = await DeleteActivity(id);
+        if (data && !data.error) {
+          getActivity();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -299,7 +311,7 @@ const Activity = () => {
                 <p className="text-danger">{errors?.nameError?.message}</p>
               )}
             </div>
-            
+
             <div className="col-md-4 m-b30">
               <label className="form-label">
                 Enter Activity Name (AR)

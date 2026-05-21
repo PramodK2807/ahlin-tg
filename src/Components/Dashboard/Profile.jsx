@@ -231,14 +231,14 @@ const Profile = () => {
                         )}
                       </div>
                       <div className="col-md-4 m-b30">
-                        <label className="form-label">Vat Tax</label>
+                        <label className="form-label">Vat Tax (%)</label>
                         <input
                           type="number"
                           className={`form-control ${
                             errors.commission ? "is-invalid" : ""
                           }`}
                           {...register("commission", {
-                            required: "Vat Tax is required",
+                            required: "Vat Tax % is required",
                             min: {
                               value: 0,
                               message:
