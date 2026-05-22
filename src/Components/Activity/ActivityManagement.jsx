@@ -18,7 +18,7 @@ const ActivityManagement = () => {
                   </div>
                 </div>
                 <div className="card-body">
-                  <ul
+                  {/* <ul
                     className="nav nav-pills mb-3"
                     id="pills-tab"
                     role="tablist"
@@ -57,7 +57,7 @@ const ActivityManagement = () => {
                         Sub Activity
                       </button>
                     </li>
-                  </ul>
+                  </ul> */}
                   <div className="tab-content" id="pills-tabContent">
                     <div
                       className={`tab-pane fade ${
@@ -70,7 +70,7 @@ const ActivityManagement = () => {
                     >
                       {activeTab === "activity" && <Activity />}
                     </div>
-                    <div
+                    {/* <div
                       className={`tab-pane fade ${
                         activeTab === "subActivity" ? "show active" : ""
                       }`}
@@ -80,7 +80,7 @@ const ActivityManagement = () => {
                       tabIndex={0}
                     >
                       {activeTab === "subActivity" && <SubActivity />}
-                    </div>
+                    </div> */}
                   </div>
                   {/* <hr /> */}
                 </div>

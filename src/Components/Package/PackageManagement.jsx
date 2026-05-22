@@ -47,6 +47,12 @@ const PackageManagement = () => {
         width: 50,
         selected: false,
       },
+      {
+        label: "Created On",
+        field: "createdAt",
+        width: 50,
+        selected: false,
+      },
 
       {
         label: "Status",
@@ -76,13 +82,13 @@ const PackageManagement = () => {
   }, [filterFields]);
 
   const getPackage = async (signal) => {
-    let { data } = await GetAllPackage(filterFields, {signal});
+    let { data } = await GetAllPackage(filterFields, { signal });
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
       let values = data?.results?.list;
       values
-        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
+        ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt))
         ?.map((list, index) => {
           const returnData = {};
           returnData.sno = index + 1;
@@ -93,7 +99,7 @@ const PackageManagement = () => {
           // );
 
           returnData.price = list?.price || "NA";
-          // returnData.date = moment(list?.createdAt).format("Do MMMM YYYY");
+          returnData.createdAt = moment(list?.createdAt).format("lll");
 
           returnData.status = (
             <div className="check_toggle text-center" key={list?._id}>

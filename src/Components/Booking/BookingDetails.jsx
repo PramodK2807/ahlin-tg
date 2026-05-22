@@ -4,11 +4,62 @@ import { useLocation } from "react-router-dom";
 import { GetBookingDetails } from "../../adminHttpServices/dashHttpService";
 import moment from "moment";
 import ActivityCard from "../Common/ActivityCard";
+const staticDestinations = [
+  {
+    _id: "1",
+    destination: "Dubai",
+    startDate: "2026-05-01",
+  },
+  {
+    _id: "2",
+    destination: "Abu Dhabi",
+    startDate: "2026-05-03",
+  },
+  {
+    _id: "3",
+    destination: "Sharjah",
+    startDate: "2026-05-05",
+  },
+  {
+    _id: "4",
+    destination: "Ajman",
+    startDate: "2026-05-07",
+  },
+  {
+    _id: "5",
+    destination: "Fujairah",
+    startDate: "2026-05-09",
+  },
+  {
+    _id: "6",
+    destination: "Ras Al Khaimah",
+    startDate: "2026-05-11",
+  },
+  {
+    _id: "7",
+    destination: "Doha",
+    startDate: "2026-05-13",
+  },
+  {
+    _id: "8",
+    destination: "Muscat",
+    startDate: "2026-05-15",
+  },
+  {
+    _id: "9",
+    destination: "Bahrain",
+    startDate: "2026-05-17",
+  },
+  {
+    _id: "10",
+    destination: "Kuwait",
+    startDate: "2026-05-19",
+  },
+];
 
 const BookingDetails = () => {
   const [details, setDetails] = useState();
   const { state } = useLocation();
-  console.log(state);
 
   useEffect(() => {
     getBookingDetails();
@@ -24,6 +75,8 @@ const BookingDetails = () => {
       console.error(error);
     }
   };
+
+  console.log(details);
   return (
     <Layout activeSlide={"Booking"}>
       <div className="content-body">
@@ -89,7 +142,7 @@ const BookingDetails = () => {
                           disabled={true}
                           type="text"
                           className="form-control bg-body-secondary text-dark"
-                          value={details?.package?.price}
+                          value={details?.totalAmount || 0}
                         />
                       </div>
                     </div>
@@ -199,25 +252,26 @@ const BookingDetails = () => {
                         <label className="form-label">
                           Destination<sup className="mandatesign">*</sup>
                         </label>
-                        <div className="d-flex w-100">
-                          <div className="d-flex align-items-center flex-wrap">
-                            {details?.trip?.destinations?.map((item, index) => (
-                              <div
-                                className="form-control bg-body-secondary text-dark "
-                                key={item._id}
-                              >
-                                <span className="pb-1">
-                                  {item?.destination}
-                                  <p>{moment(item?.startDate).format("ll")}</p>
-                                </span>
 
-                                {index !==
-                                  details?.trip?.destinations?.length - 1 && (
-                                  <span className="mx-2 fs-5">→</span>
-                                )}
+                        <div className="d-flex align-items-center flex-wrap gap-2">
+                          {details?.trip?.destinations?.map((item, index) => (
+                            <React.Fragment key={item._id}>
+                              <div className="form-control bg-body-secondary text-dark w-auto">
+                                <div className="fw-semibold">
+                                  {item?.destination}
+                                </div>
+
+                                <p className="mb-0 small">
+                                  {moment(item?.startDate).format("ll")}
+                                </p>
                               </div>
-                            ))}
-                          </div>
+
+                              {index !==
+                                details?.trip?.destinations.length - 1 && (
+                                <span className="fs-4 fw-bold">→</span>
+                              )}
+                            </React.Fragment>
+                          ))}
                         </div>
                       </div>
                     </div>

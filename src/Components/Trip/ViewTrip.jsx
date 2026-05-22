@@ -58,60 +58,24 @@ const ViewTrip = () => {
                         <label className="form-label">
                           Destination<sup className="mandatesign">*</sup>
                         </label>
-                        <div className="d-flex w-100">
-                          {/* <div className="bg-body-secondary p-2 pt-2 rounded ">
-                            <label className="form-label">From : </label>
-                            <input
-                              disabled={true}
-                              type="text"
-                              className=" border-0 ms-2 fs-5 bg-body-secondary"
-                              value={state?.destinations[0]?.destination}
-                            />
-                          </div> */}
-                          {/* <div className="bg-body-secondary p-2 pt-2 rounded ">
-                            <label className="form-label">From : </label>
-                            <input
-                            disabled={true}
-                              type="text"
-                              className=" border-0 ms-2 fs-5 bg-body-secondary text-wrap"
-                              value={state?.destinations[0]?.destination}
-                              value={"Tokyo, Japan"}
-                            />
-                          </div> */}
-                          {/* {state?.destinations?.length > 2 &&
-                            state?.destinations?.filter((data, i) => {
-                              if (
-                                i !== 0 &&
-                                i !== state.destinations.length - 1
-                              ) {
-                                return false;
-                              } else {
-                                <div
-                                  key={i}
-                                  className="bg-body-secondary p-2 pt-2 rounded ms-3 h-100"
-                                >
-                                  <p className="">{data?.destination}</p>
-                                </div>;
-                              }
-                            })} */}
-
-                          <div className="d-flex align-items-center flex-wrap">
-                            {state?.destinations?.map((item, index) => (
-                              <div
-                                className="form-control bg-body-secondary text-dark"
-                                key={item._id}
-                              >
-                                <span className="">
+                        <div className="d-flex align-items-center flex-wrap gap-2">
+                          {state?.destinations?.map((item, index) => (
+                            <React.Fragment key={item._id}>
+                              <div className="form-control bg-body-secondary text-dark w-auto">
+                                <div className="fw-semibold">
                                   {item?.destination}
-                                  <p>{moment(item?.startDate).format("ll")}</p>
-                                </span>
+                                </div>
 
-                                {index !== state?.destinations?.length - 1 && (
-                                  <span className="mx-2 fs-5">→</span>
-                                )}
+                                <p className="mb-0 small">
+                                  {moment(item?.startDate).format("ll")}
+                                </p>
                               </div>
-                            ))}
-                          </div>
+
+                              {index !== state?.destinations.length - 1 && (
+                                <span className="fs-4 fw-bold">→</span>
+                              )}
+                            </React.Fragment>
+                          ))}
                         </div>
                       </div>
                       <div className="col-md-3 m-b30">

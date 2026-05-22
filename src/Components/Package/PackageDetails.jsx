@@ -71,13 +71,13 @@ const PackageDetails = () => {
                       </div>
                       <div className="col-md-4 m-b30">
                         <label className="form-label">
-                          Booked By<sup className="mandatesign">*</sup>
+                          Number Of Guests<sup className="mandatesign">*</sup>
                         </label>
                         <input
                           type="text"
                           disabled
                           className="form-control"
-                          defaultValue="100 Guests"
+                          value={details?.local?.maxGuest || "NA"}
                         />
                       </div>
                       <div className="col-md-4 m-b30">

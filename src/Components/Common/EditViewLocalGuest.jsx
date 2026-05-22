@@ -382,12 +382,11 @@ const EditViewLocalGuest = () => {
                         />
                       </div>
 
-                      {state?.type === "Guide" && (
+                      {/* {state?.type === "Guide" && (
                         <>
                           <div className="col-md-3 m-b30 position-relative">
                             <label className="form-label">
                               View Certificate & Approve
-                              {/* <sup className="mandatesign">*</sup> */}
                             </label>
 
                             {details?.certificate ? (
@@ -407,32 +406,22 @@ const EditViewLocalGuest = () => {
                             )}
                           </div>
                         </>
-                      )}
+                      )} */}
 
-                      {state?.type !== "Guide" && (
-                        <div className="col-md-5 m-b30">
-                          <label className="form-label" htmlFor="img">
-                            Passport Image<sup className="mandatesign">*</sup>
-                            <div className="mt-2">
-                              <img
-                                // src="/images/0_91v0rV9LQBJdPX7s.jpg"
-                                src={
-                                  imageUrl || "/images/0_91v0rV9LQBJdPX7s.jpg"
-                                }
-                                className="passport_photo_manage"
-                                alt="i"
-                              />
-                              {/* <input
-                                type="file"
-                                onChange={onFileChange}
-                                className="d-none"
-                                name="img"
-                                id="img"
-                              /> */}
-                            </div>
-                          </label>
-                        </div>
-                      )}
+                      <div className="col-md-5 m-b30">
+                        <label className="form-label" htmlFor="img">
+                          Profile Image<sup className="mandatesign">*</sup>
+                          <div className="mt-2">
+                            <img
+                              // src="/images/0_91v0rV9LQBJdPX7s.jpg"
+                              src={imageUrl || "/images/0_91v0rV9LQBJdPX7s.jpg"}
+                              className="passport_photo_manage"
+                              alt="i"
+                            />
+                          </div>
+                        </label>
+                      </div>
+
                       {state?.type === "Guide" &&
                         details?.tripMemories?.length > 0 && (
                           <div className="row">
