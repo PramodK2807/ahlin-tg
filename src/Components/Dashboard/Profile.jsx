@@ -271,6 +271,11 @@ const Profile = () => {
                               message:
                                 "Value must be greater than or equal to 0",
                             },
+                            max: {
+                              value: 100,
+                              message:
+                                "Value must be less than or equal to 100",
+                            },
                           })}
                         />
                         {errors?.ahlinFees && (
