@@ -409,8 +409,23 @@ const EditViewLocalGuest = () => {
                           </div>
                         </>
                       )} */}
+                      {state?.type === "Guide" && (
+                        <div className="col-md-4 m-b30">
+                          <label className="form-label">
+                            Account Number<sup className="mandatesign">*</sup>
+                          </label>
+                          <input
+                            type="text"
+                            disabled={true}
+                            // value={commission}
+                            value={details?.ibanNumber}
+                            className="form-control"
+                            // onChange={(e) => setCommission(e.target.value)}
+                          />
+                        </div>
+                      )}
 
-                      <div className="col-md-5 m-b30">
+                      <div className="col-md-2 m-b30">
                         <label className="form-label" htmlFor="img">
                           Profile Image<sup className="mandatesign">*</sup>
                           <div className="mt-2">

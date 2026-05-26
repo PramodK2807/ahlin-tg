@@ -48,7 +48,7 @@ const SubscriptionDetails = () => {
         );
       }
     }
-    setValue("validity", 1);
+    // setValue("validity", 1);
   }, [state?.data, setValue]);
 
   const onSubmit = async (info) => {
@@ -198,8 +198,8 @@ const SubscriptionDetails = () => {
                           Validity (Monthly)<sup className="mandatesign">*</sup>
                         </label>
                         <input
-                          disabled={true}
-                          // disabled={state?.isView}
+                          // disabled={true}
+                          disabled={state?.isView}
                           type="number"
                           className={`form-control ${
                             errors.validity ? "is-invalid" : ""

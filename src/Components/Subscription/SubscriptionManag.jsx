@@ -48,6 +48,12 @@ const SubscriptionManag = () => {
         selected: false,
       },
       {
+        label: "Validity (in Months)",
+        field: "validity",
+        width: 50,
+        selected: false,
+      },
+      {
         label: "Status",
         field: "status",
         width: 50,
