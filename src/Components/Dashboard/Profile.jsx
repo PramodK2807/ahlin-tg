@@ -258,7 +258,7 @@ const Profile = () => {
                         )}
                       </div>
                       <div className="col-md-4 m-b30">
-                        <label className="form-label">Ahlin Fees</label>
+                        <label className="form-label">Ahlin Fees (%)</label>
                         <input
                           type="number"
                           className={`form-control ${
