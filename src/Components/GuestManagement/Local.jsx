@@ -103,7 +103,7 @@ const Local = () => {
           returnData.name = list?.fullName;
           returnData.mobile = +list?.mobileNumber || "NA";
           returnData.email = list?.email || "NA";
-          returnData.plan = list?.plan || "None";
+          returnData.plan = list?.planType || list?.subscription || "None";
           returnData.rating = list?.rating || "NA";
           returnData.reviews = list?.reviews || "NA";
           returnData.status = (

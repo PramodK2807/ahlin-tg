@@ -117,7 +117,7 @@ const PackageDetails = () => {
                           type="text"
                           disabled
                           className="form-control"
-                          value={details?.includes}
+                          value={details?.otherIncludes?.join(", ")}
                         />
                       </div>
                       <div className="col-md-6 m-b30">
@@ -128,7 +128,7 @@ const PackageDetails = () => {
                           type="text"
                           disabled
                           className="form-control"
-                          value={details?.excludes}
+                          value={details?.otherExcludes?.join(", ")}
                         />
                       </div>
                       <div className=" m-b30">

@@ -336,12 +336,14 @@ const EditViewLocalGuest = () => {
                         <input
                           disabled
                           type="text"
-                          className={`form-control ${
-                            errors.country ? "is-invalid" : ""
-                          }`}
-                          {...register("country", {
-                            required: "* Country is required",
-                          })}
+                          value={"Saudi Arabia"}
+                          className="form-control"
+                          // className={`form-control ${
+                          //   errors.country ? "is-invalid" : ""
+                          // }`}
+                          // {...register("country", {
+                          //   required: "* Country is required",
+                          // })}
                         />
                         {errors.country && (
                           <div className="invalid-feedback">
@@ -413,10 +415,14 @@ const EditViewLocalGuest = () => {
                           Profile Image<sup className="mandatesign">*</sup>
                           <div className="mt-2">
                             <img
-                              // src="/images/0_91v0rV9LQBJdPX7s.jpg"
+                              onClick={() => {
+                                if (imageUrl) {
+                                  window.open(imageUrl, "_blank");
+                                }
+                              }}
                               src={imageUrl || "/images/0_91v0rV9LQBJdPX7s.jpg"}
-                              className="passport_photo_manage"
-                              alt="i"
+                              className="passport_photo_manage cursor-pointer"
+                              alt="passport"
                             />
                           </div>
                         </label>
