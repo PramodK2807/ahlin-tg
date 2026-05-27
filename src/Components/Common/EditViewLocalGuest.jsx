@@ -61,7 +61,7 @@ const EditViewLocalGuest = () => {
         setValue("email", values?.email || "NA");
         setValue("dob", moment(values?.dob).format("YYYY-MM-DD") || "NA");
         setValue("image", values?.profile_image || "NA");
-        setValue("country", values?.countryName || "NA");
+        setValue("country", values?.countryName || values?.country || "NA");
         setCommission(values?.commission);
         setImageUrl(values?.profileImage[0]);
       }
@@ -336,14 +336,13 @@ const EditViewLocalGuest = () => {
                         <input
                           disabled
                           type="text"
-                          value={"Saudi Arabia"}
-                          className="form-control"
-                          // className={`form-control ${
-                          //   errors.country ? "is-invalid" : ""
-                          // }`}
-                          // {...register("country", {
-                          //   required: "* Country is required",
-                          // })}
+                          // value={"Saudi Arabia"}
+                          className={`form-control ${
+                            errors.country ? "is-invalid" : ""
+                          }`}
+                          {...register("country", {
+                            required: "* Country is required",
+                          })}
                         />
                         {errors.country && (
                           <div className="invalid-feedback">
@@ -410,19 +409,35 @@ const EditViewLocalGuest = () => {
                         </>
                       )} */}
                       {state?.type === "Guide" && (
-                        <div className="col-md-4 m-b30">
-                          <label className="form-label">
-                            Account Number<sup className="mandatesign">*</sup>
-                          </label>
-                          <input
-                            type="text"
-                            disabled={true}
-                            // value={commission}
-                            value={details?.ibanNumber}
-                            className="form-control"
-                            // onChange={(e) => setCommission(e.target.value)}
-                          />
-                        </div>
+                        <>
+                          {" "}
+                          <div className="col-md-6 m-b30">
+                            <label className="form-label">
+                              Iban Number<sup className="mandatesign">*</sup>
+                            </label>
+                            <input
+                              type="text"
+                              disabled={true}
+                              // value={commission}
+                              value={details?.ibanNumber}
+                              className="form-control"
+                              // onChange={(e) => setCommission(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-md-4 m-b30">
+                            <label className="form-label">
+                              Bank Name<sup className="mandatesign">*</sup>
+                            </label>
+                            <input
+                              type="text"
+                              disabled={true}
+                              // value={commission}
+                              value={details?.bankName}
+                              className="form-control"
+                              // onChange={(e) => setCommission(e.target.value)}
+                            />
+                          </div>
+                        </>
                       )}
 
                       <div className="col-md-2 m-b30">
