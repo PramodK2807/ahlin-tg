@@ -8,6 +8,7 @@ import {
   Commission,
   DeleteGalleryImage,
   GuideDetails,
+  UnblockApi,
   UpdateDetails,
   UserDetails,
 } from "../../adminHttpServices/dashHttpService";
@@ -214,6 +215,38 @@ const EditViewLocalGuest = () => {
   //   }
   // };
 
+  const handleUnblock = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action will unblock the local.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, unblock it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          let { data } = await UnblockApi(id);
+          if (data && !data?.error) {
+            Swal.fire({
+              toast: true,
+              icon: "success",
+              position: "top-end",
+              title: "Local unblocked successfully",
+              showConfirmButton: false,
+              timerProgressBar: true,
+              timer: 3000,
+            });
+            navigate(-1);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
+
   return (
     <Layout activeSlide={"Guest"}>
       <div className="content-body">
@@ -221,8 +254,13 @@ const EditViewLocalGuest = () => {
           <div className="row">
             <div className="col-xl-12">
               <div className="card profile-card card-bx m-b30">
-                <div className="card-header">
+                <div className="card-header d-flex align-items-center justify-content-between">
                   <h6 className="title">{state?.title}</h6>
+                  {details?.isBlocked && (
+                    <button className="btn btn-primary" onClick={handleUnblock}>
+                      Unblock
+                    </button>
+                  )}
                 </div>
                 <form
                   className="profile-form"
@@ -379,6 +417,7 @@ const EditViewLocalGuest = () => {
                           // value={commission}
                           value={moment(details?.createdAt).format("L")}
                           className="form-control"
+                          disabled={true}
                           // onChange={(e) => setCommission(e.target.value)}
                         />
                       </div>
