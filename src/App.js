@@ -15,6 +15,7 @@ import AddBanner from "./Components/Banner/AddBanner";
 import ReviewList from "./Components/ReviewAndRatings/ReviewList";
 import CityManager from "./Components/City/CityManager";
 import AddEditCity from "./Components/City/AddEditCity";
+import RefundManagement from "./Components/Refund/RefundManagement";
 
 // Lazy imports
 const Login = lazy(() => import("./Components/Login"));
@@ -400,6 +401,16 @@ function App() {
             </IsLoggedIn>
           }
         />
+        {/* <Route
+          path="Refund-Management"
+          element={
+            <IsLoggedIn>
+              <Suspense fallback={<Loader />}>
+                <RefundManagement />
+              </Suspense>
+            </IsLoggedIn>
+          }
+        /> */}
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment/:checkoutId" element={<Payment />} />
         <Route path="/payment-status" element={<PaymentStatus />} />

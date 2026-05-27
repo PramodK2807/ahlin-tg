@@ -1190,6 +1190,73 @@ export async function DeletePackage(id) {
   }
 }
 
+// REFUND
+export async function GetAllRefundList(formData, signal) {
+  try {
+    const { data } = await adminHttpService.put(
+      `${process.env.REACT_APP_API}/api/admin/refundList`,
+      formData,
+      signal,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
+export async function GetAllRefundDetails(id) {
+  try {
+    const { data } = await adminHttpService.get(
+      `${process.env.REACT_APP_API}/api/admin/refundDetails/${id}`,
+    );
+
+    if (!data?.error) {
+      return { data };
+    } else
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: data.message,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+  } catch (error) {
+    if (error.response)
+      Swal.fire({
+        toast: true,
+        icon: "error",
+        position: "top-end",
+        title: "error",
+        showConfirmButton: false,
+        timerProgressBar: true,
+        timer: 3000,
+      });
+    return { error };
+  }
+}
 // SUBSCRIPTION MANAGEMENT
 export async function GetAllSubscription(formData, signal) {
   try {

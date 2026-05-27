@@ -155,6 +155,17 @@ const Layout = ({ children, activeSlide }) => {
               </Link>
             </li>
             <li
+              onClick={() => setSlide("Refund")}
+              className={slide === "Refund" ? "mm-active" : ""}
+            >
+              <Link to="/Refund-Management" aria-expanded="false">
+                <div className="menu-icon">
+                  <i className="fa-solid fa-money-bill-transfer" />
+                </div>
+                <span className="nav-text">Refund Management</span>
+              </Link>
+            </li>
+            <li
               onClick={() => setSlide("Rating")}
               className={slide === "Rating" ? "mm-active" : ""}
             >
