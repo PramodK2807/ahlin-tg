@@ -60,18 +60,18 @@ const PayoutManag = () => {
       //   width: 50,
       //   selected: false,
       // },
-      {
-        label: "Ahlain Fees",
-        field: "ahlainFee",
-        width: 50,
-        selected: false,
-      },
-      {
-        label: "Total Amount",
-        field: "total",
-        width: 50,
-        selected: false,
-      },
+      // {
+      //   label: "Ahlain Fees",
+      //   field: "ahlainFee",
+      //   width: 50,
+      //   selected: false,
+      // },
+      // {
+      //   label: "Total Amount",
+      //   field: "total",
+      //   width: 50,
+      //   selected: false,
+      // },
 
       // {
       //   label: "Status",
