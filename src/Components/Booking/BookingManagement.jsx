@@ -98,7 +98,7 @@ const BookingManagement = () => {
           returnData.id = list?.bookingId || "NA";
           returnData.name = list?.user?.fullName || "NA";
           returnData.localName = list?.local?.fullName || "NA";
-          returnData.amount = list?.package?.price || "NA";
+          returnData.amount = list?.totalAmount || "NA";
           returnData.status =
             list?.status && list?.status === "completed" ? (
               <span className="badge light badge-success">Completed</span>

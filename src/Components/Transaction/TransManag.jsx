@@ -128,13 +128,9 @@ const TransManag = () => {
           returnData.status = list?.status || "Pending";
           returnData.payment = list?.paymentType || "NA";
 
-          returnData.vat =
-            Number(list?.totalAmountAfterCommission || 0) -
-            Number(list?.amount || 0);
+          returnData.vat = list?.vat || 0;
 
-          returnData.total =
-            Number(list?.totalAmountAfterCommission || 0) +
-            Number(list?.adminFees || 0);
+          returnData.total = list?.totalAmountAfterCommission || 0;
           // returnData.status = (
           //   <div className="check_toggle text-center" key={list?._id}>
           //     <input
