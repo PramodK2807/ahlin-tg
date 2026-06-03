@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { MDBDataTable } from "mdbreact";
-import { TransactionList } from "../../adminHttpServices/dashHttpService";
-import { Link } from "react-router-dom";
+import { PayoutListApi } from "../../adminHttpServices/dashHttpService";
 
 const PayoutManag = () => {
   const [filterFields, setFilterFields] = useState({
@@ -16,76 +15,62 @@ const PayoutManag = () => {
         label: "S.No.",
         field: "sno",
         width: 50,
-        selected: false,
       },
       {
-        label: "Booking Id ",
-        field: "id",
-        width: 50,
-        selected: false,
-      },
-      {
-        label: "Invoice Id ",
-        field: "invoiceId",
-        width: 50,
-        selected: false,
+        label: "Booking ID",
+        field: "bookingId",
+        width: 100,
       },
       {
         label: "Guest Name",
-        field: "gName",
-        width: 50,
-        selected: false,
+        field: "guestName",
+        width: 150,
+      },
+      {
+        label: "Guest Email",
+        field: "guestEmail",
+        width: 200,
       },
       {
         label: "Local Name",
-        field: "lName",
-        width: 50,
-        selected: false,
+        field: "localName",
+        width: 150,
+      },
+      {
+        label: "Local Email",
+        field: "localEmail",
+        width: 200,
+      },
+      {
+        label: "Package Name",
+        field: "packageName",
+        width: 150,
+      },
+      {
+        label: "Package Price",
+        field: "packagePrice",
+        width: 120,
+      },
+      {
+        label: "Local Earning",
+        field: "localEarning",
+        width: 120,
+      },
+      {
+        label: "Total Amount",
+        field: "totalAmount",
+        width: 120,
+      },
+      {
+        label: "Status",
+        field: "status",
+        width: 120,
       },
       {
         label: "Booking Date",
         field: "date",
-        width: 50,
-        selected: false,
+        width: 120,
       },
-      {
-        label: "Booking Amount",
-        field: "amount",
-        width: 50,
-        selected: false,
-      },
-      // {
-      //   label: "Vat Amount",
-      //   field: "vat",
-      //   width: 50,
-      //   selected: false,
-      // },
-      // {
-      //   label: "Ahlain Fees",
-      //   field: "ahlainFee",
-      //   width: 50,
-      //   selected: false,
-      // },
-      // {
-      //   label: "Total Amount",
-      //   field: "total",
-      //   width: 50,
-      //   selected: false,
-      // },
-
-      // {
-      //   label: "Status",
-      //   field: "status",
-      //   width: 50,
-      //   selected: false,
-      // },
-
-      // {
-      //   label: "Actions",
-      //   field: "actions",
-      //   width: 100,
-      //   selected: false,
-      // },
     ],
     rows: [],
   });
@@ -101,78 +86,49 @@ const PayoutManag = () => {
   }, [filterFields]);
 
   const getPayout = async (signal) => {
-    let { data } = await TransactionList(filterFields, { signal });
+    let { data } = await PayoutListApi(filterFields, { signal });
     console.warn(data);
     if (data && !data?.error) {
       const newRows = [];
-      let values = data?.results?.transactions;
+      let values = data?.results?.payoutList;
       values
-        ?.sort((a, b) => new Date(b?.updatedAt) - new Date(a?.updatedAt))
-        ?.map((list, index) => {
+        ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        ?.forEach((list, index) => {
           const returnData = {};
-          returnData.sno = index + 1;
-          returnData.id = list?.bookingId || "NA";
-          returnData.invoiceId = list?.paymentId || "NA";
-          returnData.gName = list?.user?.fullName || "NA";
-          returnData.lName = list?.local?.fullName || "NA";
-          returnData.date = list?.createdAt
-            ? new Date(list?.createdAt).toLocaleDateString()
-            : "NA";
-          returnData.amount = list?.amount || "0";
-          returnData.vat = list?.vatAmount || "0";
-          returnData.ahlainFee = list?.adminFees || "0";
-          returnData.total =
-            Number(list?.amount || 0) - Number(list?.adminFees || 0);
 
-          // returnData.status = (
-          //   <div className="check_toggle text-center" key={list?._id}>
-          //     <input
-          //       type="checkbox"
-          //       defaultChecked={list?.status}
-          //       name="check1"
-          //       id={list?._id}
-          //       className="d-none"
-          //       // onClick={() => {
-          //       //   changeStatus(list?._id, list?.status);
-          //       // }}
-          //     />
-          //     <label for={list?._id}></label>
-          //   </div>
-          // );
-          returnData.actions = (
-            <div className="d-flex">
-              {/* <Link
-                to={`/Guest-Management/Details/${list?._id}`}
-                state={{
-                  title: "Edit Guest Details",
-                  isEdit: false,
-                  type: "User",
-                  api: "editUser",
-                }}
-                className="btn btn-primary shadow btn-xs sharp me-2"
-              >
-                <i className="fa fa-edit"></i> 
-              </Link>*/}
-              <Link
-                to={`/Guest-Management/Details/${list?._id}`}
-                state={{
-                  title: "View Guest Details",
-                  isEdit: false,
-                  type: "User",
-                }}
-                className="btn btn-primary shadow btn-xs sharp me-2"
-              >
-                <i className="fa fa-eye"></i>
-              </Link>
-              <button
-                type="button"
-                // onClick={() => handleDeleteItem(list?._id)}
-                className="btn btn-danger shadow btn-xs sharp"
-              >
-                <i className="fa fa-trash"></i>
-              </button>
-            </div>
+          returnData.sno = index + 1;
+          returnData.bookingId = list?.bookingId || "NA";
+
+          returnData.guestName = list?.guest?.fullName || "NA";
+          returnData.guestEmail = list?.guest?.email || "NA";
+
+          returnData.localName = list?.local?.fullName || "NA";
+          returnData.localEmail = list?.local?.email || "NA";
+
+          returnData.packageName = list?.packageName || "NA";
+          returnData.packagePrice = list?.packagePrice || 0;
+
+          returnData.localEarning = list?.localEarning || 0;
+
+          returnData.totalAmount = list?.totalAmount || 0;
+
+          returnData.status = (
+            <span
+              className={`badge ${
+                list?.status === "Completed"
+                  ? "bg-success"
+                  : list?.status === "Pending"
+                    ? "bg-warning"
+                    : "bg-danger"
+              }`}
+            >
+              {list?.status || "NA"}
+            </span>
           );
+
+          returnData.date = list?.createdAt
+            ? new Date(list.createdAt).toLocaleDateString()
+            : "NA";
 
           newRows.push(returnData);
         });
@@ -306,7 +262,7 @@ const PayoutManag = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12">
+                    {/* <div class="col-md-12">
                       <label for="message-text" class="col-form-label">
                         Status
                       </label>
@@ -349,7 +305,7 @@ const PayoutManag = () => {
                           </label>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="modal-footer p-0 pt-2">
                     <button
