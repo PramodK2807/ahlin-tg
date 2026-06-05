@@ -110,7 +110,11 @@ const TripManagement = () => {
               </span>
             );
           returnData.date =
-            moment(list?.startDate).format("MMM Do YYYY") || "NA";
+            (list?.destinations?.[0]?.startDate &&
+              moment(list?.destinations?.[0]?.startDate).format(
+                "MMM Do YYYY",
+              )) ||
+            "NA";
 
           // returnData.status = (
           //   <div className="check_toggle text-center" key={list?._id}>
