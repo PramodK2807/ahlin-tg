@@ -62,7 +62,12 @@ const EditViewLocalGuest = () => {
         setValue("email", values?.email || "NA");
         setValue("dob", moment(values?.dob).format("YYYY-MM-DD") || "NA");
         setValue("image", values?.profile_image || "NA");
-        setValue("country", values?.countryName || values?.country || "NA");
+        setValue(
+          "country",
+          values?.countryName || values?.country || state?.type === "Guide"
+            ? "Saudi Arabia"
+            : "NA",
+        );
         setCommission(values?.commission);
         setImageUrl(values?.profileImage[0]);
       }
