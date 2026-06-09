@@ -493,15 +493,16 @@ const Help = () => {
               </div>
             </div>
             <div class="modal-footer">
-              {ticketObject?.status !== "solve" && (
-                <button
-                  type="button"
-                  onClick={handleQueryChange}
-                  class="btn btn-primary"
-                >
-                  Save
-                </button>
-              )}
+              {/* {ticketObject?.status !== "solve" && (
+            
+              )} */}
+              <button
+                type="button"
+                onClick={handleQueryChange}
+                class="btn btn-primary"
+              >
+                Save
+              </button>
               <button
                 type="button"
                 data-bs-dismiss="modal"
