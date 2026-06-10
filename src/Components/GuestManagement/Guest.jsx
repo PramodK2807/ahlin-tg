@@ -140,13 +140,13 @@ const Guest = ({ latest }) => {
               >
                 <i className="fa fa-eye"></i>
               </Link>
-              <button
+              {/* <button
                 type="button"
                 onClick={() => handleDeleteItem(list?._id)}
                 className="btn btn-danger shadow btn-xs sharp"
               >
                 <i className="fa fa-trash"></i>
-              </button>
+              </button> */}
             </div>
           );
 

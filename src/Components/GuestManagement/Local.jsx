@@ -147,13 +147,13 @@ const Local = () => {
               >
                 <i class="fa fa-eye"></i>
               </Link>
-              <button
+              {/* <button
                 type="button"
                 onClick={() => handleDeleteItem(list?._id)}
                 class="btn btn-danger shadow btn-xs sharp"
               >
                 <i class="fa fa-trash"></i>
-              </button>
+              </button> */}
             </div>
           );
 
